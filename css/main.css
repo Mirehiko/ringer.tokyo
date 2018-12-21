@@ -8,9 +8,116 @@ html, body {
 	margin: 0;
 	padding: 0;
 }
+body {
+	background-color: #000;
+	color: #fff;
+}
+@keyframes pulsate{ 50%{ opacity: 0.7; } }
+button:hover {
+	cursor: pointer;
+}
+a:hover, .iconBtn:hover {
+	opacity: 1;
+  -webkit-animation: pulsate .001s linear infinite;
+  animation: pulsate .001s linear infinite;
+}
 .wrapper {
 	position: relative;
 }
 #pageContent {
 	margin-right: 200px;
+}
+
+.iconBtn {
+	position: absolute;
+	text-align: center;
+	right: 15px;
+	top: 50%;
+	margin-top: -24px;
+	width: auto;
+	height: auto;
+}
+.iconBtn svg {
+	opacity: .2;
+}
+.iconBtn .shape {
+  position: relative;
+  width: 20.8333333%;
+  height: 4.1666667%;
+}
+.iconBtn .shape > .inner {
+  position: absolute;
+  top: 24px;
+  left: 0px;
+  bottom: auto;
+  right: auto;
+  width: 100%;
+  height: 100%;
+}
+.iconBtn .shape > .inner > div {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: auto;
+  right: auto;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+	transition: all .3s;
+}
+.iconBtnBox {
+	position: relative;
+	cursor: pointer;
+}
+.iconBtn .shape > .inner > div:last-child {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.iconBtn:hover .inner > div,
+.iconBtnBox:hover .inner > div  {
+	-webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.iconBtn:hover .inner > div:last-child,
+.iconBtnBox:hover .inner > div:last-child {
+	-webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+.iconBtn .wrapper {
+	width: 48px;
+	height: 48px;
+	position: relative;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: box;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
+	-o-box-orient: vertical;
+	-webkit-flex-direction: column;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-pack: center;
+	-moz-box-pack: center;
+	-o-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-moz-box-align: center;
+	-o-box-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
 }
