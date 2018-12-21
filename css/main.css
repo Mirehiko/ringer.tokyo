@@ -16,7 +16,7 @@ body {
 button:hover {
 	cursor: pointer;
 }
-a:hover, .iconBtn:hover {
+a:hover, .iconBtnBox:hover .iconBtn {
 	opacity: 1;
   -webkit-animation: pulsate .001s linear infinite;
   animation: pulsate .001s linear infinite;
