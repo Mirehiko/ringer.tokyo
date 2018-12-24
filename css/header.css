@@ -7,20 +7,32 @@
 	right: 0;
 	left: calc(100% - 200px);
 	bottom: auto;
-	background-color: #000;
+	/* background-color: #000; */
+	background-color: transparent;
 	transition: all 0.3s;
 	z-index: 2;
 }
 .side-header * {
 	text-decoration: none;
-	color: #fff;
+	/* color: #fff; */
 }
 
 .side-header.open {
-	background-color: rgba(34, 34, 34, 0.7);
+	background-color: rgba(34, 34, 34, 0.8);
 	right: 400px;
 	left: 50%;
+	color: #fff;
 }
+.side-header.open a {
+	color: #fff;
+}
+.side-header.open .iconBtn .shape > .inner > div  {
+	background-color: #fff;
+}
+.side-header.open .bg path {
+	fill: #fff;
+}
+
 .side-menu-controls {
 	height: 100%;
 	width: 200px;
@@ -43,6 +55,15 @@
 .backlayer.-visible- {
 	display: block;
 }
+.backlayer video {
+    min-width: 100%;
+    min-height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
 
 .header-menu {
 	display: block;
@@ -59,7 +80,7 @@
 	display: block;
 	border: none;
 	background-color: transparent;
-	color: #fff;
+	/* color: #fff; */
 	height: 30px;
 	padding: 0;
 	line-height: 30px;

@@ -12,8 +12,34 @@ body {
 	background-color: #000;
 	color: #fff;
 }
+body.isRecruit, body.isContact {
+	background-color: #f6f6f6;
+	color: #222;
+}
+body.isContact {
+	background-color: #fff;
+	color: #222;
+}
 a {
+	text-decoration: none;
 	color: #fff;
+}
+.bg path {
+	fill: #fff;
+}
+body.isRecruit a, body.isContact a {
+	color: #222;
+}
+body.isRecruit .bg path,
+body.isContact .bg path {
+	fill: #222;
+}
+.iconBtn .shape > .inner > div {
+	background-color: #fff;
+}
+body.isRecruit .iconBtn .shape > .inner > div,
+body.isContact .iconBtn .shape > .inner > div {
+	background-color: #222;
 }
 
 @keyframes pulsate{ 50%{ opacity: 0.7; } }
@@ -30,6 +56,10 @@ a:hover, .iconBtnBox:hover .iconBtn {
 }
 #pageContent {
 	margin-right: 200px;
+}
+#contactPage, #talentPage,
+#newsPage {
+	margin-top: 170px;
 }
 
 .iconBtn {
@@ -147,4 +177,19 @@ a:hover, .iconBtnBox:hover .iconBtn {
 	transition: all .5s;
 	height: 0;
 	overflow: hidden;
+}
+.breadcrumbs {
+    position: absolute;
+    font-size: 24px;
+    padding: 27px 29px;
+    mix-blend-mode: difference;
+    top: 0;
+    left: 0;
+    width: 100%;
+    font-weight: bold;
+    z-index: 1;
+    /* color: #fff; */
+}
+.breadcrumbs a {
+	opacity: .4;
 }
