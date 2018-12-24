@@ -12,6 +12,10 @@ body {
 	background-color: #000;
 	color: #fff;
 }
+a {
+	color: #fff;
+}
+
 @keyframes pulsate{ 50%{ opacity: 0.7; } }
 button:hover {
 	cursor: pointer;
@@ -76,6 +80,8 @@ a:hover, .iconBtnBox:hover .iconBtn {
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
+
+.iconBtnBox.open .inner > div,
 .iconBtn:hover .inner > div,
 .iconBtnBox:hover .inner > div  {
 	-webkit-transform: rotate(180deg);
@@ -84,6 +90,7 @@ a:hover, .iconBtnBox:hover .iconBtn {
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
+.iconBtnBox.open .inner > div:last-child,
 .iconBtn:hover .inner > div:last-child,
 .iconBtnBox:hover .inner > div:last-child {
 	-webkit-transform: rotate(270deg);
@@ -91,6 +98,20 @@ a:hover, .iconBtnBox:hover .iconBtn {
   -o-transform: rotate(270deg);
   -ms-transform: rotate(270deg);
   transform: rotate(270deg);
+}
+.iconBtnBox.open:hover .inner > div {
+	-webkit-transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+.iconBtnBox.open:hover .inner > div:last-child {
+	-webkit-transform: rotate(450deg);
+  -moz-transform: rotate(450deg);
+  -o-transform: rotate(450deg);
+  -ms-transform: rotate(450deg);
+  transform: rotate(450deg);
 }
 .iconBtn .wrapper {
 	width: 48px;
@@ -120,4 +141,10 @@ a:hover, .iconBtnBox:hover .iconBtn {
 	-ms-flex-align: center;
 	-webkit-align-items: center;
 	align-items: center;
+}
+
+.toggleContent {
+	transition: all .5s;
+	height: 0;
+	overflow: hidden;
 }

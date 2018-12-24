@@ -5,21 +5,48 @@ $('#header-menu').on('click', function(e) {
 	$('.backlayer').toggleClass('-visible-');
 
 	if ( $('.side-header').hasClass('open') ) {
-		// console.log('open')
-		$('.side-header .line.is-b').css('display', 'none');
+		closeIcon($('.side-header .line.is-b'));
 	} else {
-		// console.log('close')
-		$('.side-header .line.is-b').css('display', 'block');
+		openIcon($('.side-header .line.is-b'));
 	}
 });
 
 $('.side-header').on('click', function(e) {
 	if ( $('.side-header').hasClass('open') ) {
-		// console.log('close')
 		$('.side-header').removeClass('open');
 		$('.backlayer').removeClass('-visible-');
 		$('.side-header .line.is-b').css('display', 'block');
 	}
 });
 
+// Toggle accordeon item
+$('.toggleBtn').on('click', function(e) {
+	let target = $(this).attr('toggle-target');
+	let toggleData = $(`.toggleContent[toggle-data="${ target }"]`);
 
+	if ( $(this).hasClass('collapse') ) {
+		$(this).removeClass('collapse');
+		toggleData.animate({height: 0}, 0.5);
+	} else {
+		$(this).addClass('collapse');
+		toggleData.animate({height: toggleData.find('.aliContent')[0].getBoundingClientRect().height+'px'}, 0.5);
+	}
+});
+
+$('.iconBtnBox').on('click', function(e){
+	e.stopPropagation();
+
+	$(this).toggleClass('open');
+	if ( $(this).hasClass('open') ) {
+		closeIcon( $(this).find('.line.is-b') );
+	} else {
+		openIcon( $(this).find('.line.is-b') );
+	}
+});
+
+function openIcon(icon) {
+	icon.css('display', 'block');
+}
+function closeIcon(icon) {
+	icon.css('display', 'none');
+}

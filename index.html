@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="css/header.css">
 	<link rel="stylesheet" href="css/content.css">
+	<link rel="stylesheet" href="css/news.css">
 	<link rel="stylesheet" href="css/talent.css">
 
 </head>
@@ -25,7 +26,7 @@
 						<a href="#" class="categoryList__item">Interactive</a>
 					</div>
 				</div>
-				<a id="header-menu" href="#" class="header-menu iconBtnBox">
+				<a id="header-menu" class="header-menu iconBtnBox">
 					<span class="hmenu-text">Menu</span>
 					<div class="iconBtn">
 						<div class="wrapper">
@@ -56,12 +57,14 @@
 		</div>
 	</div>
 
-	<div class="backlayer"></div>
+	<div class="backlayer">
+		<video class="inner" src="video/about.mp4" width="100%" height="100%" muted="" loop="" playsinline=""></video>
+	</div>
 
 	<div class="crumbs">
-		<span>Home</span>
+		<a href="#">Home</a>
 		<span>-></span>
-		<a href="#">About</a>
+		<span>About</span>
 	</div>
 
 	<div id="pageContent" class="content">
@@ -69,7 +72,7 @@
 		<div id="aboutPage" class="page">
 
 			<div class="videoBox">
-				<video src=""></video>
+				<video class="inner" src="video/about.mp4" width="100%" height="100%" muted="" loop="" playsinline="" autoplay></video>
 			</div>
 
 			<div class="production">
@@ -154,10 +157,10 @@
 				</div>
 				<div class="newsItem">
 					<div class="publicationDate">
-						<span class="newsDate">2018.09.10</span>
+						<span class="newsDate">2018.08.16</span>
 						<span class="span newsState">Release</span>
 					</div>
-					<a href="#" class="newsTitle" target="_blank">"Touching Sound,"the VR content first revealed at SXSW in the spring of 2018 that created so much buzz in the VR world, was further improved over the summer! It can now be enjoyed by two pairs of people at J-WAVE Innovation Festa 2018, which will be held from Saturday, September 29, to Sunday, September 30, at Roppongi Hills. Come and experience it with family members or friends.</a>
+					<a href="#" class="newsTitle" target="_blank">"The Man from the Sea" is the latest movie by director Koji Fukuda, a rising star in the world of film and winner of the 2016 Jury Prize in the Un Certain Regard category of the 69th Cannes Film Festival for his film, "Harmonium." TAIYOKIKAKU R&D was involved in the production of the film, and the VFX was handled by +Ring. The film is currently being shown at Kineca Omori in Tokyo, so don't miss it! You're certain to be enthralled by this moving and beautiful fantasy film!</a>
 				</div>
 			</div>
 		</div>
@@ -165,7 +168,7 @@
 		<div id="talentPage" class="page">
 			<div class="accordList">
 				<div class="accordListItem">
-					<div class="aliTitle iconBtnBox">3DCG
+					<div class="aliTitle iconBtnBox toggleBtn" toggle-target="talent1">3DCG
 						<div class="iconBtn">
 							<div class="wrapper">
 								<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
@@ -180,7 +183,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="aliContentBox">
+					<div class="aliContentBox toggleContent" toggle-data="talent1">
 						<div class="aliContent">
 							<p class="aliContent__item">Toru Hayai</p>
 							<p class="aliContent__item">Takeshi Ozaki</p>
@@ -200,7 +203,7 @@
 					</div>
 				</div>
 				<div class="accordListItem">
-					<div class="aliTitle iconBtnBox">VFX / Finish
+					<div class="aliTitle iconBtnBox toggleBtn" toggle-target="talent2">VFX / Finish
 						<div class="iconBtn">
 							<div class="wrapper">
 								<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
@@ -215,7 +218,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="aliContentBox">
+					<div class="aliContentBox toggleContent" toggle-data="talent2">
 						<div class="aliContent">
 							<p class="aliContent__item">Masami Nikaido</p>
 							<p class="aliContent__item">Jun Hatano</p>
@@ -223,7 +226,7 @@
 					</div>
 				</div>
 				<div class="accordListItem">
-					<div class="aliTitle iconBtnBox">Editor
+					<div class="aliTitle iconBtnBox toggleBtn" toggle-target="talent3">Editor
 						<div class="iconBtn">
 							<div class="wrapper">
 								<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
@@ -238,7 +241,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="aliContentBox">
+					<div class="aliContentBox toggleContent" toggle-data="talent3">
 						<div class="aliContent">
 							<p class="aliContent__item">Hidehisa Watanabe</p>
 							<p class="aliContent__item">Atsushi Wakabayashi</p>
@@ -250,7 +253,7 @@
 					</div>
 				</div>
 				<div class="accordListItem">
-					<div class="aliTitle iconBtnBox">Mixer
+					<div class="aliTitle iconBtnBox toggleBtn" toggle-target="talent4">Mixer
 						<div class="iconBtn">
 							<div class="wrapper">
 								<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
@@ -265,7 +268,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="aliContentBox">
+					<div class="aliContentBox toggleContent" toggle-data="talent4">
 						<div class="aliContent">
 							<p class="aliContent__item">Akihiro Morita</p>
 							<p class="aliContent__item">Akari Tatsumi</p>
@@ -274,7 +277,7 @@
 					</div>
 				</div>
 				<div class="accordListItem">
-					<div class="aliTitle iconBtnBox">Engineer
+					<div class="aliTitle iconBtnBox toggleBtn" toggle-target="talent5">Engineer
 						<div class="iconBtn">
 							<div class="wrapper">
 								<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
@@ -289,7 +292,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="aliContentBox">
+					<div class="aliContentBox toggleContent" toggle-data="talent5">
 						<div class="aliContent">
 							<p class="aliContent__item">Masanobu Hagiwara</p>
 							<p class="aliContent__item">Yukihiro Kobayashi</p>
@@ -297,7 +300,7 @@
 					</div>
 				</div>
 				<div class="accordListItem">
-					<div class="aliTitle iconBtnBox">CG Producer
+					<div class="aliTitle iconBtnBox toggleBtn" toggle-target="talent6">CG Producer
 						<div class="iconBtn">
 							<div class="wrapper">
 								<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
@@ -312,7 +315,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="aliContentBox">
+					<div class="aliContentBox toggleContent" toggle-data="talent6">
 						<div class="aliContent">
 							<p class="aliContent__item">Mamoru Iizuka</p>
 							<p class="aliContent__item">Go Takahashi</p>
@@ -324,7 +327,7 @@
 					</div>
 				</div>
 				<div class="accordListItem">
-					<div class="aliTitle iconBtnBox">Manager
+					<div class="aliTitle iconBtnBox toggleBtn" toggle-target="talent7">Manager
 						<div class="iconBtn">
 							<div class="wrapper">
 								<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
@@ -339,7 +342,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="aliContentBox">
+					<div class="aliContentBox toggleContent" toggle-data="talent7">
 						<div class="aliContent">
 							<p class="aliContent__item subcategory">EDIT & MIXER</p>
 							<p class="aliContent__item">Ayuko Ishibashi</p>
@@ -350,7 +353,7 @@
 					</div>
 				</div>
 				<div class="accordListItem">
-					<div class="aliTitle iconBtnBox">Producer
+					<div class="aliTitle iconBtnBox toggleBtn" toggle-target="talent8">Producer
 						<div class="iconBtn">
 							<div class="wrapper">
 								<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
@@ -365,7 +368,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="aliContentBox">
+					<div class="aliContentBox toggleContent" toggle-data="talent8">
 						<div class="aliContent">
 							<p class="aliContent__item">Koji Eguchi</p>
 							<p class="aliContent__item">Hide Nagasawa</p>
