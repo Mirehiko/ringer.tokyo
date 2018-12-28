@@ -1,3 +1,9 @@
+var SCREEN_RATIO = 16/9;
+var maxScroll = 0;
+
+reDrawImages( $('.infiniteItem') );
+// moveInfinate();
+
 $('#header-menu').on('click', function(e) {
 	// e.stopPropagation();
 
@@ -7,7 +13,7 @@ $('#header-menu').on('click', function(e) {
 	if ( $('.side-header').hasClass('open') ) {
 		// closeIcon($('.side-header .line.is-b'));
 		$('.hmenu-text').html('Close');
-		
+
 	} else {
 		// openIcon($('.side-header .line.is-b'));
 		$('.hmenu-text').html('Menu');
@@ -22,6 +28,7 @@ $('.side-header').on('click', function(e) {
 		$('.hmenu-text').html('Menu');
 	}
 });
+
 
 // Toggle accordeon item
 $('.toggleBtn').on('click', function(e) {
@@ -47,6 +54,32 @@ $('.iconBtnBox').on('click', function(e){
 		openIcon( $(this).find('.line.is-b') );
 	}
 });
+
+$(window).on('resize', function(e){
+	reDrawImages( $('.infiniteItem') );
+});
+
+$('.infiniteBlock').scroll(function(e) {
+	let scrollable = $('.infiniteList');
+
+	console.log();
+	console.log($(this).scrollLeft())
+
+	// if () {
+  //
+	// }
+});
+
+function moveInfinate() {
+	let mar = 0;
+	setInterval( () => {
+		$('.infiniteList').css('margin', mar );
+		mar -= 5;
+	}, 100);
+}
+function reDrawImages(image) {
+	image.width( image.height() * SCREEN_RATIO );
+}
 
 function openIcon(icon) {
 	icon.css('display', 'block');
