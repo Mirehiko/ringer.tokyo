@@ -1,9 +1,4 @@
-.doubleBox {
-	width: 50%;
-}
-.tripleBox {
-	width: 33.333333%;
-}
+
 .infirow {
 	display: flex;
 }
@@ -17,4 +12,17 @@
 .infirow .boxItem {
 	border-radius: 15px;
 	overflow: hidden;
+}
+.col-1, .col-2, .col-3 {
+	display: inline-block;
+}
+
+.col-4 {
+	width: 33.333333%;
+}
+.col-6 {
+	width: 50%;
+}
+.col-8 {
+	width: 66.666666%;
 }
