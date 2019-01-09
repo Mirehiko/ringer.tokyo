@@ -1,0 +1,20 @@
+.doubleBox {
+	width: 50%;
+}
+.tripleBox {
+	width: 33.333333%;
+}
+.infirow {
+	display: flex;
+}
+.infirow .-multy- {
+	display: flex;
+	flex-direction: column;
+}
+.infirow .boxItem img {
+	width: 100%;
+}
+.infirow .boxItem {
+	border-radius: 15px;
+	overflow: hidden;
+}

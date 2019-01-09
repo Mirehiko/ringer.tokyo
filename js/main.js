@@ -59,16 +59,16 @@ $(window).on('resize', function(e){
 	reDrawImages( $('.infiniteItem') );
 });
 
-$('.infiniteBlock').scroll(function(e) {
-	let scrollable = $('.infiniteList');
+// $('.infiniteBlock').scroll(function(e) {
+// 	let scrollable = $('.infiniteList');
 
-	console.log();
-	console.log($(this).scrollLeft())
+// 	console.log();
+// 	console.log($(this).scrollLeft())
 
-	// if () {
-  //
-	// }
-});
+// 	// if () {
+//   //
+// 	// }
+// });
 
 function moveInfinate() {
 	let mar = 0;
