@@ -12,6 +12,28 @@
 .infirow .boxItem {
 	border-radius: 15px;
 	overflow: hidden;
+	display: block;
+	height: 300px;
+	padding: 5px;
+	position: relative;
+}
+.infirow .boxItem:hover {
+	animation: none;
+}
+.boxItem .itemContent {
+	position: absolute;
+	top:0;
+	margin-top: 100%;
+	transition: all 0.3s;
+	height: 100%;
+	width: 100%;
+	background-color: #222;
+}
+.boxItem:hover .itemContent {
+	margin-top: 0;
+}
+.itemBack {
+	height: 100%;
 }
 .col-1, .col-2, .col-3 {
 	display: inline-block;
