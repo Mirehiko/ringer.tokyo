@@ -1,8 +1,8 @@
 var textData = [
 	{
 		title: 'testTitle',
-		lauch: '',
-		categoty: '',
+		lauch: 'January',
+		category: 'development',
 		preview: {
 			type: 'image',
 			src: 'images/works/deki2_2.jpg',
@@ -12,8 +12,8 @@ var textData = [
 	},
 	{
 		title: 'testTitle',
-		lauch: '',
-		categoty: '',
+		lauch: 'January',
+		category: 'development',
 		preview: {
 			type: 'image',
 			src: 'images/works/deki2_4.jpg',
@@ -23,8 +23,8 @@ var textData = [
 	},
 	{
 		title: 'testTitle',
-		lauch: '',
-		categoty: '',
+		lauch: 'January',
+		category: 'development',
 		preview: {
 			type: 'image',
 			src: 'images/works/deki2_6.jpg',
@@ -34,8 +34,8 @@ var textData = [
 	},
 	{
 		title: 'testTitle',
-		lauch: '',
-		categoty: '',
+		lauch: 'January',
+		category: 'development',
 		preview: {
 			type: 'image',
 			src: 'images/works/deki2_8.jpg',
@@ -45,8 +45,8 @@ var textData = [
 	},
 	{
 		title: 'testTitle',
-		lauch: '',
-		categoty: '',
+		lauch: 'January',
+		category: 'development',
 		preview: {
 			type: 'image',
 			src: 'images/works/victas_iamnext_03.jpg',
@@ -56,8 +56,8 @@ var textData = [
 	},
 	{
 		title: 'testTitle',
-		lauch: '',
-		categoty: '',
+		lauch: 'January',
+		category: 'development',
 		preview: {
 			type: 'image',
 			src: 'images/works/iamnext.jpg',
@@ -66,7 +66,8 @@ var textData = [
 		link: 'works.html',
 	},
 ];
-
+var computedLines = [];
+var renderedData = [];
 Array.prototype.shuffle = function() {
   for (var i = this.length - 1; i > 0; i--) {
     var num = Math.floor(Math.random() * (i + 1));
@@ -77,8 +78,99 @@ Array.prototype.shuffle = function() {
   return this;
 }
 
+// var box =  $('.infiniteBox')[0];
+// if (box.addEventListener) {
+//   if ('onwheel' in document) {
+//     // IE9+, FF17+, Ch31+
+//     box.addEventListener("wheel", onWheel);
+//   } else if ('onmousewheel' in document) {
+//     // устаревший вариант события
+//     box.addEventListener("mousewheel", onWheel);
+//   } else {
+//     // Firefox < 17
+//     box.addEventListener("MozMousePixelScroll", onWheel);
+//   }
+// } else { // IE8-
+//   box.attachEvent("onmousewheel", onWheel);
+// }
+
+// function onWheel(e) {
+//   e = e || window.event;
+
+//   // wheelDelta не дает возможность узнать количество пикселей
+//   var delta = e.deltaY || e.detail || e.wheelDelta;
+
+//   console.log(delta)
+
+//   e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+// }
+
 
 $('#homePage').append(renderPage(textData));
+redrawBackgrounds();
+checkForAdditionData();
+
+$(window).on('resize', function(e) {
+	redrawBackgrounds();
+});
+
+let semiScroll = 0;
+$(window).on('scroll', function(e) {
+	let box = $('.infiniteBox');
+	semiScroll++;
+	firstLine = $('.infirow:first-child');
+	box.css('margin-top', -semiScroll)
+	// let w = $(this);
+	// let firstLine = $('.infirow:first-child');
+	// let lastLine = $('.infirow:last-child');
+
+	// if (w.scrollTop() > (lastLine.offset().top - w.height())) {
+	// 	// footer в окне
+	// 	// $('.infiniteBox').append(firstLine.clone())
+	// } else {
+	// 	// footer вне окна
+	// }
+});
+
+
+
+
+function checkForAdditionData() {
+	let box = $('.infiniteBox');
+	let w = $(window);
+	let lastLine = $('.infirow:last-child');
+	// console.log(lastLine.offset().top - w.height())
+	while( $('.infirow:last-child').offset().top - w.height() < 0 ) {
+	// while( box.outerHeight() < w.height() ) {
+		try {
+			console.log('computedLines:before:', computedLines)
+			let forDraw = computedLines.splice(0,1);
+			if ( forDraw.length == 2 ) {
+				box.append(doubleLine(forDraw));
+			} else {
+				box.append(forDraw[0].lineType(forDraw[0].data));
+			}
+			computedLines = computedLines.concat(forDraw);
+			redrawBackgrounds();
+			console.log('computedLines:after:', computedLines)
+		} catch(e) {console.log(e)}
+	}
+	/*if ( box.outerHeight() < windowObj.height() ) {
+		console.log('computedLines:before:', computedLines)
+		let forDraw = computedLines.splice(0,1);
+		if ( forDraw.length == 2 ) {
+			box.append(doubleLine(forDraw));
+		} else {
+			box.append(forDraw[0].lineType(forDraw[0].data));
+		}
+		computedLines = computedLines.concat(forDraw);
+		redrawBackgrounds();
+		console.log('computedLines:after:', computedLines)
+	}
+	if ( box.outerHeight() < windowObj.height() ) {
+		checkForAdditionData()
+	}*/
+}
 
 function renderPage(data) {
 	let tmpData = data;
@@ -124,13 +216,17 @@ function renderPage(data) {
 	}
 
 	// Собираем все плитки воедино
-	let resultLines = doubleData.concat(tripleData);
-	console.log('resultLines:',resultLines)
-	resultLines.shuffle(); // Задаем случайное положение
-	console.log('resultLines:',resultLines)
+	// let resultLines = doubleData.concat(tripleData);
+	// console.log('resultLines:',resultLines)
+	// resultLines.shuffle(); // Задаем случайное положение
+	// console.log('resultLines:',resultLines)
+	computedLines = doubleData.concat(tripleData);
+	computedLines.shuffle(); // Задаем случайное положение
+	console.log('computedLines:',computedLines)
 
 	// Собираем данные для отрисовки
-	for ( item of resultLines ) {
+	for ( item of computedLines ) {
+		console.log('line:', item)
 		if ( item.length == 2 ) {
 			$(result).append(doubleLine(item));
 		} else {
@@ -231,21 +327,22 @@ function randomInteger(min, max) {
 }
 
 function tsobLine(data){
+	let dt = data.slice();
 	let line = document.createElement('div');
 	$(line).addClass('infirow');
 
 	let big = document.createElement('div');
 	$(big).addClass('col-8');
-	$(big).append( drawItem(data[0]) );
-	data.splice(0,1);
+	$(big).append( drawItem(dt[0]) );
+	dt.splice(0,1);
 
 	let small = document.createElement('div');
 	$(small).addClass('col-4');
 	do {
-		$(small).append(drawItem(data[0]));
-		data.splice(0,1);
+		$(small).append(drawItem(dt[0]));
+		dt.splice(0,1);
 	}
-	while(data.length)
+	while(dt.length)
 
 	$(line).append(small);
 	$(line).append(big);
@@ -254,21 +351,22 @@ function tsobLine(data){
 }
 
 function obtsLine(data){
+	let dt = data.slice();
 	let line = document.createElement('div');
 	$(line).addClass('infirow');
 
 	let big = document.createElement('div');
 	$(big).addClass('col-8');
-	$(big).append( drawItem(data[0]) );
-	data.splice(0,1);
+	$(big).append( drawItem(dt[0]) );
+	dt.splice(0,1);
 
 	let small = document.createElement('div');
 	$(small).addClass('col-4');
 	do {
-		$(small).append(drawItem(data[0]));
-		data.splice(0,1);
+		$(small).append(drawItem(dt[0]));
+		dt.splice(0,1);
 	}
-	while(data.length)
+	while(dt.length)
 
 	$(line).append(big);
 	$(line).append(small);
@@ -277,35 +375,45 @@ function obtsLine(data){
 }
 
 function tripleLine(data) {
+	let dt = data.slice();
 	let line = document.createElement('div');
 	$(line).addClass('infirow');
 
 	do {
 		let item = document.createElement('div');
 		$(item).addClass('col-4');
-		$(item).append( drawItem(data[0]) );
+		$(item).append( drawItem(dt[0]) );
 		$(line).append(item);
-		data.splice(0,1);
+		dt.splice(0,1);
 	}
-	while(data.length)
+	while(dt.length)
 
 	return line;
 }
 
 function doubleLine(data) {
+	let dt = data.slice();
 	let line = document.createElement('div');
 	$(line).addClass('infirow');
 
 	do {
 		let item = document.createElement('div');
 		$(item).addClass('col-6');
-		$(item).append( drawItem(data[0]) );
+		$(item).append( drawItem(dt[0]) );
 		$(line).append(item);
-		data.splice(0,1);
+		dt.splice(0,1);
 	}
-	while(data.length)
+	while(dt.length)
 
 	return line;
+}
+
+function redrawBackgrounds() {
+	let items = $('.boxItem');
+
+	$.each(items, function(key, val){
+		$(this).outerHeight($(this).outerWidth() / SCREEN_RATIO);
+	});
 }
 
 function drawItem(data) {
@@ -313,33 +421,46 @@ function drawItem(data) {
 	item.href = data.link;
 	$(item).addClass('boxItem');
 
+	let wrapper = document.createElement('div');
+	$(wrapper).addClass('itemWrapper');
+	$(item).append(wrapper);
+
+
 	let back = document.createElement('div');
 	$(back).addClass('itemBack');
 	$(back).css('background-image', 'url('+data.src+')');
 	$(back).css('background-size', 'cover');
 	$(back).css('background-repeat', 'no-repeat');
-	$(item).append(back);
+	$(wrapper).append(back);
 
 	let itemContent = document.createElement('div');
 	$(itemContent).addClass('itemContent');
-	$(item).append(itemContent);
+	$(wrapper).append(itemContent);
 
 
 	let itemTitle = document.createElement('div');
-	$(itemTitle).addClass('itemTitle');
-	$(itemTitle).text(data.title);
+	$(itemTitle).addClass('itemTitle withValue');
+	$(itemTitle).text('Title');
 	$(itemContent).append(itemTitle);
+	let itemTitle__value = document.createElement('span');
+	$(itemTitle__value).text(data.title);
+	$(itemTitle).append(itemTitle__value);
 
 	let itemLauchDate = document.createElement('div');
-	$(itemLauchDate).addClass('itemLauchDate');
-	$(itemLauchDate).text(data.lauch);
+	$(itemLauchDate).addClass('itemLauchDate withValue');
+	$(itemLauchDate).text('Lauch');
 	$(itemContent).append(itemLauchDate);
+	let itemLauch__value = document.createElement('span');
+	$(itemLauch__value).text(data.lauch);
+	$(itemLauchDate).append(itemLauch__value);
 
 	let itemCategory = document.createElement('div');
-	$(itemCategory).addClass('itemCategory');
-	$(itemCategory).text(data.category);
+	$(itemCategory).addClass('itemCategory withValue');
+	$(itemCategory).text('Category');
 	$(itemContent).append(itemCategory);
-
+	let itemCategory__value = document.createElement('span');
+	$(itemCategory__value).text(data.category);
+	$(itemCategory).append(itemCategory__value);
 
 	let previewBlock = document.createElement('div');
 	$(previewBlock).addClass('itemPreview');
@@ -356,3 +477,5 @@ function drawItem(data) {
 
 	return item;
 }
+
+

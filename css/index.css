@@ -10,15 +10,19 @@
 	width: 100%;
 }
 .infirow .boxItem {
-	border-radius: 15px;
-	overflow: hidden;
 	display: block;
-	height: 300px;
-	padding: 5px;
+	padding: 3px;
 	position: relative;
 }
 .infirow .boxItem:hover {
 	animation: none;
+}
+.infirow .boxItem .itemWrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border-radius: 15px;
+	overflow: hidden;
 }
 .boxItem .itemContent {
 	position: absolute;
@@ -28,9 +32,11 @@
 	height: 100%;
 	width: 100%;
 	background-color: #222;
+	padding: 20px;
 }
 .boxItem:hover .itemContent {
 	margin-top: 0;
+	transition: none;
 }
 .itemBack {
 	height: 100%;
@@ -48,3 +54,22 @@
 .col-8 {
 	width: 66.666666%;
 }
+.itemTitle {
+	margin-bottom: 30px;
+}
+.withValue {
+	position: relative;
+}
+.withValue span {
+	position: absolute;
+	right: 0;
+}
+
+/* #pageContent,
+#homePage{
+	height: 100%;
+	overflow: hidden;
+}
+.infiniteBox {
+	height: 100%;
+} */
