@@ -65,11 +65,12 @@
 	right: 0;
 }
 
-/* #pageContent,
+#pageContent,
 #homePage{
 	height: 100%;
 	overflow: hidden;
 }
 .infiniteBox {
 	height: 100%;
-} */
+	transition: all .1s;
+}

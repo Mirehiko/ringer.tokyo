@@ -68,6 +68,7 @@ var textData = [
 ];
 var computedLines = [];
 var renderedData = [];
+var isScrolling = false;
 Array.prototype.shuffle = function() {
   for (var i = this.length - 1; i > 0; i--) {
     var num = Math.floor(Math.random() * (i + 1));
@@ -77,62 +78,94 @@ Array.prototype.shuffle = function() {
   }
   return this;
 }
+var firstId = '';
 
-// var box =  $('.infiniteBox')[0];
-// if (box.addEventListener) {
-//   if ('onwheel' in document) {
-//     // IE9+, FF17+, Ch31+
-//     box.addEventListener("wheel", onWheel);
-//   } else if ('onmousewheel' in document) {
-//     // устаревший вариант события
-//     box.addEventListener("mousewheel", onWheel);
-//   } else {
-//     // Firefox < 17
-//     box.addEventListener("MozMousePixelScroll", onWheel);
-//   }
-// } else { // IE8-
-//   box.attachEvent("onmousewheel", onWheel);
-// }
+moveContent();
 
-// function onWheel(e) {
-//   e = e || window.event;
+function isFirstElement() {
+	if ( $('.infiniteBox').children().first().attr('id') == firstId ) {
+		return true;
+	}
+	return false;
+}
+function isFirstEnd() {
+	let first = $('.infiniteBox').children().first();
+	// console.log('oftop',first.offset().top)
+	// console.log('first.height()',first.height())
+	if ( first.offset().top <= -first.height() ) {
+		return true;
+	}
+	return false;
+}
 
-//   // wheelDelta не дает возможность узнать количество пикселей
-//   var delta = e.deltaY || e.detail || e.wheelDelta;
+function replaceFirstToEnd(elem) {
+	let nextElem = elem.next();
+	let margin = elem.css('margin-top');
+	margin = parseInt(margin);
 
-//   console.log(delta)
+	let newMargin = margin + elem.height();
+	console.log('newMargin', newMargin)
+	elem.css('margin-top', 0);
 
-//   e.preventDefault ? e.preventDefault() : (e.returnValue = false);
-// }
+	let newElem = elem.clone();
+
+	elem.remove();
+	nextElem.css('margin-top', newMargin);
+	$('.infiniteBox').append(newElem);
+}
+
+function moveContent() {
+	setInterval(function(){
+		let contentBox = $('.infiniteBox').children().first();
+		if ( !isScrolling ) {
+			let margin = 0;
+			if ( isFirstEnd() ) {
+				replaceFirstToEnd(contentBox);
+			} else {
+				if ( !isFirstElement() ) {
+					margin = contentBox.css('margin-top');
+					margin = parseInt(margin);
+					margin -= 2;
+				}
+			}
+			contentBox.css('margin-top', margin);
+		}		
+	},100);
+}
+
+$(window).on('mousewheel', function(event) {
+	isScrolling = true;
+	console.log(event.deltaX, event.deltaY, event.deltaFactor);
+	let dataBox = $('.infiniteBox').children().first();
+	let margin = dataBox.css('margin-top');
+	if (event.deltaY > 0) {
+		// console.log('margin', margin)
+		margin = parseInt(margin);
+		// console.log('margin2', margin)
+		margin += event.deltaFactor;
+		// console.log('margin3', margin)
+		dataBox.css('margin-top', margin);
+	} else {
+		// console.log('margin', margin)
+		margin = parseInt(margin);
+		// console.log('margin2', margin)
+		margin -= event.deltaFactor;
+		// console.log('margin3', margin)
+		dataBox.css('margin-top', margin);
+	}
+	isScrolling = false;
+});
 
 
 $('#homePage').append(renderPage(textData));
 redrawBackgrounds();
 checkForAdditionData();
 
+$('.infiniteBox').children().first().attr('id', 'first');
+
 $(window).on('resize', function(e) {
 	redrawBackgrounds();
 });
-
-let semiScroll = 0;
-$(window).on('scroll', function(e) {
-	let box = $('.infiniteBox');
-	semiScroll++;
-	firstLine = $('.infirow:first-child');
-	box.css('margin-top', -semiScroll)
-	// let w = $(this);
-	// let firstLine = $('.infirow:first-child');
-	// let lastLine = $('.infirow:last-child');
-
-	// if (w.scrollTop() > (lastLine.offset().top - w.height())) {
-	// 	// footer в окне
-	// 	// $('.infiniteBox').append(firstLine.clone())
-	// } else {
-	// 	// footer вне окна
-	// }
-});
-
-
 
 
 function checkForAdditionData() {
