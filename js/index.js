@@ -78,88 +78,179 @@ Array.prototype.shuffle = function() {
   }
   return this;
 }
-var firstId = '';
-
+var firstID = '';
+var lastID = '';
+var currentMargin = 0;
+var firstHeight = 0;
+var loop = null;
 moveContent();
 
 function isFirstElement() {
-	if ( $('.infiniteBox').children().first().attr('id') == firstId ) {
+	if ( $('.infiniteBox').children().first().attr('id') == firstID ) {
 		return true;
 	}
 	return false;
 }
-function isFirstEnd() {
-	let first = $('.infiniteBox').children().first();
+
+function isLastOnScreen() {
+	if ( $('.infiniteBox').children().last().offset().top <= $(window).height() ) {
+		return true;
+	}
+	return false;
+}
+function isLastLeaveScreen() {
+	let last = $('.infiniteBox').children().last().prev();
 	// console.log('oftop',first.offset().top)
 	// console.log('first.height()',first.height())
+	if ( last.offset().top >= $(window).height() ) {
+		return true;
+	}
+	return false;
+}
+function isFirstLeaveScreen(elem) {
+	let first = $('.infiniteBox').children().first().next();
 	if ( first.offset().top <= -first.height() ) {
 		return true;
 	}
 	return false;
 }
+function isFirstOnScreen() {
+	let first = $('.infiniteBox').children().first();
+	console.log('oftop',first.offset().top)
+	console.log('first.height()',first.height())
+	if ( first.offset().top >= -first.height() ) {
+		return true;
+	}
+	return false;
+}
 
-function replaceFirstToEnd(elem) {
-	let nextElem = elem.next();
-	let margin = elem.css('margin-top');
-	margin = parseInt(margin);
 
-	let newMargin = margin + elem.height();
-	console.log('newMargin', newMargin)
-	elem.css('margin-top', 0);
+function setPropsToFirst(elem) {
+	elem.css('margin-top', currentMargin + firstHeight );
+}
 
-	let newElem = elem.clone();
-
+function removeElem(elem) {
 	elem.remove();
-	nextElem.css('margin-top', newMargin);
-	$('.infiniteBox').append(newElem);
 }
 
 function moveContent() {
-	setInterval(function(){
+	loop = setInterval(function(){
 		let contentBox = $('.infiniteBox').children().first();
 		if ( !isScrolling ) {
 			let margin = 0;
-			if ( isFirstEnd() ) {
-				replaceFirstToEnd(contentBox);
-			} else {
-				if ( !isFirstElement() ) {
-					margin = contentBox.css('margin-top');
-					margin = parseInt(margin);
-					margin -= 2;
-				}
+			// replaceElements(contentBox, 'down');
+			checkForDraw('down');
+			if ( !isFirstElement() ) {
+				margin = contentBox.css('margin-top');
+				margin = parseInt(margin);
+				margin -= 2;
 			}
+			currentMargin = margin;
 			contentBox.css('margin-top', margin);
 		}		
 	},100);
 }
 
+function checkForDraw(way) {
+	let first = $('.infiniteBox').children().first();
+	let last = $('.infiniteBox').children().last();
+
+	if (way == 'down') {
+		if ( isLastOnScreen() ) {
+			appendToEnd();
+			redrawBackgrounds();
+		}
+
+		if ( isFirstLeaveScreen() ) {
+			firstHeight = first.height();
+			removeElem(first);
+			setPropsToFirst($('.infiniteBox').children().first());
+		}
+
+	} else {
+		if ( isFirstOnScreen() ) {
+			prependToStart();
+			redrawBackgrounds();
+
+			$('.infiniteBox').children().css('margin-top', 0);
+			first = $('.infiniteBox').children().first();
+			first.css('margin-top', currentMargin - first.height());
+		}
+
+		if ( isLastLeaveScreen() ) {
+			removeElem(last);
+		}
+	}
+	// redrawBackgrounds();
+
+
+}
+
+function prependToStart(){
+	let box = $('.infiniteBox');
+	let forDraw = computedLines.splice(-1,1);
+	let item = null;
+
+	if ( forDraw.length == 2 ) {
+		item = doubleLine(forDraw);
+	} else {
+		item = forDraw[0].lineType(forDraw[0].data);
+	}
+	box.prepend(item);
+	
+	computedLines = forDraw.concat(computedLines);
+	// $(item).css('margin-top', currentMargin - $(item).height());
+}
+function appendToEnd() {
+	let box = $('.infiniteBox');
+	let forDraw = computedLines.splice(0,1);
+	if ( forDraw.length == 2 ) {
+		box.append(doubleLine(forDraw));
+	} else {
+		box.append(forDraw[0].lineType(forDraw[0].data));
+	}
+	computedLines = computedLines.concat(forDraw);
+	redrawBackgrounds();
+}
+
 $(window).on('mousewheel', function(event) {
-	isScrolling = true;
+	// isScrolling = true;
+	clearInterval(loop);
 	console.log(event.deltaX, event.deltaY, event.deltaFactor);
-	let dataBox = $('.infiniteBox').children().first();
-	let margin = dataBox.css('margin-top');
+	let item = $('.infiniteBox').children().first();
+	let margin = item.css('margin-top');
 	if (event.deltaY > 0) {
 		// console.log('margin', margin)
 		margin = parseInt(margin);
 		// console.log('margin2', margin)
 		margin += event.deltaFactor;
 		// console.log('margin3', margin)
-		dataBox.css('margin-top', margin);
+		item.css('margin-top', margin);
+
+		// replaceElements(item, 'up');
+		checkForDraw('up');
 	} else {
 		// console.log('margin', margin)
 		margin = parseInt(margin);
 		// console.log('margin2', margin)
 		margin -= event.deltaFactor;
 		// console.log('margin3', margin)
-		dataBox.css('margin-top', margin);
+		item.css('margin-top', margin);
+
+		// replaceElements(item, 'down');
+		checkForDraw('down');
 	}
-	isScrolling = false;
+	currentMargin = margin;
+
+	
+	moveContent();
+	// isScrolling = false;
 });
 
 
 $('#homePage').append(renderPage(textData));
 redrawBackgrounds();
-checkForAdditionData();
+// checkForAdditionData();z
 
 $('.infiniteBox').children().first().attr('id', 'first');
 
@@ -172,9 +263,8 @@ function checkForAdditionData() {
 	let box = $('.infiniteBox');
 	let w = $(window);
 	let lastLine = $('.infirow:last-child');
-	// console.log(lastLine.offset().top - w.height())
+
 	while( $('.infirow:last-child').offset().top - w.height() < 0 ) {
-	// while( box.outerHeight() < w.height() ) {
 		try {
 			console.log('computedLines:before:', computedLines)
 			let forDraw = computedLines.splice(0,1);
@@ -188,21 +278,6 @@ function checkForAdditionData() {
 			console.log('computedLines:after:', computedLines)
 		} catch(e) {console.log(e)}
 	}
-	/*if ( box.outerHeight() < windowObj.height() ) {
-		console.log('computedLines:before:', computedLines)
-		let forDraw = computedLines.splice(0,1);
-		if ( forDraw.length == 2 ) {
-			box.append(doubleLine(forDraw));
-		} else {
-			box.append(forDraw[0].lineType(forDraw[0].data));
-		}
-		computedLines = computedLines.concat(forDraw);
-		redrawBackgrounds();
-		console.log('computedLines:after:', computedLines)
-	}
-	if ( box.outerHeight() < windowObj.height() ) {
-		checkForAdditionData()
-	}*/
 }
 
 function renderPage(data) {
