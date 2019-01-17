@@ -80,179 +80,12 @@ Array.prototype.shuffle = function() {
 }
 var firstID = '';
 var lastID = '';
-var currentMargin = 0;
-var firstHeight = 0;
-var loop = null;
-moveContent();
-
-function isFirstElement() {
-	if ( $('.infiniteBox').children().first().attr('id') == firstID ) {
-		return true;
-	}
-	return false;
-}
-
-function isLastOnScreen() {
-	if ( $('.infiniteBox').children().last().offset().top <= $(window).height() ) {
-		return true;
-	}
-	return false;
-}
-function isLastLeaveScreen() {
-	let last = $('.infiniteBox').children().last().prev();
-	// console.log('oftop',first.offset().top)
-	// console.log('first.height()',first.height())
-	if ( last.offset().top >= $(window).height() ) {
-		return true;
-	}
-	return false;
-}
-function isFirstLeaveScreen(elem) {
-	let first = $('.infiniteBox').children().first().next();
-	if ( first.offset().top <= -first.height() ) {
-		return true;
-	}
-	return false;
-}
-function isFirstOnScreen() {
-	let first = $('.infiniteBox').children().first();
-	console.log('oftop',first.offset().top)
-	console.log('first.height()',first.height())
-	if ( first.offset().top >= -first.height() ) {
-		return true;
-	}
-	return false;
-}
-
-
-function setPropsToFirst(elem) {
-	elem.css('margin-top', currentMargin + firstHeight );
-}
-
-function removeElem(elem) {
-	elem.remove();
-}
-
-function moveContent() {
-	loop = setInterval(function(){
-		let contentBox = $('.infiniteBox').children().first();
-		if ( !isScrolling ) {
-			let margin = 0;
-			// replaceElements(contentBox, 'down');
-			checkForDraw('down');
-			if ( !isFirstElement() ) {
-				margin = contentBox.css('margin-top');
-				margin = parseInt(margin);
-				margin -= 2;
-			}
-			currentMargin = margin;
-			contentBox.css('margin-top', margin);
-		}		
-	},100);
-}
-
-function checkForDraw(way) {
-	let first = $('.infiniteBox').children().first();
-	let last = $('.infiniteBox').children().last();
-
-	if (way == 'down') {
-		if ( isLastOnScreen() ) {
-			appendToEnd();
-			redrawBackgrounds();
-		}
-
-		if ( isFirstLeaveScreen() ) {
-			firstHeight = first.height();
-			removeElem(first);
-			setPropsToFirst($('.infiniteBox').children().first());
-		}
-
-	} else {
-		if ( isFirstOnScreen() ) {
-			prependToStart();
-			redrawBackgrounds();
-
-			$('.infiniteBox').children().css('margin-top', 0);
-			first = $('.infiniteBox').children().first();
-			first.css('margin-top', currentMargin - first.height());
-		}
-
-		if ( isLastLeaveScreen() ) {
-			removeElem(last);
-		}
-	}
-	// redrawBackgrounds();
-
-
-}
-
-function prependToStart(){
-	let box = $('.infiniteBox');
-	let forDraw = computedLines.splice(-1,1);
-	let item = null;
-
-	if ( forDraw.length == 2 ) {
-		item = doubleLine(forDraw);
-	} else {
-		item = forDraw[0].lineType(forDraw[0].data);
-	}
-	box.prepend(item);
-	
-	computedLines = forDraw.concat(computedLines);
-	// $(item).css('margin-top', currentMargin - $(item).height());
-}
-function appendToEnd() {
-	let box = $('.infiniteBox');
-	let forDraw = computedLines.splice(0,1);
-	if ( forDraw.length == 2 ) {
-		box.append(doubleLine(forDraw));
-	} else {
-		box.append(forDraw[0].lineType(forDraw[0].data));
-	}
-	computedLines = computedLines.concat(forDraw);
-	redrawBackgrounds();
-}
-
-$(window).on('mousewheel', function(event) {
-	// isScrolling = true;
-	clearInterval(loop);
-	console.log(event.deltaX, event.deltaY, event.deltaFactor);
-	let item = $('.infiniteBox').children().first();
-	let margin = item.css('margin-top');
-	if (event.deltaY > 0) {
-		// console.log('margin', margin)
-		margin = parseInt(margin);
-		// console.log('margin2', margin)
-		margin += event.deltaFactor;
-		// console.log('margin3', margin)
-		item.css('margin-top', margin);
-
-		// replaceElements(item, 'up');
-		checkForDraw('up');
-	} else {
-		// console.log('margin', margin)
-		margin = parseInt(margin);
-		// console.log('margin2', margin)
-		margin -= event.deltaFactor;
-		// console.log('margin3', margin)
-		item.css('margin-top', margin);
-
-		// replaceElements(item, 'down');
-		checkForDraw('down');
-	}
-	currentMargin = margin;
-
-	
-	moveContent();
-	// isScrolling = false;
-});
 
 
 $('#homePage').append(renderPage(textData));
 redrawBackgrounds();
 // checkForAdditionData();z
 
-$('.infiniteBox').children().first().attr('id', 'first');
 
 $(window).on('resize', function(e) {
 	redrawBackgrounds();
@@ -586,4 +419,100 @@ function drawItem(data) {
 	return item;
 }
 
+
+var motionObj = new Motion( $('.infiniteBox'), [], {} );
+
+motionObj.appendToEnd = function() {
+	let forDraw = computedLines.splice(0,1);
+	if ( forDraw.length == 2 ) {
+		this.container.append(doubleLine(forDraw));
+	} else {
+		this.container.append(forDraw[0].lineType(forDraw[0].data));
+	}
+	computedLines = computedLines.concat(forDraw);
+	redrawBackgrounds();
+};
+
+motionObj.prependToStart = function() {
+	let forDraw = computedLines.splice(-1,1);
+	let item = null;
+
+	if ( forDraw.length == 2 ) {
+		item = doubleLine(forDraw);
+	} else {
+		item = forDraw[0].lineType(forDraw[0].data);
+	}
+	this.container.prepend(item);
+	
+	computedLines = forDraw.concat(computedLines);
+}
+motionObj.replaceVertical = function(way) {
+	let first = this.container.children().first();
+	let last = this.container.children().last();
+	console.log('asdkjahsdkj');
+	if (way == 'down') {
+		if ( this.isLastOnScreen() ) {
+			this.appendToEnd();
+			redrawBackgrounds();
+			console.log('added to end');
+		}
+
+		if ( this.isFirstLeaveScreen() ) {
+			this.firstSize = first.height();
+			this.removeElem(first);
+			this.setPropsToFirst(this.container.children().first());
+			console.log('removefirst');
+		}
+
+	} else {
+		console.log('12837162');
+
+		if ( this.isFirstOnScreen() ) {
+			this.prependToStart();
+			redrawBackgrounds();
+
+			this.container.children().css('margin-'+this.needSide, 0);
+			first = this.container.children().first();
+			first.css('margin-'+this.needSide, this.currentMargin - first.height());
+		}
+
+		if ( this.isLastLeaveScreen() ) {
+			this.removeElem(last);
+		}
+	}
+};
+
+motionObj.replaceHorizontal = function(way) {
+	let first = this.container.children().first();
+	let last = this.container.children().last();
+
+	if (way == 'left') {
+		if ( this.isLastOnScreen() ) {
+			this.appendToEnd();
+			redrawBackgrounds();
+		}
+
+		if ( this.isFirstLeaveScreen() ) {
+			this.firstSize = first.width();
+			this.removeElem(first);
+			this.setPropsToFirst(this.container.children().first());
+		}
+
+	} else {
+		if ( this.isFirstOnScreen() ) {
+			this.prependToStart();
+			redrawBackgrounds();
+
+			this.container.children().css('margin-'+this.needSide, 0);
+			first = this.container.children().first();
+			first.css('margin-'+this.needSide, this.currentMargin - first.width());
+		}
+
+		if ( this.isLastLeaveScreen() ) {
+			this.removeElem(last);
+		}
+	}
+};
+
+motionObj.init();
 
