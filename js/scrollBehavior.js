@@ -11,6 +11,7 @@
 		direction: // Направление
 		speed: // Скорость смещения
 		delayAfterScroll: // Задержка после скрола(наведения)
+		delayAfterHover: // Задержка после наведения на элемент
 		indent: // Отступ от границы
 	}
 */
@@ -19,16 +20,17 @@ class Motion {
 		this.container = container;
 		this.firstID = 'abraham';
 		this.container.children().first().attr('id',this.firstID);
-		//this.data = data;
+		// this.data = data;
 		
 		this.direction = options.direction || 'down';
-		this.speed = options.speed || 2; // скорость движения в пикселях
-		this.delayAfterScroll = options.delayAfterScroll || 2000; // задержка после скрола
+		this.speed = options.speed || 1; // скорость движения в пикселях
+		this.delayAfterHover = options.delayAfterHover || 2000; // задержка после скрола
 		this.indent = options.indent || 0;
+
 
 		console.log(this.direction);
 		console.log(this.speed );
-		console.log(this.delayAfterScroll );
+		console.log(this.delayAfterHover );
 		console.log(this.indent );
 
 	}
@@ -37,11 +39,15 @@ class Motion {
 		let self = this;
 		this.loop = null; // таймер для движения контента
 		this.delay = null; // таймер для задержки после скрола
+		this.isCanReplace = true;
+		this.hoverAction = 'hoverAction';
 
 		this.firstSize = 0; // высота/ширина первого элемента
 		this.currentMargin = 0; // отступ
 		this.needSide = '';
 		this.axis = '';
+		this.container.children().addClass(this.hoverAction);
+
 		this.motion = null; // функция движения
 		this.setMotionDirection(); // задаем направление движения
 
@@ -62,20 +68,31 @@ class Motion {
 				margin += evt.deltaFactor;
 				item.css('margin-'+self.needSide, margin);
 
-				self.replaceObjects('up');
+				if (self.isCanReplace) {
+					self.replaceObjects('up');
+				}
 			} else {
 				margin = parseInt(margin);
 				margin -= evt.deltaFactor;
 				item.css('margin-'+self.needSide, margin);
 
-				self.replaceObjects('down');
+				if (self.isCanReplace) {
+					self.replaceObjects('down');
+				}
 			}
 
 			self.currentMargin = margin; // сохраняем текущее положение
 
 			self.delay = setTimeout(function() {
 				self.simpleMotion();
-			}, self.delayAfterScroll); // выждав паузу запускаем движение
+			}, 1000); // выждав паузу запускаем движение
+		});
+
+		this.container.delegate('.hoverAction', 'mousemove', function(evt) {
+			self.clearTimers(); // останавливаем таймеры
+			self.delay = setTimeout(function() {
+				self.simpleMotion();
+			}, self.delayAfterHover); // выждав паузу запускаем движение
 		});
 	}
 
@@ -103,8 +120,11 @@ class Motion {
 			let indent = 'margin-'+self.needSide;
 			item.css(indent, margin);
 
-			self.replaceObjects('down');
-		}, 100);
+
+			if (self.isCanReplace) {
+				self.replaceObjects('down');
+			}
+		}, 50);
 	}
 	replaceObjects(way) {
 		if ( this.axis == 'vertical' ) {
@@ -246,6 +266,8 @@ class Motion {
 
 	clearTimers() {
 		clearInterval(this.loop);
+		clearInterval(this.delay);
+		clearTimeout(this.loop);
 		clearTimeout(this.delay);
 	}
 

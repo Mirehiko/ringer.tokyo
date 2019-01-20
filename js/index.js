@@ -99,7 +99,7 @@ function checkForAdditionData() {
 
 	while( $('.infirow:last-child').offset().top - w.height() < 0 ) {
 		try {
-			console.log('computedLines:before:', computedLines)
+			// console.log('computedLines:before:', computedLines)
 			let forDraw = computedLines.splice(0,1);
 			if ( forDraw.length == 2 ) {
 				box.append(doubleLine(forDraw));
@@ -108,7 +108,7 @@ function checkForAdditionData() {
 			}
 			computedLines = computedLines.concat(forDraw);
 			redrawBackgrounds();
-			console.log('computedLines:after:', computedLines)
+			// console.log('computedLines:after:', computedLines)
 		} catch(e) {console.log(e)}
 	}
 }
@@ -118,11 +118,11 @@ function renderPage(data) {
 	let result = document.createElement('div');
 	$(result).addClass('infiniteBox');
 	let linesCount = data.length;
-	console.log('linesCount:',linesCount)
+	// console.log('linesCount:',linesCount)
 
 	// Вычисляем какие плитки будут
 	let lines = calcView(linesCount);
-	console.log('lines:',lines)
+	// console.log('lines:',lines)
 
 	// Отбираем данные для тройной плитки
 	let tripleLines = lines.filter(length => length == 3);
@@ -134,7 +134,7 @@ function renderPage(data) {
 		for (item of tripleLines) {
 			lineTypes.push(autoSelectType())
 		}
-		console.log('lineTypes:',lineTypes)
+		// console.log('lineTypes:',lineTypes)
 
 		// Отбираем данные для отображения
 		for (let i = 0; i < tripleLines.length; i++ ) {
@@ -163,18 +163,18 @@ function renderPage(data) {
 	// console.log('resultLines:',resultLines)
 	computedLines = doubleData.concat(tripleData);
 	computedLines.shuffle(); // Задаем случайное положение
-	console.log('computedLines:',computedLines)
+	// console.log('computedLines:',computedLines)
 
 	// Собираем данные для отрисовки
 	for ( item of computedLines ) {
-		console.log('line:', item)
+		// console.log('line:', item)
 		if ( item.length == 2 ) {
 			$(result).append(doubleLine(item));
 		} else {
 			$(result).append(item.lineType(item.data));
 		}
 	}
-	console.log('result:',result)
+	// console.log('result:',result)
 
 
 	return result;
@@ -389,7 +389,7 @@ function drawItem(data) {
 
 	let itemLauchDate = document.createElement('div');
 	$(itemLauchDate).addClass('itemLauchDate withValue');
-	$(itemLauchDate).text('Lauch');
+	$(itemLauchDate).text('Launch');
 	$(itemContent).append(itemLauchDate);
 	let itemLauch__value = document.createElement('span');
 	$(itemLauch__value).text(data.lauch);
@@ -424,11 +424,18 @@ var motionObj = new Motion( $('.infiniteBox'), [], {} );
 
 motionObj.appendToEnd = function() {
 	let forDraw = computedLines.splice(0,1);
+	let item = null;
+
 	if ( forDraw.length == 2 ) {
-		this.container.append(doubleLine(forDraw));
+		// this.container.append(doubleLine(forDraw));
+		item = doubleLine(forDraw);
 	} else {
-		this.container.append(forDraw[0].lineType(forDraw[0].data));
+		// this.container.append(forDraw[0].lineType(forDraw[0].data));
+		item = forDraw[0].lineType(forDraw[0].data);
 	}
+	$(item).addClass(this.hoverAction);
+	this.container.append(item);
+	
 	computedLines = computedLines.concat(forDraw);
 	redrawBackgrounds();
 };
@@ -442,6 +449,7 @@ motionObj.prependToStart = function() {
 	} else {
 		item = forDraw[0].lineType(forDraw[0].data);
 	}
+	$(item).addClass(this.hoverAction);
 	this.container.prepend(item);
 	
 	computedLines = forDraw.concat(computedLines);
@@ -449,23 +457,24 @@ motionObj.prependToStart = function() {
 motionObj.replaceVertical = function(way) {
 	let first = this.container.children().first();
 	let last = this.container.children().last();
-	console.log('asdkjahsdkj');
+	this.isCanReplace = false;
+
 	if (way == 'down') {
 		if ( this.isLastOnScreen() ) {
 			this.appendToEnd();
 			redrawBackgrounds();
-			console.log('added to end');
+			// console.log('added to end');
 		}
 
 		if ( this.isFirstLeaveScreen() ) {
 			this.firstSize = first.height();
 			this.removeElem(first);
 			this.setPropsToFirst(this.container.children().first());
-			console.log('removefirst');
+			// console.log('removefirst');
 		}
 
 	} else {
-		console.log('12837162');
+		// console.log('12837162');
 
 		if ( this.isFirstOnScreen() ) {
 			this.prependToStart();
@@ -480,11 +489,14 @@ motionObj.replaceVertical = function(way) {
 			this.removeElem(last);
 		}
 	}
+	this.isCanReplace = true;
+
 };
 
 motionObj.replaceHorizontal = function(way) {
 	let first = this.container.children().first();
 	let last = this.container.children().last();
+	this.isCanReplace = false;
 
 	if (way == 'left') {
 		if ( this.isLastOnScreen() ) {
@@ -512,6 +524,8 @@ motionObj.replaceHorizontal = function(way) {
 			this.removeElem(last);
 		}
 	}
+
+	this.isCanReplace = true;
 };
 
 motionObj.init();
