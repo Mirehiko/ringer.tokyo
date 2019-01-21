@@ -6,17 +6,17 @@ var textData = [
 		client: 'SuperSonic Co.',
 		launch: '2019.12.01',
 	},
-	{
-		type: 'integrated_video',
-		// src: '<iframe frameborder="0" width="480" height="270" src="https://www.dailymotion.com/embed/video/k2vFjUZvXsWMd0s8ina" allowfullscreen allow="autoplay"></iframe>',
-		src: 'alsjkdjasd',
-		title: 'video1',
-	},
-	{
-		type: 'video',
-		src: 'images/works/victas_iamnext_03.jpg',
-		alt: 'image2',
-	},
+	// {
+	// 	type: 'integrated_video',
+	// 	// src: '<iframe frameborder="0" width="480" height="270" src="https://www.dailymotion.com/embed/video/k2vFjUZvXsWMd0s8ina" allowfullscreen allow="autoplay"></iframe>',
+	// 	src: 'alsjkdjasd',
+	// 	title: 'video1',
+	// },
+	// {
+	// 	type: 'video',
+	// 	src: 'images/works/victas_iamnext_03.jpg',
+	// 	alt: 'image2',
+	// },
 	{
 		type: 'image',
 		src: 'images/works/iamnext.jpg',
@@ -26,7 +26,7 @@ var textData = [
 		type: 'image',
 		src: 'images/works/deki2_4.jpg',
 		alt: 'image4',
-	},
+	}
 ];
 
 var firstID = '';
@@ -58,15 +58,16 @@ function drawContent(data) {
 	$(results).addClass('workInfo');
 
 	for (let item of data) {
-		if (item.type == 'info') {
-			$(results).append(drawInfoItem(item));
-		} else if (item.type == 'video') {
-			$(results).append(drawVideoItem(item));
-		} else if (item.type == 'integrated_video') {
-			$(results).append(drawIntegratedVideoItem(item));
-		} else {
-			$(results).append(drawImageItem(item));
-		}
+		// if (item.type == 'info') {
+		// 	$(results).append(drawInfoItem(item));
+		// } else if (item.type == 'video') {
+		// 	$(results).append(drawVideoItem(item));
+		// } else if (item.type == 'integrated_video') {
+		// 	$(results).append(drawIntegratedVideoItem(item));
+		// } else {
+		// 	$(results).append(drawImageItem(item));
+		// }
+		$(results).append(selectDrawModeAndDraw(item));
 	}
 
 	return results;
@@ -79,7 +80,7 @@ function drawImageItem(data) {
 	let img = document.createElement('img');
 	$(img).addClass('workImage workContent');
 	img.src = data.src;
-	img.alt = data.alt;
+	$(img).attr('alt', data.alt);
 
 	$(item).append(img);
 
@@ -139,15 +140,9 @@ function drawInfoItem(data) {
 	return item;
 }
 
-
-var motionObj = new Motion( $('.workInfo'), textData, {
-	direction: 'left',
-} );
-
-motionObj.appendToEnd = function() {
-	let elem = this.data.splice(0,1);
+function selectDrawModeAndDraw(elem) {
 	let item = null;
-
+  
 	if (elem.type == 'info') {
 		item = drawInfoItem(elem);
 	} else if (elem.type == 'video') {
@@ -158,6 +153,18 @@ motionObj.appendToEnd = function() {
 		item = drawImageItem(elem);
 	}
 
+	return item;
+}
+
+var motionObj = new Motion( $('.workInfo'), textData, {
+	direction: 'left',
+} );
+
+motionObj.appendToEnd = function() {
+	let elem = this.data.splice(0,1);
+	let item = null;
+
+	item = selectDrawModeAndDraw(elem[0]);
 	$(item).addClass(this.hoverAction);
 	this.container.append(item);
 
@@ -166,99 +173,52 @@ motionObj.appendToEnd = function() {
 };
 
 motionObj.prependToStart = function() {
-	// let elem = this.data.splice(-1,1);
-	// let item = null;
-  //
-	// if (elem.type == 'info') {
-	// 	item = drawInfoItem(elem);
-	// } else if (elem.type == 'video') {
-	// 	item = drawVideoItem(elem);
-	// } else if (elem.type == 'integrated_video') {
-	// 	item = drawIntegratedVideoItem(elem);
-	// } else {
-	// 	item = drawImageItem(elem);
-	// }
-  //
-	// $(item).addClass(this.hoverAction);
-	// this.container.prepend(item);
-  //
-  //
-	// //
-	// this.data = elem.concat(this.data);
-	// console.log(this.data)
+	let elem = this.data.splice(-1,1);
+	let item = null;
+  
+	item = selectDrawModeAndDraw(elem[0]);
+	$(item).addClass(this.hoverAction);
+	this.container.prepend(item);
+  
+	//
+	this.data = elem.concat(this.data);
 }
-motionObj.replaceVertical = function(way) {
+
+motionObj.replaceHorizontal = function(way) {
 	let first = this.container.children().first();
 	let last = this.container.children().last();
 	this.isCanReplace = false;
-
-	if (way == 'down') {
+	// console.log('replaceHorizontal');
+	console.log(way)
+  
+	if (way == 'left') {
 		if ( this.isLastOnScreen() ) {
 			this.appendToEnd();
-			redrawBackgrounds();
-			// console.log('added to end');
+			// redrawBackgrounds();
 		}
-
+  
 		if ( this.isFirstLeaveScreen() ) {
-			this.firstSize = first.height();
+			this.firstSize = first.width();
 			this.removeElem(first);
 			this.setPropsToFirst(this.container.children().first());
-			// console.log('removefirst');
 		}
-
+  
 	} else {
-		// console.log('12837162');
-
 		if ( this.isFirstOnScreen() ) {
 			this.prependToStart();
-			redrawBackgrounds();
-
+			// redrawBackgrounds();
+  
 			this.container.children().css('margin-'+this.needSide, 0);
 			first = this.container.children().first();
-			first.css('margin-'+this.needSide, this.currentMargin - first.height());
+			first.css('margin-'+this.needSide, this.currentMargin - first.width());
 		}
-
+  
 		if ( this.isLastLeaveScreen() ) {
 			this.removeElem(last);
 		}
 	}
+  
 	this.isCanReplace = true;
-
-};
-
-motionObj.replaceHorizontal = function(way) {
-	// let first = this.container.children().first();
-	// let last = this.container.children().last();
-	// this.isCanReplace = false;
-  //
-	// if (way == 'left') {
-	// 	if ( this.isLastOnScreen() ) {
-	// 		this.appendToEnd();
-	// 		// redrawBackgrounds();
-	// 	}
-  //
-	// 	if ( this.isFirstLeaveScreen() ) {
-	// 		this.firstSize = first.width();
-	// 		this.removeElem(first);
-	// 		this.setPropsToFirst(this.container.children().first());
-	// 	}
-  //
-	// } else {
-	// 	if ( this.isFirstOnScreen() ) {
-	// 		this.prependToStart();
-	// 		// redrawBackgrounds();
-  //
-	// 		this.container.children().css('margin-'+this.needSide, 0);
-	// 		first = this.container.children().first();
-	// 		first.css('margin-'+this.needSide, this.currentMargin - first.width());
-	// 	}
-  //
-	// 	if ( this.isLastLeaveScreen() ) {
-	// 		this.removeElem(last);
-	// 	}
-	// }
-  //
-	// this.isCanReplace = true;
 };
 
 motionObj.init();

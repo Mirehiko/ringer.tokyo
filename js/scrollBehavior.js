@@ -63,13 +63,18 @@ class Motion {
 			let item = self.container.children().first();
 			let margin = item.css('margin-'+self.needSide);
 
+			console.log(self.axis)
 			if (evt.deltaY > 0) {
 				margin = parseInt(margin);
 				margin += evt.deltaFactor;
 				item.css('margin-'+self.needSide, margin);
 
 				if (self.isCanReplace) {
-					self.replaceObjects('up');
+					if (self.axis == 'vertical') {
+						self.replaceObjects('up');
+					} else {
+						self.replaceObjects('right');
+					}
 				}
 			} else {
 				margin = parseInt(margin);
@@ -77,7 +82,11 @@ class Motion {
 				item.css('margin-'+self.needSide, margin);
 
 				if (self.isCanReplace) {
-					self.replaceObjects('down');
+					if (self.axis == 'vertical') {
+						self.replaceObjects('down');
+					} else {
+						self.replaceObjects('left');
+					}
 				}
 			}
 
@@ -120,9 +129,12 @@ class Motion {
 			let indent = 'margin-'+self.needSide;
 			item.css(indent, margin);
 
-
 			if (self.isCanReplace) {
-				self.replaceObjects('down');
+				if (self.axis == 'vertical') {
+					self.replaceObjects('down');
+				} else {
+					self.replaceObjects('left');
+				}
 			}
 		}, 50);
 	}
@@ -133,73 +145,47 @@ class Motion {
 			this.replaceHorizontal(way);
 		}
 	}
-	replaceVertical(way) {
-
-	}
-	replaceHorizontal(way) {
-
-	}
+	replaceVertical(way) {}
+	replaceHorizontal(way) {}
 
 	isFirstOnScreen() {
 		let first = this.container.children().first();
-		if ( (first.offset().top >= -first.height() && this.axis == 'vertical') /*||
-			 ( first.offset().left >= -first.width() && this.axis == 'horizontal')*/ ) {
+		// console.log('ofset',first.offset().left);
+		// console.log('ofset',first.offset().left);
+		if ( (first.offset().top >= -first.height() && this.axis == 'vertical') ||
+			 ( first.offset().left >= -first.width() && this.axis == 'horizontal') ) {
 			return true;
 		}
 		return false;
 	}
 	isLastOnScreen() {
 		let last = this.container.children().last();
-		if ( (last.offset().top <= $(window).height() && this.axis == 'vertical' )/* ||
-			 ( last.offset().left <= $(window).width() && this.axis == 'horizontal' )*/ ) {
+		if ( (last.offset().top <= $(window).height() && this.axis == 'vertical' ) ||
+			 ( last.offset().left <= $(window).width() && this.axis == 'horizontal' ) ) {
 			return true;
 		}
 		return false;
 	}
 	isLastLeaveScreen() {
 		let last = this.container.children().last().prev();
-		if ( ( last.offset().top >= $(window).height() && this.axis == 'vertical' ) /*||
-			 ( last.offset().left >= $(window).width() && this.axis == 'horizontal' )*/ ) {
+		if ( ( last.offset().top >= $(window).height() && this.axis == 'vertical' ) ||
+			 ( last.offset().left >= $(window).width() && this.axis == 'horizontal' ) ) {
 			return true;
 		}
 		return false;
 	}
 	isFirstLeaveScreen() {
 		let first = this.container.children().first().next();
-		if ( ( first.offset().top <= -first.height() && this.axis == 'vertical' ) /*||
-			 ( first.offset().left <= -first.width() && this.axis == 'horizontal' )*/ ) {
+		if ( ( first.offset().top <= -first.height() && this.axis == 'vertical' ) ||
+			 ( first.offset().left <= -first.width() && this.axis == 'horizontal' ) ) {
 			return true;
 		}
 		return false;
 	}
 
 
-	appendToEnd() {
-		// // let box = $('.infiniteBox');
-		// let forDraw = computedLines.splice(0,1);
-		// if ( forDraw.length == 2 ) {
-		// 	this.container.append(doubleLine(forDraw));
-		// } else {
-		// 	this.container.append(forDraw[0].lineType(forDraw[0].data));
-		// }
-		// computedLines = computedLines.concat(forDraw);
-		// redrawBackgrounds();
-	}
-	prependToStart(){
-		// // let box = $('.infiniteBox');
-		// let forDraw = computedLines.splice(-1,1);
-		// let item = null;
-
-		// if ( forDraw.length == 2 ) {
-		// 	item = doubleLine(forDraw);
-		// } else {
-		// 	item = forDraw[0].lineType(forDraw[0].data);
-		// }
-		// this.container.prepend(item);
-
-		// computedLines = forDraw.concat(computedLines);
-		// // $(item).css('margin-top', currentMargin - $(item).height());
-	}
+	appendToEnd() {}
+	prependToStart(){}
 	setPropsToFirst(elem) {
 		elem.css('margin-'+this.needSide, this.currentMargin + this.firstSize );
 	}
