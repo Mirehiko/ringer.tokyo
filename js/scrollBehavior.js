@@ -2,10 +2,10 @@
 /*
 	Контаинер в котором происходит смещение объектов
 	@container = $(elem)
-	
+
 	Смещаемые данные
 	@data = [{}, ...]
-	
+
 	Дополнительные параметры, которые можно изменить по желанию
 	@options = {
 		direction: // Направление
@@ -20,8 +20,8 @@ class Motion {
 		this.container = container;
 		this.firstID = 'abraham';
 		this.container.children().first().attr('id',this.firstID);
-		// this.data = data;
-		
+		this.data = data;
+
 		this.direction = options.direction || 'down';
 		this.speed = options.speed || 1; // скорость движения в пикселях
 		this.delayAfterHover = options.delayAfterHover || 2000; // задержка после скрола
@@ -111,7 +111,7 @@ class Motion {
 
 		this.loop = setInterval(function(){
 			let item = self.container.children().first();
-			
+
 			let margin = 0;
 			margin = self.getMargin(item);
 			margin -= self.speed;
@@ -134,96 +134,40 @@ class Motion {
 		}
 	}
 	replaceVertical(way) {
-		// let first = this.container.children().first();
-		// let last = this.container.children().last();
 
-		// if (this.needSide == 'down') {
-		// 	if ( this.isLastOnScreen() ) {
-		// 		this.appendToEnd();
-		// 		redrawBackgrounds();
-		// 	}
-
-		// 	if ( this.isFirstLeaveScreen() ) {
-		// 		this.firstSize = first.height();
-		// 		this.removeElem(first);
-		// 		this.setPropsToFirst(this.container.children().first());
-		// 	}
-
-		// } else {
-		// 	if ( this.isFirstOnScreen() ) {
-		// 		this.prependToStart();
-		// 		redrawBackgrounds();
-
-		// 		this.container.children().css('margin-'+this.needSide, 0);
-		// 		first = this.container.children().first();
-		// 		first.css('margin-'+this.needSide, this.currentMargin - first.height());
-		// 	}
-
-		// 	if ( this.isLastLeaveScreen() ) {
-		// 		this.removeElem(last);
-		// 	}
-		// }
 	}
 	replaceHorizontal(way) {
-		// let first = this.container.children().first();
-		// let last = this.container.children().last();
 
-		// if (this.needSide == 'left') {
-		// 	if ( this.isLastOnScreen() ) {
-		// 		this.appendToEnd();
-		// 		redrawBackgrounds();
-		// 	}
-
-		// 	if ( this.isFirstLeaveScreen() ) {
-		// 		this.firstSize = first.width();
-		// 		this.removeElem(first);
-		// 		this.setPropsToFirst(this.container.children().first());
-		// 	}
-
-		// } else {
-		// 	if ( this.isFirstOnScreen() ) {
-		// 		this.prependToStart();
-		// 		redrawBackgrounds();
-
-		// 		this.container.children().css('margin-'+this.needSide, 0);
-		// 		first = this.container.children().first();
-		// 		first.css('margin-'+this.needSide, this.currentMargin - first.width());
-		// 	}
-
-		// 	if ( this.isLastLeaveScreen() ) {
-		// 		this.removeElem(last);
-		// 	}
-		// }
 	}
 
 	isFirstOnScreen() {
 		let first = this.container.children().first();
-		if ( first.offset().top >= -first.height() /*|| 
-			 first.offset().left >= -first.width()*/ ) {
+		if ( (first.offset().top >= -first.height() && this.axis == 'vertical') /*||
+			 ( first.offset().left >= -first.width() && this.axis == 'horizontal')*/ ) {
 			return true;
 		}
 		return false;
 	}
 	isLastOnScreen() {
 		let last = this.container.children().last();
-		if ( last.offset().top <= $(window).height()/* || 
-			 last.offset().left <= $(window).width()*/ ) {
+		if ( (last.offset().top <= $(window).height() && this.axis == 'vertical' )/* ||
+			 ( last.offset().left <= $(window).width() && this.axis == 'horizontal' )*/ ) {
 			return true;
 		}
 		return false;
 	}
 	isLastLeaveScreen() {
 		let last = this.container.children().last().prev();
-		if ( last.offset().top >= $(window).height() /*|| 
-			 last.offset().left >= $(window).width()*/ ) {
+		if ( ( last.offset().top >= $(window).height() && this.axis == 'vertical' ) /*||
+			 ( last.offset().left >= $(window).width() && this.axis == 'horizontal' )*/ ) {
 			return true;
 		}
 		return false;
 	}
 	isFirstLeaveScreen() {
 		let first = this.container.children().first().next();
-		if ( first.offset().top <= -first.height() /*||
-			 first.offset().left <= -first.width()*/ ) {
+		if ( ( first.offset().top <= -first.height() && this.axis == 'vertical' ) /*||
+			 ( first.offset().left <= -first.width() && this.axis == 'horizontal' )*/ ) {
 			return true;
 		}
 		return false;
@@ -252,7 +196,7 @@ class Motion {
 		// 	item = forDraw[0].lineType(forDraw[0].data);
 		// }
 		// this.container.prepend(item);
-		
+
 		// computedLines = forDraw.concat(computedLines);
 		// // $(item).css('margin-top', currentMargin - $(item).height());
 	}
@@ -276,4 +220,3 @@ class Motion {
 		return parseInt(margin);
 	}
 }
-

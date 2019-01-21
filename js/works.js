@@ -1,34 +1,33 @@
-var textData = {
-	info: {
+var textData = [
+	{
+		type: 'info',
 		title: 'Work preview',
 		category: 'test',
 		client: 'SuperSonic Co.',
 		launch: '2019.12.01',
 	},
-	data: [
-		{
-			type: 'integrated_video',
-			// src: '<iframe frameborder="0" width="480" height="270" src="https://www.dailymotion.com/embed/video/k2vFjUZvXsWMd0s8ina" allowfullscreen allow="autoplay"></iframe>',
-			src: 'alsjkdjasd',
-			title: 'video1',
-		},
-		{
-			type: 'video',
-			src: 'images/works/victas_iamnext_03.jpg',
-			alt: 'image2',
-		},
-		{
-			type: 'image',
-			src: 'images/works/iamnext.jpg',
-			alt: 'image3',
-		},
-		{
-			type: 'image',
-			src: 'images/works/deki2_4.jpg',
-			alt: 'image4',
-		},
-	],
-};
+	{
+		type: 'integrated_video',
+		// src: '<iframe frameborder="0" width="480" height="270" src="https://www.dailymotion.com/embed/video/k2vFjUZvXsWMd0s8ina" allowfullscreen allow="autoplay"></iframe>',
+		src: 'alsjkdjasd',
+		title: 'video1',
+	},
+	{
+		type: 'video',
+		src: 'images/works/victas_iamnext_03.jpg',
+		alt: 'image2',
+	},
+	{
+		type: 'image',
+		src: 'images/works/iamnext.jpg',
+		alt: 'image3',
+	},
+	{
+		type: 'image',
+		src: 'images/works/deki2_4.jpg',
+		alt: 'image4',
+	},
+];
 
 var firstID = '';
 var lastID = '';
@@ -54,15 +53,14 @@ function redrawBackgrounds() {
 
 
 
-
 function drawContent(data) {
 	let results = document.createElement('div');
 	$(results).addClass('workInfo');
 
-	$(results).append(drawInfoItem(data.info));
-
-	for (let item of data.data) {
-		if (item.type == 'video') {
+	for (let item of data) {
+		if (item.type == 'info') {
+			$(results).append(drawInfoItem(item));
+		} else if (item.type == 'video') {
 			$(results).append(drawVideoItem(item));
 		} else if (item.type == 'integrated_video') {
 			$(results).append(drawIntegratedVideoItem(item));
@@ -77,9 +75,9 @@ function drawContent(data) {
 function drawImageItem(data) {
 	let item = document.createElement('div');
 	$(item).addClass('workItem');
-	
+
 	let img = document.createElement('img');
-	$(img).addClass('workItem');
+	$(img).addClass('workImage workContent');
 	img.src = data.src;
 	img.alt = data.alt;
 
@@ -90,11 +88,13 @@ function drawImageItem(data) {
 function drawVideoItem(data) {
 	let item = document.createElement('div');
 	$(item).addClass('workItem');
-	let img = document.createElement('img');
+	let video = document.createElement('img');
+	$(item).append(video);
 	return item;
 }
 function drawIntegratedVideoItem(data) {
 	let item = document.createElement('div');
+	$(item).addClass('workItem');
 	$(item).append(data.src);
 	return item;
 }
@@ -140,39 +140,52 @@ function drawInfoItem(data) {
 }
 
 
-var motionObj = new Motion( $('.infiniteBox'), [], {} );
+var motionObj = new Motion( $('.workInfo'), textData, {
+	direction: 'left',
+} );
 
 motionObj.appendToEnd = function() {
-	let forDraw = computedLines.splice(0,1);
+	let elem = this.data.splice(0,1);
 	let item = null;
 
-	if ( forDraw.length == 2 ) {
-		// this.container.append(doubleLine(forDraw));
-		item = doubleLine(forDraw);
+	if (elem.type == 'info') {
+		item = drawInfoItem(elem);
+	} else if (elem.type == 'video') {
+		item = drawVideoItem(elem);
+	} else if (elem.type == 'integrated_video') {
+		item = drawIntegratedVideoItem(elem);
 	} else {
-		// this.container.append(forDraw[0].lineType(forDraw[0].data));
-		item = forDraw[0].lineType(forDraw[0].data);
+		item = drawImageItem(elem);
 	}
+
 	$(item).addClass(this.hoverAction);
 	this.container.append(item);
-	
-	computedLines = computedLines.concat(forDraw);
-	redrawBackgrounds();
+
+	this.data = this.data.concat(elem);
+	// redrawBackgrounds();
 };
 
 motionObj.prependToStart = function() {
-	let forDraw = computedLines.splice(-1,1);
-	let item = null;
-
-	if ( forDraw.length == 2 ) {
-		item = doubleLine(forDraw);
-	} else {
-		item = forDraw[0].lineType(forDraw[0].data);
-	}
-	$(item).addClass(this.hoverAction);
-	this.container.prepend(item);
-	
-	computedLines = forDraw.concat(computedLines);
+	// let elem = this.data.splice(-1,1);
+	// let item = null;
+  //
+	// if (elem.type == 'info') {
+	// 	item = drawInfoItem(elem);
+	// } else if (elem.type == 'video') {
+	// 	item = drawVideoItem(elem);
+	// } else if (elem.type == 'integrated_video') {
+	// 	item = drawIntegratedVideoItem(elem);
+	// } else {
+	// 	item = drawImageItem(elem);
+	// }
+  //
+	// $(item).addClass(this.hoverAction);
+	// this.container.prepend(item);
+  //
+  //
+	// //
+	// this.data = elem.concat(this.data);
+	// console.log(this.data)
 }
 motionObj.replaceVertical = function(way) {
 	let first = this.container.children().first();
@@ -214,38 +227,38 @@ motionObj.replaceVertical = function(way) {
 };
 
 motionObj.replaceHorizontal = function(way) {
-	let first = this.container.children().first();
-	let last = this.container.children().last();
-	this.isCanReplace = false;
-
-	if (way == 'left') {
-		if ( this.isLastOnScreen() ) {
-			this.appendToEnd();
-			redrawBackgrounds();
-		}
-
-		if ( this.isFirstLeaveScreen() ) {
-			this.firstSize = first.width();
-			this.removeElem(first);
-			this.setPropsToFirst(this.container.children().first());
-		}
-
-	} else {
-		if ( this.isFirstOnScreen() ) {
-			this.prependToStart();
-			redrawBackgrounds();
-
-			this.container.children().css('margin-'+this.needSide, 0);
-			first = this.container.children().first();
-			first.css('margin-'+this.needSide, this.currentMargin - first.width());
-		}
-
-		if ( this.isLastLeaveScreen() ) {
-			this.removeElem(last);
-		}
-	}
-
-	this.isCanReplace = true;
+	// let first = this.container.children().first();
+	// let last = this.container.children().last();
+	// this.isCanReplace = false;
+  //
+	// if (way == 'left') {
+	// 	if ( this.isLastOnScreen() ) {
+	// 		this.appendToEnd();
+	// 		// redrawBackgrounds();
+	// 	}
+  //
+	// 	if ( this.isFirstLeaveScreen() ) {
+	// 		this.firstSize = first.width();
+	// 		this.removeElem(first);
+	// 		this.setPropsToFirst(this.container.children().first());
+	// 	}
+  //
+	// } else {
+	// 	if ( this.isFirstOnScreen() ) {
+	// 		this.prependToStart();
+	// 		// redrawBackgrounds();
+  //
+	// 		this.container.children().css('margin-'+this.needSide, 0);
+	// 		first = this.container.children().first();
+	// 		first.css('margin-'+this.needSide, this.currentMargin - first.width());
+	// 	}
+  //
+	// 	if ( this.isLastLeaveScreen() ) {
+	// 		this.removeElem(last);
+	// 	}
+	// }
+  //
+	// this.isCanReplace = true;
 };
 
 motionObj.init();
