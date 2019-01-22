@@ -23,8 +23,8 @@ class Motion {
 		this.data = data;
 
 		this.direction = options.direction || 'down';
-		this.speed = options.speed || 1; // скорость движения в пикселях
-		this.delayAfterHover = options.delayAfterHover || 2000; // задержка после скрола
+		this.speed = options.speed || 2; // скорость движения в пикселях
+		this.delayAfterHover = options.delayAfterHover || 1000; // задержка после скрола
 		this.indent = options.indent || 0;
 
 

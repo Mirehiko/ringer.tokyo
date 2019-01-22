@@ -1,71 +1,4 @@
-var textData = [
-	{
-		title: 'testTitle',
-		lauch: 'January',
-		category: 'development',
-		preview: {
-			type: 'image',
-			src: 'images/works/deki2_2.jpg',
-		},
-		src: 'images/works/deki2_2.jpg',
-		link: 'works.html',
-	},
-	{
-		title: 'testTitle',
-		lauch: 'January',
-		category: 'development',
-		preview: {
-			type: 'image',
-			src: 'images/works/deki2_4.jpg',
-		},
-		src: 'images/works/deki2_4.jpg',
-		link: 'works.html',
-	},
-	{
-		title: 'testTitle',
-		lauch: 'January',
-		category: 'development',
-		preview: {
-			type: 'image',
-			src: 'images/works/deki2_6.jpg',
-		},
-		src: 'images/works/deki2_6.jpg',
-		link: 'works.html',
-	},
-	{
-		title: 'testTitle',
-		lauch: 'January',
-		category: 'development',
-		preview: {
-			type: 'image',
-			src: 'images/works/deki2_8.jpg',
-		},
-		src: 'images/works/deki2_8.jpg',
-		link: 'works.html',
-	},
-	{
-		title: 'testTitle',
-		lauch: 'January',
-		category: 'development',
-		preview: {
-			type: 'image',
-			src: 'images/works/victas_iamnext_03.jpg',
-		},
-		src: 'images/works/victas_iamnext_03.jpg',
-		link: 'works.html',
-	},
-	{
-		title: 'testTitle',
-		lauch: 'January',
-		category: 'development',
-		preview: {
-			type: 'image',
-			src: 'images/works/iamnext.jpg',
-		},
-		src: 'images/works/iamnext.jpg',
-		link: 'works.html',
-	},
-];
+
 var computedLines = [];
 var renderedData = [];
 var isScrolling = false;
@@ -84,7 +17,7 @@ var lastID = '';
 
 $('#homePage').append(renderPage(textData));
 redrawBackgrounds();
-// checkForAdditionData();z
+checkForAdditionData();
 
 
 $(window).on('resize', function(e) {
@@ -152,15 +85,14 @@ function renderPage(data) {
 	if ( doubleLines.length ) {
 		// Отбираем данные для отображения
 		for (item of doubleLines) {
-			doubleData.push(tmpData.splice(0, item));
+			doubleData.push({
+        lineType: 'double',
+        data: [].concat(tmpData.splice(0, item)),
+      });
 		}
 	}
 
 	// Собираем все плитки воедино
-	// let resultLines = doubleData.concat(tripleData);
-	// console.log('resultLines:',resultLines)
-	// resultLines.shuffle(); // Задаем случайное положение
-	// console.log('resultLines:',resultLines)
 	computedLines = doubleData.concat(tripleData);
 	computedLines.shuffle(); // Задаем случайное положение
 	// console.log('computedLines:',computedLines)
@@ -168,8 +100,8 @@ function renderPage(data) {
 	// Собираем данные для отрисовки
 	for ( item of computedLines ) {
 		// console.log('line:', item)
-		if ( item.length == 2 ) {
-			$(result).append(doubleLine(item));
+		if ( item.lineType == 'double' ) {
+			$(result).append(doubleLine(item.data));
 		} else {
 			$(result).append(item.lineType(item.data));
 		}
@@ -425,17 +357,17 @@ var motionObj = new Motion( $('.infiniteBox'), [], {} );
 motionObj.appendToEnd = function() {
 	let forDraw = computedLines.splice(0,1);
 	let item = null;
-
-	if ( forDraw.length == 2 ) {
+  console.log('forDraw',forDraw)
+	if ( forDraw[0].lineType == 'double' ) {
 		// this.container.append(doubleLine(forDraw));
-		item = doubleLine(forDraw);
+		item = doubleLine(forDraw[0].data);
 	} else {
 		// this.container.append(forDraw[0].lineType(forDraw[0].data));
 		item = forDraw[0].lineType(forDraw[0].data);
 	}
 	$(item).addClass(this.hoverAction);
 	this.container.append(item);
-	
+
 	computedLines = computedLines.concat(forDraw);
 	redrawBackgrounds();
 };
@@ -444,14 +376,14 @@ motionObj.prependToStart = function() {
 	let forDraw = computedLines.splice(-1,1);
 	let item = null;
 
-	if ( forDraw.length == 2 ) {
-		item = doubleLine(forDraw);
+	if ( forDraw[0].lineType == 'double' ) {
+		item = doubleLine(forDraw[0].data);
 	} else {
 		item = forDraw[0].lineType(forDraw[0].data);
 	}
 	$(item).addClass(this.hoverAction);
 	this.container.prepend(item);
-	
+
 	computedLines = forDraw.concat(computedLines);
 }
 motionObj.replaceVertical = function(way) {
@@ -529,4 +461,3 @@ motionObj.replaceHorizontal = function(way) {
 };
 
 motionObj.init();
-

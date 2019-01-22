@@ -61,7 +61,31 @@
   display: inline-block;
   vertical-align: middle;
   height: 50%;
+  position: relative;
 }
 .workContent {
   height: 100%;
+}
+.infoItem {
+  padding: 30px;
+  color: #fff;
+  background: #222;
+}
+.paramLine {
+  margin-bottom: 5px;
+}
+.paramTitle {
+  opacity: 0.4;
+  margin-right: 15px;
+}
+.paramValue {
+  font-weight: bold;
+}
+.itmEtc {
+  position: absolute;
+  margin: 0;
+  padding: 0 30px 30px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }

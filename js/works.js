@@ -1,33 +1,4 @@
-var textData = [
-	{
-		type: 'info',
-		title: 'Work preview',
-		category: 'test',
-		client: 'SuperSonic Co.',
-		launch: '2019.12.01',
-	},
-	// {
-	// 	type: 'integrated_video',
-	// 	// src: '<iframe frameborder="0" width="480" height="270" src="https://www.dailymotion.com/embed/video/k2vFjUZvXsWMd0s8ina" allowfullscreen allow="autoplay"></iframe>',
-	// 	src: 'alsjkdjasd',
-	// 	title: 'video1',
-	// },
-	// {
-	// 	type: 'video',
-	// 	src: 'images/works/victas_iamnext_03.jpg',
-	// 	alt: 'image2',
-	// },
-	{
-		type: 'image',
-		src: 'images/works/iamnext.jpg',
-		alt: 'image3',
-	},
-	{
-		type: 'image',
-		src: 'images/works/deki2_4.jpg',
-		alt: 'image4',
-	}
-];
+
 
 var firstID = '';
 var lastID = '';
@@ -58,15 +29,6 @@ function drawContent(data) {
 	$(results).addClass('workInfo');
 
 	for (let item of data) {
-		// if (item.type == 'info') {
-		// 	$(results).append(drawInfoItem(item));
-		// } else if (item.type == 'video') {
-		// 	$(results).append(drawVideoItem(item));
-		// } else if (item.type == 'integrated_video') {
-		// 	$(results).append(drawIntegratedVideoItem(item));
-		// } else {
-		// 	$(results).append(drawImageItem(item));
-		// }
 		$(results).append(selectDrawModeAndDraw(item));
 	}
 
@@ -101,48 +63,67 @@ function drawIntegratedVideoItem(data) {
 }
 function drawInfoItem(data) {
 	let item = document.createElement('div');
-	$(item).addClass('workItem');
+	$(item).addClass('workItem infoItem');
 
-	let workTitle = document.createElement('h1');
-	$(workTitle).addClass('workTitle withValue');
+	let workTitle = document.createElement('div');
+	$(workTitle).addClass('paramTitle');
 	$(workTitle).text('Title');
-	let workTitle__value = document.createElement('span');
+	let workTitle__value = document.createElement('h1');
+	$(workTitle__value).addClass('paramValue');
 	$(workTitle__value).text(data.title);
-	$(workTitle).append(workTitle__value);
+
+	let itemEtc = document.createElement('div');
+	$(itemEtc).addClass('itmEtc');
 
 	let workLaunch = document.createElement('div');
-	$(workLaunch).addClass('workLaunch withValue');
-	$(workLaunch).text('Launch');
+	$(workLaunch).addClass('paramLine');
+	let workLaunch__title = document.createElement('span');
+	$(workLaunch__title).addClass('paramTitle');
+	$(workLaunch__title).text('Launch');
 	let workLaunch__value = document.createElement('span');
+	$(workLaunch__value).addClass('paramValue');
 	$(workLaunch__value).text(data.launch);
+	$(workLaunch).append(workLaunch__title);
 	$(workLaunch).append(workLaunch__value);
 
 	let workCategory = document.createElement('div');
-	$(workCategory).addClass('workCategory withValue');
-	$(workCategory).text('Category');
+	$(workCategory).addClass('paramLine');
+	let workCategory__title = document.createElement('span');
+	$(workCategory__title).addClass('paramTitle');
+	$(workCategory__title).text('Category');
 	let workCategory__value = document.createElement('span');
+	$(workCategory__value).addClass('paramValue');
 	$(workCategory__value).text(data.category);
+	$(workCategory).append(workCategory__title);
 	$(workCategory).append(workCategory__value);
 
+
 	let workClient = document.createElement('div');
-	$(workClient).addClass('workClient withValue');
-	$(workClient).text('Client');
+	$(workClient).addClass('paramLine');
+	let workClient__title = document.createElement('span');
+	$(workClient__title).addClass('paramTitle');
+	$(workClient__title).text('Client');
 	let workClient__value = document.createElement('span');
+	$(workClient__value).addClass('paramValue');
 	$(workClient__value).text(data.client);
+	$(workClient).append(workClient__title);
 	$(workClient).append(workClient__value);
 
-	$(item).append(workTitle);
-	$(item).append(workLaunch);
-	$(item).append(workCategory);
-	$(item).append(workClient);
 
+	$(itemEtc).append(workLaunch);
+	$(itemEtc).append(workCategory);
+	$(itemEtc).append(workClient);
+
+	$(item).append(workTitle);
+	$(item).append(workTitle__value);
+	$(item).append(itemEtc);
 
 	return item;
 }
 
 function selectDrawModeAndDraw(elem) {
 	let item = null;
-  
+
 	if (elem.type == 'info') {
 		item = drawInfoItem(elem);
 	} else if (elem.type == 'video') {
@@ -175,11 +156,11 @@ motionObj.appendToEnd = function() {
 motionObj.prependToStart = function() {
 	let elem = this.data.splice(-1,1);
 	let item = null;
-  
+
 	item = selectDrawModeAndDraw(elem[0]);
 	$(item).addClass(this.hoverAction);
 	this.container.prepend(item);
-  
+
 	//
 	this.data = elem.concat(this.data);
 }
@@ -190,34 +171,34 @@ motionObj.replaceHorizontal = function(way) {
 	this.isCanReplace = false;
 	// console.log('replaceHorizontal');
 	console.log(way)
-  
+
 	if (way == 'left') {
 		if ( this.isLastOnScreen() ) {
 			this.appendToEnd();
 			// redrawBackgrounds();
 		}
-  
+
 		if ( this.isFirstLeaveScreen() ) {
 			this.firstSize = first.width();
 			this.removeElem(first);
 			this.setPropsToFirst(this.container.children().first());
 		}
-  
+
 	} else {
 		if ( this.isFirstOnScreen() ) {
 			this.prependToStart();
 			// redrawBackgrounds();
-  
+
 			this.container.children().css('margin-'+this.needSide, 0);
 			first = this.container.children().first();
 			first.css('margin-'+this.needSide, this.currentMargin - first.width());
 		}
-  
+
 		if ( this.isLastLeaveScreen() ) {
 			this.removeElem(last);
 		}
 	}
-  
+
 	this.isCanReplace = true;
 };
 
