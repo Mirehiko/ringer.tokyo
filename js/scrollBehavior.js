@@ -71,6 +71,11 @@ class Motion {
 		this.axis = '';
 		this.container.children().addClass(this.hoverAction);
 
+		if ( this.onhover == 'none' ) {
+			this.mouseX = 0;
+			this.mouseY = 0;
+		}
+
 		this.motion = null; // функция движения
 		this.setMotionDirection(); // задаем направление движения
 
@@ -128,9 +133,21 @@ class Motion {
 		if ( this.onhover == 'pause' ) {
 			this.container.delegate('.hoverAction', 'mousemove', function(evt) {
 				self.clearTimers(); // останавливаем таймеры
+				self.mouseX = evt.clientX;
+				self.mouseY = evt.clientY;
+				console.log(mouseX, mouseY)
 				self.delay = setTimeout(function() {
 					self.simpleMotion();
 				}, self.delayAfterHover); // выждав паузу запускаем движение
+			});
+		} else if ( this.onhover == 'none' ) {
+			this.container.delegate('.hoverAction', 'mouseenter', function(evt) {
+				evt.preventDefault();
+				console.log('over')
+			});
+			this.container.delegate('.hoverAction', 'mouseleave', function(evt) {
+				evt.preventDefault();
+				console.log('leave')
 			});
 		}
 	}
