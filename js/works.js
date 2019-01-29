@@ -40,10 +40,22 @@ function drawImageItem(data) {
 	return item;
 }
 function drawVideoItem(data) {
-	let item = document.createElement('div');
-	$(item).addClass('workItem');
-	let video = document.createElement('img');
-	$(item).append(video);
+	let item = '<div class="workItem videoItem">';
+	item += '<img ';
+
+	if ( data.previewImage ) {
+		item += 'src="' + data.previewImage + '"';
+	} else if ( data.color ) {
+		item += 'style="background-color:' + data.color + '"';
+	} else {
+		item += 'style="background-color: #333"';
+	}
+
+	item += ' alt="' + data.title + '">';
+	item += `<a href="#" class="prevIcon" title="` + data.title + `" vid="` + data.id + `" own="${ data.type == 'video' ? 'true' : 'false' }">
+		<img class="playIcon" src="images/system/play.svg" alt="play icon">
+	</a><div class="previewcover"></div></div>`;
+
 	return item;
 }
 function drawIntegratedVideoItem(data) {
@@ -132,6 +144,7 @@ function selectDrawModeAndDraw(elem) {
 		item = drawInfoItem(elem);
 	} else if (elem.type == 'video') {
 		item = drawVideoItem(elem);
+		videoObj[elem.id] = elem;
 	} else if (elem.type == 'integrated_video') {
 		item = drawIntegratedVideoItem(elem);
 		videoObj[elem.id] = {
@@ -215,12 +228,21 @@ motionObj.init();
 
 
 
+$(document).on('keyup', function(e) {
+	if (e.keyCode == 27) {
+		closeVideo();
+	}
+});
 
 $('body').delegate('.fullView__close', 'click', closeVideo);
 
 $('body').delegate('.prevIcon', 'click', function(e) {
 	e.preventDefault();
-	drawVideo($(this).attr('vid'));
+	if ( $(this).attr('own') == 'true' ) {
+		drawOwnVideo( videoObj[$(this).attr('vid')] );
+	} else {
+		drawVideo( $(this).attr('vid') );
+	}
 	showVideo();
 });
 
@@ -234,6 +256,17 @@ function closeVideo() {
 	motionObj.simpleMotion();
 }
 
+function drawOwnVideo(data) {
+	let video = `
+		<video id="${ data.id }" class="video-js vjs-default-skin" controls
+		 preload="auto" width="640" height="264" poster="${ data.previewImage }"
+		 data-setup="{}" title="${ data.title }">
+		 ${ data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : '' }
+		 ${ data.srcwebm ? '<source src="' + data.srcwebm + '" type="video/webm">' : '' }
+		 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+		</video>`;
+	$('#videoContent').append(video);
+}
 function drawVideo(id) {
 	$('#videoContent').append(videoObj[id].src);
 }

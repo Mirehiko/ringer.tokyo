@@ -207,11 +207,12 @@ a:hover, .iconBtnBox:hover .iconBtn {
 }
 .fullView__close {
 	position: absolute;
-    top: 30px;
-    right: 30px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #fff;
-    padding-bottom: 4px;
-    border-bottom: 2px solid #fff;
+  top: 30px;
+  right: 30px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #fff;
+	z-index: 1;
 }

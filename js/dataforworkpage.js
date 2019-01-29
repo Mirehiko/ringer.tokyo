@@ -23,6 +23,14 @@ var textData = [
 		previewImage: 'images/works/preview2.jpg',
 	},
 	{
+		type: 'video',
+		srcMP4: 'video/my_first_story_missing_you_720p.mp4',
+		title: 'Own video 3',
+		id: 'video3',
+		color: '',
+		previewImage: 'images/works/preview3.jpg',
+	},
+	{
 		type: 'image',
 		src: 'images/works/iamnext.jpg',
 		alt: 'image3',

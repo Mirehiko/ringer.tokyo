@@ -56,7 +56,6 @@ class Motion {
 		console.log(this.speed );
 		console.log(this.delayAfterHover );
 		console.log(this.indent );
-
 	}
 
 	init() {
