@@ -4,6 +4,9 @@
 #pageContent, #workPage {
   height: 100%;
 }
+#pageContent {
+  margin: 0;
+}
 .infiniteBlock {
   width: 100%;
   overflow: hidden;
@@ -87,5 +90,75 @@
   padding: 0 30px 30px;
   bottom: 0;
   left: 0;
+  width: 100%;
+}
+.videoItem>* {
+  height: 100%;
+}
+.previewcover {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #222222c9;
+}
+.prevIcon {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%; 
+}
+.prevIcon>.playIcon {
+  top: 50%;
+  left: 50%;
+  margin-top: -24px;
+  margin-left: -24px;
+  height: 48px;
+  width: 48px;
+  position: absolute;
+}
+
+.navigation {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -o-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -moz-box-pack: justify;
+    -o-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding: 22px 29px;
+  white-space: nowrap;
+}
+.navigation.nav-bottom {
+  bottom: 0;
+}
+.nav__item {
+  padding-bottom: 4px;
+  border-bottom: 2px solid #fff;
+}
+#videoContent {
+  height: 100%;
+  width: 100%;
+}
+#videoContent>* {
+  display: block;
+  margin: 0 auto;
+  height: 100%;
   width: 100%;
 }

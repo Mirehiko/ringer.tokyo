@@ -26,6 +26,7 @@ class Motion {
 		this.speed = options.speed || 2; // скорость движения в пикселях
 		this.delayAfterHover = options.delayAfterHover || 1000; // задержка после скрола
 		this.indent = options.indent || 0;
+		this.onhover = options.onhover || 'default';
 
 
 		console.log(this.direction);
@@ -52,6 +53,7 @@ class Motion {
 		this.setMotionDirection(); // задаем направление движения
 
 		this.simpleMotion();
+		// this.render();
 		//
 
 
@@ -97,12 +99,14 @@ class Motion {
 			}, 1000); // выждав паузу запускаем движение
 		});
 
-		this.container.delegate('.hoverAction', 'mousemove', function(evt) {
-			self.clearTimers(); // останавливаем таймеры
-			self.delay = setTimeout(function() {
-				self.simpleMotion();
-			}, self.delayAfterHover); // выждав паузу запускаем движение
-		});
+		if ( this.onhover == 'pause' ) {
+			this.container.delegate('.hoverAction', 'mousemove', function(evt) {
+				self.clearTimers(); // останавливаем таймеры
+				self.delay = setTimeout(function() {
+					self.simpleMotion();
+				}, self.delayAfterHover); // выждав паузу запускаем движение
+			});
+		}
 	}
 
 	setMotionDirection() {
@@ -181,6 +185,43 @@ class Motion {
 			return true;
 		}
 		return false;
+	}
+
+	render() {
+		const refreshRate = 1000 / 60;
+		let item = this.container.children().first();
+		let speedX = 1;
+		let positionX = 0;
+		let self = this;
+
+		function renderStep() {
+			positionX = positionX - speedX;
+			// if (positionX > maxXPosition || positionX < 0) {
+			// 	speedX = speedX * (-1);
+			// }
+			// rect.style.left = positionX + 'px';
+			let indent = 'margin-'+self.needSide;
+			item.css(indent, positionX + 'px');
+
+			// let margin = 0;
+			// margin = self.getMargin(item);
+			// margin -= self.speed;
+
+			// self.currentMargin = margin;
+			// item.css(indent, margin);
+
+			if (self.isCanReplace) {
+				if (self.axis == 'vertical') {
+					self.replaceObjects('down');
+				} else {
+					self.replaceObjects('left');
+				}
+			}
+
+		  	window.requestAnimationFrame(renderStep);
+		}
+
+		window.requestAnimationFrame(renderStep);
 	}
 
 

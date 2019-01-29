@@ -1,8 +1,6 @@
-
-
 var firstID = '';
 var lastID = '';
-
+var videoObj = {};
 
 $('#workPage').append(drawContent(textData));
 // redrawBackgrounds();
@@ -36,16 +34,9 @@ function drawContent(data) {
 }
 
 function drawImageItem(data) {
-	let item = document.createElement('div');
-	$(item).addClass('workItem');
-
-	let img = document.createElement('img');
-	$(img).addClass('workImage workContent');
-	img.src = data.src;
-	$(img).attr('alt', data.alt);
-
-	$(item).append(img);
-
+	let item = '<div class="workItem">';
+	item += '<img class="workImage workContent" src="' + data.src;
+	item += '" alt="' + data.alt + '"></div>';
 	return item;
 }
 function drawVideoItem(data) {
@@ -56,9 +47,22 @@ function drawVideoItem(data) {
 	return item;
 }
 function drawIntegratedVideoItem(data) {
-	let item = document.createElement('div');
-	$(item).addClass('workItem');
-	$(item).append(data.src);
+	let item = '<div class="workItem videoItem">';
+	item += '<img ';
+
+	if ( data.previewImage ) {
+		item += 'src="' + data.previewImage + '"';
+	} else if ( data.color ) {
+		item += 'style="background-color:' + data.color + '"';
+	} else {
+		item += 'style="background-color: #333"';
+	}
+
+	item += ' alt="' + data.title + '">';
+	item += `<a href="#" class="prevIcon" title="` + data.title + `" vid="` + data.id + `">
+		<img class="playIcon" src="images/system/play.svg" alt="play icon">
+	</a><div class="previewcover"></div></div>`;
+
 	return item;
 }
 function drawInfoItem(data) {
@@ -130,6 +134,10 @@ function selectDrawModeAndDraw(elem) {
 		item = drawVideoItem(elem);
 	} else if (elem.type == 'integrated_video') {
 		item = drawIntegratedVideoItem(elem);
+		videoObj[elem.id] = {
+			src: elem.src,
+			title: elem.title,
+		};
 	} else {
 		item = drawImageItem(elem);
 	}
@@ -203,3 +211,28 @@ motionObj.replaceHorizontal = function(way) {
 };
 
 motionObj.init();
+
+
+
+
+$('body').delegate('.fullView__close', 'click', closeVideo);
+
+$('body').delegate('.prevIcon', 'click', function(e) {
+	e.preventDefault();
+	drawVideo($(this).attr('vid'));
+	showVideo();
+});
+
+function showVideo() {
+	$('.fullView').removeClass('-hidden-');
+	motionObj.clearTimers();
+}
+function closeVideo() {
+	$('.fullView').addClass('-hidden-');
+	$('#videoContent').empty();
+	motionObj.simpleMotion();
+}
+
+function drawVideo(id) {
+	$('#videoContent').append(videoObj[id].src);
+}
