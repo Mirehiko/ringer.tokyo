@@ -147,6 +147,7 @@ function selectDrawModeAndDraw(elem) {
 
 var motionObj = new Motion( $('.workInfo'), textData, {
 	direction: 'left',
+	pauseOnScroll: false,
 } );
 
 motionObj.appendToEnd = function() {

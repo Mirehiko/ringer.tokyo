@@ -1,6 +1,29 @@
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
 /*
-	Контаинер в котором происходит смещение объектов
+	Контеинер в котором происходит смещение объектов
 	@container = $(elem)
 
 	Смещаемые данные
@@ -27,7 +50,7 @@ class Motion {
 		this.delayAfterHover = options.delayAfterHover || 1000; // задержка после скрола
 		this.indent = options.indent || 0;
 		this.onhover = options.onhover || 'default';
-
+		this.pauseOnScroll = options.pauseOnScroll == undefined ? true : options.pauseOnScroll;
 
 		console.log(this.direction);
 		console.log(this.speed );
@@ -59,8 +82,9 @@ class Motion {
 
 		this.container.on('mousewheel', function(evt){
 			evt.preventDefault();
-
-			self.clearTimers(); // останавливаем таймеры
+			if ( self.pauseOnScroll ) {
+				self.clearTimers(); // останавливаем таймеры
+			}
 
 			let item = self.container.children().first();
 			let margin = item.css('margin-'+self.needSide);
@@ -94,9 +118,12 @@ class Motion {
 
 			self.currentMargin = margin; // сохраняем текущее положение
 
-			self.delay = setTimeout(function() {
-				self.simpleMotion();
-			}, 1000); // выждав паузу запускаем движение
+			if ( self.pauseOnScroll ) {
+				self.delay = setTimeout(function() {
+					self.simpleMotion();
+				}, 1000); // выждав паузу запускаем движение
+			}
+			// self.render();
 		});
 
 		if ( this.onhover == 'pause' ) {
@@ -119,6 +146,26 @@ class Motion {
 		}
 	}
 
+	animateData() {
+		// let self = this;
+		let item = this.container.children().first();
+		let margin = 0;
+		margin = this.getMargin(item);
+		margin -= this.speed;
+
+		this.currentMargin = margin;
+		let indent = 'margin-'+this.needSide;
+		item.css(indent, margin);
+
+		if (this.isCanReplace) {
+			if (this.axis == 'vertical') {
+				this.replaceObjects('down');
+			} else {
+				this.replaceObjects('left');
+			}
+		}
+		requestAnimationFrame.apply(this.animateData(this));
+	}
 	simpleMotion() {
 		let self = this;
 
@@ -221,9 +268,11 @@ class Motion {
 		  	window.requestAnimationFrame(renderStep);
 		}
 
-		window.requestAnimationFrame(renderStep);
+		this.requestID = window.requestAnimationFrame(renderStep);
 	}
-
+	stop() {
+		cancelAnimationFrame(this.requestID);
+	}
 
 	appendToEnd() {}
 	prependToStart(){}
