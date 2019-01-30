@@ -46,12 +46,15 @@ class Motion {
 		this.data = data;
 
 		this.direction = options.direction || 'down';
-		this.speed = options.speed || 2; // скорость движения в пикселях
 		this.delayAfterHover = options.delayAfterHover || 1000; // задержка после скрола
-		this.indent = options.indent || 0;
 		this.onhover = options.onhover || 'default';
 		this.pauseOnScroll = options.pauseOnScroll == undefined ? true : options.pauseOnScroll;
+
     this.itemClass = options.itemClass || '';
+    this.indent = options.indent || 0;
+    this.itemPosition = 0 + this.indent; // для движения
+    this.itemSpeed = options.speed || 1; // скорость движения в пикселях
+
 
 		console.log(this.direction);
 		console.log(this.speed );
@@ -80,8 +83,8 @@ class Motion {
 		this.motion = null; // функция движения
 		this.setMotionDirection(); // задаем направление движения
 
-		this.simpleMotion();
-		// this.render();
+		// this.simpleMotion();
+		this.render();
 		//
 
 
@@ -164,27 +167,6 @@ class Motion {
 			this.axis = 'horizontal';
 		}
 	}
-
-	animateData() {
-		// let self = this;
-		let item = this.container.children().first();
-		let margin = 0;
-		margin = this.getMargin(item);
-		margin -= this.speed;
-
-		this.currentMargin = margin;
-		let indent = 'margin-'+this.needSide;
-		item.css(indent, margin);
-
-		if (this.isCanReplace) {
-			if (this.axis == 'vertical') {
-				this.replaceObjects('down');
-			} else {
-				this.replaceObjects('left');
-			}
-		}
-		requestAnimationFrame.apply(this.animateData(this));
-	}
 	simpleMotion() {
 		let self = this;
 
@@ -256,25 +238,15 @@ class Motion {
 	render() {
 		const refreshRate = 1000 / 60;
 		let item = this.container.children().first();
-		let speedX = 1;
-		let positionX = 0;
+		// let speed = 1;
+		// let position = 0;
 		let self = this;
 
 		function renderStep() {
-			positionX = positionX - speedX;
-			// if (positionX > maxXPosition || positionX < 0) {
-			// 	speedX = speedX * (-1);
-			// }
-			// rect.style.left = positionX + 'px';
+			self.itemPosition -= self.itemSpeed;
+
 			let indent = 'margin-'+self.needSide;
-			item.css(indent, positionX + 'px');
-
-			// let margin = 0;
-			// margin = self.getMargin(item);
-			// margin -= self.speed;
-
-			// self.currentMargin = margin;
-			// item.css(indent, margin);
+			item.css(indent, self.itemPosition + 'px');
 
 			if (self.isCanReplace) {
 				if (self.axis == 'vertical') {
@@ -284,13 +256,13 @@ class Motion {
 				}
 			}
 
-		  	window.requestAnimationFrame(renderStep);
+	  	self.requestID = window.requestAnimationFrame(renderStep);
 		}
 
 		this.requestID = window.requestAnimationFrame(renderStep);
 	}
 	stop() {
-		cancelAnimationFrame(this.requestID);
+		window.cancelAnimationFrame(this.requestID);
 	}
 
 	appendToEnd() {}

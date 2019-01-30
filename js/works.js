@@ -248,12 +248,14 @@ $('body').delegate('.prevIcon', 'click', function(e) {
 
 function showVideo() {
 	$('.fullView').removeClass('-hidden-');
-	motionObj.clearTimers();
+	// motionObj.clearTimers();
+	motionObj.stop();
 }
 function closeVideo() {
 	$('.fullView').addClass('-hidden-');
 	$('#videoContent').empty();
-	motionObj.simpleMotion();
+	// motionObj.simpleMotion();
+	motionObj.render();
 }
 
 function drawOwnVideo(data) {
