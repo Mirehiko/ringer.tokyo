@@ -352,7 +352,10 @@ function drawItem(data) {
 }
 
 
-var motionObj = new Motion( $('.infiniteBox'), [], {} );
+var motionObj = new Motion( $('.infiniteBox'), [], {
+  onhover: 'nothing',
+  itemClass: '.boxItem',
+} );
 
 motionObj.appendToEnd = function() {
 	let forDraw = computedLines.splice(0,1);

@@ -51,6 +51,7 @@ class Motion {
 		this.indent = options.indent || 0;
 		this.onhover = options.onhover || 'default';
 		this.pauseOnScroll = options.pauseOnScroll == undefined ? true : options.pauseOnScroll;
+    this.itemClass = options.itemClass || '';
 
 		console.log(this.direction);
 		console.log(this.speed );
@@ -140,13 +141,15 @@ class Motion {
 					self.simpleMotion();
 				}, self.delayAfterHover); // выждав паузу запускаем движение
 			});
-		} else if ( this.onhover == 'none' ) {
-			this.container.delegate('.hoverAction', 'mouseenter', function(evt) {
+		} else if ( this.onhover == 'nothing' ) {
+			this.container.delegate(this.itemClass, 'mouseover', function(evt) {
 				evt.preventDefault();
+        $(this).addClass('-hover-');
 				console.log('over')
 			});
-			this.container.delegate('.hoverAction', 'mouseleave', function(evt) {
+			this.container.delegate(this.itemClass, 'mouseout', function(evt) {
 				evt.preventDefault();
+        $(this).removeClass('-hover-');
 				console.log('leave')
 			});
 		}
