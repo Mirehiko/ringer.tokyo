@@ -96,23 +96,24 @@ class Motion {
       // console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
     	// console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
 			// console.log(self.axis)
-      console.log('evt.deltaFactor',evt.deltaFactor)
+      // console.log('evt.deltaFactor',evt.deltaFactor)
 			if (evt.deltaY > 0) {
         self.itemPosition += evt.deltaFactor;
-        self.setPropsToFirst(self.firstItem);
         self.replaceObjects('prev');
 			} else {
         self.itemPosition -= evt.deltaFactor;
-        self.setPropsToFirst(self.firstItem);
         self.replaceObjects('next');
 			}
+      // self.setPropsToFirst(self.firstItem);
 
 
 			if ( self.pauseOnScroll ) {
 				self.delay = setTimeout(function() {
           self.onpause = false;
 				}, 1000); // выждав паузу запускаем движение
-			}
+			} else {
+        self.onpause = false;  
+      }
 		});
 
 		if ( this.onhover == 'pause' ) {
@@ -226,15 +227,15 @@ class Motion {
 		let self = this;
 
 		function renderStep() {
-      // if ( !self.onpause ) {
-      //   self.itemPosition -= self.itemSpeed;
-      //   self.setPropsToFirst(self.firstItem);
-      //
-    	// 	if (self.isCanReplace) {
-      //     self.replaceObjects('next');
-  		// 	}
-      //   self.requestID = window.requestAnimationFrame(renderStep);
-      // }
+      if ( !self.onpause ) {
+        self.itemPosition -= self.itemSpeed;
+        self.setPropsToFirst(self.firstItem);
+
+    		if (self.isCanReplace) {
+          self.replaceObjects('next');
+  			}
+        self.requestID = window.requestAnimationFrame(renderStep);
+      }
 		}
 
 		this.requestID = window.requestAnimationFrame(renderStep);
@@ -248,7 +249,6 @@ class Motion {
 	setPropsToFirst(elem) {
     let indent = 'margin-'+this.needSide;
     elem.css(indent, this.itemPosition + 'px');
-
 	}
 	removeElem(elem) {
 		elem.remove();
