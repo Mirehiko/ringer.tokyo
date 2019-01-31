@@ -390,77 +390,60 @@ motionObj.prependToStart = function() {
 	computedLines = forDraw.concat(computedLines);
 }
 motionObj.replaceVertical = function(way) {
-	let first = this.container.children().first();
-	let last = this.container.children().last();
 	this.isCanReplace = false;
+  let self = this;
+  console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
+  console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
 
-	if (way == 'down') {
-		if ( this.isLastOnScreen() ) {
+	if (way == 'next') {
+    // this.isENDCrossProgress = false;
+
+		// Если достиг начальной границы
+		if ( this.isAcrossBGEdge() ) {
+			//Добавляем в конец новый элемент
+			this.isBGCrossProgress = true;
+			console.log('Copy element to end')
 			this.appendToEnd();
-			redrawBackgrounds();
-			// console.log('added to end');
+			this.lastItem = this.container.children().last();
+			this.setLastSize();
 		}
 
-		if ( this.isFirstLeaveScreen() ) {
-			this.firstSize = first.height();
-			this.removeElem(first);
-			this.setPropsToFirst(this.container.children().first());
-			// console.log('removefirst');
+		// Если первый полностью ушел за пределы границы
+		if ( this.isFirstOut(this.firstItem) ) {
+			console.log('First element leave the screen')
+			this.isBGCrossProgress = false;
+			this.removeElem(this.firstItem);
+			this.firstItem = this.container.children().first();
+			this.itemPosition = -this.bgEdge;
+			this.setPropsToFirst(this.firstItem);
 		}
 
 	} else {
-		// console.log('12837162');
+    // this.isBGCrossProgress = false;
 
-		if ( this.isFirstOnScreen() ) {
+		if ( this.isAcrossEndEdge() ) {
+			//Добавляем в начало новый элемент
+			this.isENDCrossProgress = true;
+			console.log('Copy element to start')
+			this.firstItem.css('margin', 0);
 			this.prependToStart();
-			redrawBackgrounds();
-
-			this.container.children().css('margin-'+this.needSide, 0);
-			first = this.container.children().first();
-			first.css('margin-'+this.needSide, this.currentMargin - first.height());
+			this.firstItem = this.container.children().first();
+			this.setFirstSize();
+			this.itemPosition -= this.firstSize;
+			this.setPropsToFirst(this.firstItem);
 		}
 
-		if ( this.isLastLeaveScreen() ) {
-			this.removeElem(last);
-		}
-	}
-	this.isCanReplace = true;
-
-};
-
-motionObj.replaceHorizontal = function(way) {
-	let first = this.container.children().first();
-	let last = this.container.children().last();
-	this.isCanReplace = false;
-
-	if (way == 'left') {
-		if ( this.isLastOnScreen() ) {
-			this.appendToEnd();
-			redrawBackgrounds();
-		}
-
-		if ( this.isFirstLeaveScreen() ) {
-			this.firstSize = first.width();
-			this.removeElem(first);
-			this.setPropsToFirst(this.container.children().first());
-		}
-
-	} else {
-		if ( this.isFirstOnScreen() ) {
-			this.prependToStart();
-			redrawBackgrounds();
-
-			this.container.children().css('margin-'+this.needSide, 0);
-			first = this.container.children().first();
-			first.css('margin-'+this.needSide, this.currentMargin - first.width());
-		}
-
-		if ( this.isLastLeaveScreen() ) {
-			this.removeElem(last);
+		// Если последний полностью ушел за пределы границы
+		if ( this.isLastOut(this.lastItem) ) {
+			console.log('Last element leave the screen')
+			this.isENDCrossProgress = false;
+			this.removeElem(this.lastItem);
+			this.lastItem = this.container.children().last();
 		}
 	}
 
-	this.isCanReplace = true;
+  	this.isCanReplace = true;
+  	this.onpause = false
 };
 
 motionObj.init();

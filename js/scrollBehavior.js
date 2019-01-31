@@ -54,12 +54,6 @@ class Motion {
     this.indent = options.indent || 0;
     this.itemPosition = 0 + this.indent; // для движения
     this.itemSpeed = options.speed || 1; // скорость движения в пикселях
-
-
-		console.log(this.direction);
-		console.log(this.speed );
-		console.log(this.delayAfterHover );
-		console.log(this.indent );
 	}
 
 	init() {
@@ -69,11 +63,17 @@ class Motion {
 		this.isCanReplace = true;
 		this.hoverAction = 'hoverAction';
 
-		this.firstSize = 0; // высота/ширина первого элемента
-		this.currentMargin = 0; // отступ
+    this.firstSize = 0; // высота/ширина первого элемента
+		this.lastSize = 0; // высота/ширина последнего элемента
+		this.lastPosition = 0; // отступ
 		this.needSide = '';
 		this.axis = '';
+    this.firstItem = this.container.children().first();
+    this.lastItem = this.container.children().last();
+    this.setFirstSize();
+    this.setLastSize();
 		this.container.children().addClass(this.hoverAction);
+    this.onpause = false;
 
 		if ( this.onhover == 'none' ) {
 			this.mouseX = 0;
@@ -82,66 +82,48 @@ class Motion {
 
 		this.motion = null; // функция движения
 		this.setMotionDirection(); // задаем направление движения
+    this.isBGCrossProgress = false;
+    this.isENDCrossProgress = false;
+    this.setEdges();
 
-		// this.simpleMotion();
 		this.render();
-		//
-
 
 		this.container.on('mousewheel', function(evt){
 			evt.preventDefault();
-			if ( self.pauseOnScroll ) {
-				self.clearTimers(); // останавливаем таймеры
-			}
 
-			let item = self.container.children().first();
-			let margin = item.css('margin-'+self.needSide);
-
-			console.log(self.axis)
+      self.onpause = true;
+      // console.log('=======================================================================================================================')
+      // console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
+    	// console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
+			// console.log(self.axis)
+      console.log('evt.deltaFactor',evt.deltaFactor)
 			if (evt.deltaY > 0) {
-				margin = parseInt(margin);
-				margin += evt.deltaFactor;
-				item.css('margin-'+self.needSide, margin);
-
-				if (self.isCanReplace) {
-					if (self.axis == 'vertical') {
-						self.replaceObjects('up');
-					} else {
-						self.replaceObjects('right');
-					}
-				}
+        self.itemPosition += evt.deltaFactor;
+        self.setPropsToFirst(self.firstItem);
+        self.replaceObjects('prev');
 			} else {
-				margin = parseInt(margin);
-				margin -= evt.deltaFactor;
-				item.css('margin-'+self.needSide, margin);
-
-				if (self.isCanReplace) {
-					if (self.axis == 'vertical') {
-						self.replaceObjects('down');
-					} else {
-						self.replaceObjects('left');
-					}
-				}
+        self.itemPosition -= evt.deltaFactor;
+        self.setPropsToFirst(self.firstItem);
+        self.replaceObjects('next');
 			}
 
-			self.currentMargin = margin; // сохраняем текущее положение
 
 			if ( self.pauseOnScroll ) {
 				self.delay = setTimeout(function() {
-					self.simpleMotion();
+          self.onpause = false;
 				}, 1000); // выждав паузу запускаем движение
 			}
-			// self.render();
 		});
 
 		if ( this.onhover == 'pause' ) {
 			this.container.delegate('.hoverAction', 'mousemove', function(evt) {
-				self.clearTimers(); // останавливаем таймеры
+        self.onpause = true;
+
 				self.mouseX = evt.clientX;
 				self.mouseY = evt.clientY;
 				console.log(mouseX, mouseY)
 				self.delay = setTimeout(function() {
-					self.simpleMotion();
+          self.onpause = false;
 				}, self.delayAfterHover); // выждав паузу запускаем движение
 			});
 		} else if ( this.onhover == 'nothing' ) {
@@ -156,7 +138,69 @@ class Motion {
 				console.log('leave')
 			});
 		}
+
+    $(window).on('resize', function(e) {
+      self.setEdges();
+      self.setFirstSize();
+      self.setLastSize();
+    });
 	}
+  getLastPosition() {
+    if ( this.axis == 'horizontal' ) {
+      return this.lastSize + this.lastItem.offset().left;
+    } else {
+      return this.lastSize + this.lastItem.offset().top;
+    }
+  }
+  setFirstSize() {
+    if ( this.axis == 'horizontal' ) {
+      this.firstSize = this.firstItem.width();
+    } else {
+      this.firstSize = this.firstItem.height();
+    }
+  }
+  setLastSize() {
+    if ( this.axis == 'horizontal' ) {
+      this.lastSize = this.lastItem.outerWidth();
+    } else {
+      this.lastSize = this.lastItem.outerHeight();
+    }
+  }
+  setEdges() {
+    if ( this.axis == 'horizontal' ) {
+      this.bgEdge = $(window).width() / 2;
+      this.endEdge = $(window).width() + this.bgEdge;
+    } else {
+      this.bgEdge = $(window).height() / 2;
+      this.endEdge = $(window).height() + this.bgEdge;
+    }
+  }
+  isAcrossBGEdge() {
+    if ( this.itemPosition <= (-this.bgEdge) && !this.isBGCrossProgress ) {
+      return true;
+    }
+    return false;
+  }
+  isAcrossEndEdge() {
+    if ( this.getLastPosition() >= this.endEdge && !this.isENDCrossProgress ) {
+      return true;
+    }
+    return false;
+  }
+  isFirstOut(first) {
+    if ( (this.itemPosition < (-(this.bgEdge + first.outerHeight())) && this.axis == 'vertical') ||
+         (this.itemPosition < (-(this.bgEdge + first.outerWidth())) && this.axis == 'horizontal')) {
+      return true;
+    }
+		return false;
+  }
+  isLastOut(last) {
+		if ( ( last.offset().top > this.endEdge && this.axis == 'vertical' ) ||
+			 ( last.offset().left > this.endEdge && this.axis == 'horizontal' ) ) {
+			return true;
+		}
+		return false;
+  }
 
 	setMotionDirection() {
 		if (this.direction == 'down') {
@@ -166,29 +210,6 @@ class Motion {
 			this.needSide = 'left';
 			this.axis = 'horizontal';
 		}
-	}
-	simpleMotion() {
-		let self = this;
-
-		this.loop = setInterval(function(){
-			let item = self.container.children().first();
-
-			let margin = 0;
-			margin = self.getMargin(item);
-			margin -= self.speed;
-
-			self.currentMargin = margin;
-			let indent = 'margin-'+self.needSide;
-			item.css(indent, margin);
-
-			if (self.isCanReplace) {
-				if (self.axis == 'vertical') {
-					self.replaceObjects('down');
-				} else {
-					self.replaceObjects('left');
-				}
-			}
-		}, 50);
 	}
 	replaceObjects(way) {
 		if ( this.axis == 'vertical' ) {
@@ -200,63 +221,20 @@ class Motion {
 	replaceVertical(way) {}
 	replaceHorizontal(way) {}
 
-	isFirstOnScreen() {
-		let first = this.container.children().first();
-		// console.log('ofset',first.offset().left);
-		// console.log('ofset',first.offset().left);
-		if ( (first.offset().top >= -first.height() && this.axis == 'vertical') ||
-			 ( first.offset().left >= -first.width() && this.axis == 'horizontal') ) {
-			return true;
-		}
-		return false;
-	}
-	isLastOnScreen() {
-		let last = this.container.children().last();
-		if ( (last.offset().top <= $(window).height() && this.axis == 'vertical' ) ||
-			 ( last.offset().left <= $(window).width() && this.axis == 'horizontal' ) ) {
-			return true;
-		}
-		return false;
-	}
-	isLastLeaveScreen() {
-		let last = this.container.children().last().prev();
-		if ( ( last.offset().top >= $(window).height() && this.axis == 'vertical' ) ||
-			 ( last.offset().left >= $(window).width() && this.axis == 'horizontal' ) ) {
-			return true;
-		}
-		return false;
-	}
-	isFirstLeaveScreen() {
-		let first = this.container.children().first().next();
-		if ( ( first.offset().top <= -first.height() && this.axis == 'vertical' ) ||
-			 ( first.offset().left <= -first.width() && this.axis == 'horizontal' ) ) {
-			return true;
-		}
-		return false;
-	}
-
 	render() {
-		const refreshRate = 1000 / 60;
-		let item = this.container.children().first();
-		// let speed = 1;
-		// let position = 0;
+    const refreshRate = 1000 / 60;
 		let self = this;
 
 		function renderStep() {
-			self.itemPosition -= self.itemSpeed;
-
-			let indent = 'margin-'+self.needSide;
-			item.css(indent, self.itemPosition + 'px');
-
-			if (self.isCanReplace) {
-				if (self.axis == 'vertical') {
-					self.replaceObjects('down');
-				} else {
-					self.replaceObjects('left');
-				}
-			}
-
-	  	self.requestID = window.requestAnimationFrame(renderStep);
+      // if ( !self.onpause ) {
+      //   self.itemPosition -= self.itemSpeed;
+      //   self.setPropsToFirst(self.firstItem);
+      //
+    	// 	if (self.isCanReplace) {
+      //     self.replaceObjects('next');
+  		// 	}
+      //   self.requestID = window.requestAnimationFrame(renderStep);
+      // }
 		}
 
 		this.requestID = window.requestAnimationFrame(renderStep);
@@ -268,22 +246,12 @@ class Motion {
 	appendToEnd() {}
 	prependToStart(){}
 	setPropsToFirst(elem) {
-		elem.css('margin-'+this.needSide, this.currentMargin + this.firstSize );
+    let indent = 'margin-'+this.needSide;
+    elem.css(indent, this.itemPosition + 'px');
+
 	}
 	removeElem(elem) {
 		elem.remove();
 	}
 
-
-	clearTimers() {
-		clearInterval(this.loop);
-		clearInterval(this.delay);
-		clearTimeout(this.loop);
-		clearTimeout(this.delay);
-	}
-
-	getMargin(item) {
-		let margin = item.css('margin-'+this.needSide);
-		return parseInt(margin);
-	}
 }

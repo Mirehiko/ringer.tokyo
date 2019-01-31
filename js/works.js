@@ -188,40 +188,73 @@ motionObj.prependToStart = function() {
 }
 
 motionObj.replaceHorizontal = function(way) {
-	let first = this.container.children().first();
-	let last = this.container.children().last();
 	this.isCanReplace = false;
-	// console.log('replaceHorizontal');
-	console.log(way)
+	let self = this;
+	console.log('==START===============================================================================================================')
+	console.log('way',way);
+	console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
+	console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
+	// console.log(self.axis)
 
-	if (way == 'left') {
-		if ( this.isLastOnScreen() ) {
+	if (way == 'next') {
+		// this.isENDCrossProgress = false;
+
+		// Если достиг начальной границы
+		if ( this.isAcrossBGEdge() ) {
+			//Добавляем в конец новый элемент
+			this.isBGCrossProgress = true;
+			console.log('Copy element to end')
 			this.appendToEnd();
-			// redrawBackgrounds();
+			this.lastItem = this.container.children().last();
+			this.setLastSize();
+			console.log('last inserted width:', this.lastSize)
+
 		}
 
-		if ( this.isFirstLeaveScreen() ) {
-			this.firstSize = first.width();
-			this.removeElem(first);
-			this.setPropsToFirst(this.container.children().first());
+		// Если первый полностью ушел за пределы границы
+		if ( this.isFirstOut(this.firstItem) ) {
+			console.log('First element leave the screen')
+			this.isBGCrossProgress = false;
+			this.removeElem(this.firstItem);
+			this.firstItem = this.container.children().first();
+			this.itemPosition = -this.bgEdge;
+			this.setPropsToFirst(this.firstItem);
 		}
 
 	} else {
-		if ( this.isFirstOnScreen() ) {
-			this.prependToStart();
-			// redrawBackgrounds();
+		// this.isBGCrossProgress = false;
 
-			this.container.children().css('margin-'+this.needSide, 0);
-			first = this.container.children().first();
-			first.css('margin-'+this.needSide, this.currentMargin - first.width());
+		if ( this.isAcrossEndEdge() ) {
+			//Добавляем в начало новый элемент
+			this.isENDCrossProgress = true;
+			console.log('Copy element to start')
+			this.firstItem.css('margin', 0);
+			this.prependToStart();
+			this.firstItem = this.container.children().first();
+			this.setFirstSize();
+			console.log('first inserted width:', this.firstSize)
+			this.itemPosition -= this.firstSize;
+			this.setPropsToFirst(this.firstItem);
 		}
 
-		if ( this.isLastLeaveScreen() ) {
-			this.removeElem(last);
+		// Если последний полностью ушел за пределы границы
+		if ( this.isLastOut(this.lastItem) ) {
+			console.log('Last element leave the screen')
+			this.isENDCrossProgress = false;
+			this.removeElem(this.lastItem);
+			this.lastItem = this.container.children().last();
 		}
 	}
 
 	this.isCanReplace = true;
+	this.onpause = false
+	console.log('====END=============================================================================================================')
+	console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
+	console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
+	console.log('')
+	console.log('')
+	console.log('')
+
 };
 
 motionObj.init();
