@@ -1,27 +1,28 @@
 (function() {
-    var lastTime = 0;
-    var vendors = ['ms', 'moz', 'webkit', 'o'];
-    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
-                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
-    }
+  var lastTime = 0;
+  var vendors = ['ms', 'moz', 'webkit', 'o'];
+  for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+      window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+      window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+                                 || window[vendors[x]+'CancelRequestAnimationFrame'];
+  }
 
-    if (!window.requestAnimationFrame)
-        window.requestAnimationFrame = function(callback, element) {
-            var currTime = new Date().getTime();
-            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
-              timeToCall);
-            lastTime = currTime + timeToCall;
-            return id;
-        };
+  if (!window.requestAnimationFrame)
+    window.requestAnimationFrame = function(callback, element) {
+      var currTime = new Date().getTime();
+      var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+      var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+        timeToCall);
+      lastTime = currTime + timeToCall;
+      return id;
+    };
 
-    if (!window.cancelAnimationFrame)
-        window.cancelAnimationFrame = function(id) {
-            clearTimeout(id);
-        };
+  if (!window.cancelAnimationFrame)
+    window.cancelAnimationFrame = function(id) {
+      clearTimeout(id);
+    };
 }());
+
 /*
 	Контеинер в котором происходит смещение объектов
 	@container = $(elem)
@@ -46,7 +47,7 @@ class Motion {
 		this.data = data;
 
 		this.direction = options.direction || 'down';
-		this.delayAfterHover = options.delayAfterHover || 1000; // задержка после скрола
+		this.delayAfterHover = options.delayAfterHover*1000 || 1000; // задержка после скрола
 		this.onhover = options.onhover || 'default';
 		this.pauseOnScroll = options.pauseOnScroll == undefined ? true : options.pauseOnScroll;
 
@@ -54,6 +55,7 @@ class Motion {
     this.indent = options.indent || 0;
     this.itemPosition = 0 + this.indent; // для движения
     this.itemSpeed = options.speed || 1; // скорость движения в пикселях
+
 	}
 
 	init() {
@@ -76,7 +78,7 @@ class Motion {
     this.onpause = false;
     this.mousetimer = null;
 
-		if ( this.onhover == 'none' ) {
+		if ( this.onhover == 'nothing' ) {
 			this.mouseX = 0;
 			this.mouseY = 0;
 		}
@@ -91,7 +93,6 @@ class Motion {
 
 		this.container.on('mousewheel', function(evt){
 			evt.preventDefault();
-
       self.onpause = true;
       // console.log('=======================================================================================================================')
       // console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
@@ -100,18 +101,21 @@ class Motion {
       // console.log('evt.deltaFactor',evt.deltaFactor)
 			if (evt.deltaY > 0) {
         self.itemPosition += evt.deltaFactor;
+        // self.setPropsToFirst(this.firstItem);
         self.replaceObjects('prev');
 			} else {
         self.itemPosition -= evt.deltaFactor;
+        // self.setPropsToFirst(this.firstItem);
         self.replaceObjects('next');
 			}
       // self.setPropsToFirst(self.firstItem);
 
 
 			if ( self.pauseOnScroll ) {
+        clearTimeout(self.delay);
 				self.delay = setTimeout(function() {
           self.onpause = false;
-				}, 1000); // выждав паузу запускаем движение
+				}, self.delayAfterHover); // выждав паузу запускаем движение
 			} else {
         self.onpause = false;
       }
@@ -131,19 +135,23 @@ class Motion {
 		} else if ( this.onhover == 'nothing' ) {
       this.container.delegate(window, 'mousemove', function(evt) {
         evt.preventDefault();
-        // console.log('move')
+        self.mouseX = evt.pageX;
+        self.mouseY = evt.pageY;
+        console.log('move')
         self.hoverRemove(self);
       });
 			this.container.delegate(this.itemClass, 'mouseover', function(evt) {
 				evt.preventDefault();
-        $(this).addClass('-hover-');
-        self.hoverRemove();
-				// console.log('over')
+        if ( self.mouseX != evt.pageX || self.mouseY != evt.pageY ) {
+          $(this).addClass('-hover-');
+        }
+        // self.hoverRemove(self);
+				console.log('over')
 			});
 			this.container.delegate(this.itemClass, 'mouseout', function(evt) {
 				evt.preventDefault();
         $(this).removeClass('-hover-');
-				// console.log('leave')
+				console.log('leave')
 			});
 		}
 
@@ -153,10 +161,13 @@ class Motion {
       self.setLastSize();
     });
 	}
+
   hoverRemove(context) {
     clearTimeout(context.mousetimer);
     context.mousetimer = setTimeout(function(){
       $(context.itemClass).removeClass('-hover-');
+      console.log('remove')
+
     }, 1000);
   }
   getLastPosition() {
@@ -226,11 +237,58 @@ class Motion {
 		}
 	}
 	replaceObjects(way) {
-		if ( this.axis == 'vertical' ) {
-			this.replaceVertical(way);
-		} else {
-			this.replaceHorizontal(way);
-		}
+    this.isCanReplace = false;
+    let self = this;
+    self.setPropsToFirst(self.firstItem);
+
+  	if (way == 'next') {
+  		// Если достиг начальной границы
+  		if ( this.isAcrossBGEdge() ) {
+  			//Добавляем в конец новый элемент
+  			this.isBGCrossProgress = true;
+  			// console.log('Copy element to end')
+  			this.appendToEnd();
+  			this.lastItem = this.container.children().last();
+  			this.setLastSize();
+  		}
+
+  		// Если первый полностью ушел за пределы границы
+  		if ( this.isFirstOut(this.firstItem) ) {
+  			// console.log('First element leave the screen')
+        this.isBGCrossProgress = false;
+  			this.removeElem(this.firstItem);
+  			let delta = this.firstSize;
+  			this.firstItem = this.container.children().first();
+  			this.itemPosition += delta;
+  			this.setPropsToFirst(this.firstItem);
+  			this.setFirstSize();
+  		}
+
+  	} else {
+
+  		if ( this.isAcrossEndEdge() ) {
+  			//Добавляем в начало новый элемент
+  			this.isENDCrossProgress = true;
+  			// console.log('Copy element to start')
+  			this.firstItem.css('margin', 0);
+  			this.prependToStart();
+  			this.firstItem = this.container.children().first();
+  			this.setFirstSize();
+  			this.itemPosition -= this.firstSize;
+  			this.setPropsToFirst(this.firstItem);
+  		}
+
+  		// Если последний полностью ушел за пределы границы
+  		if ( this.isLastOut(this.lastItem) ) {
+  			// console.log('Last element leave the screen')
+  			this.isENDCrossProgress = false;
+  			this.removeElem(this.lastItem);
+  			this.lastItem = this.container.children().last();
+        this.setLastSize();
+  		}
+  	}
+
+    this.isCanReplace = true;
 	}
 	replaceVertical(way) {}
 	replaceHorizontal(way) {}
@@ -240,15 +298,21 @@ class Motion {
 		let self = this;
 
 		function renderStep() {
+      console.log('self.onpause',self.onpause)
+      console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
+    	console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
+
       if ( !self.onpause ) {
         self.itemPosition -= self.itemSpeed;
-        self.setPropsToFirst(self.firstItem);
-
-    		if (self.isCanReplace) {
-          self.replaceObjects('next');
-  			}
-        self.requestID = window.requestAnimationFrame(renderStep);
       }
+      self.setPropsToFirst(self.firstItem);
+      if ( !self.onpause && self.isCanReplace ) {
+        // self.setPropsToFirst(self.firstItem);
+    		// if (self.isCanReplace) {
+        self.replaceObjects('next');
+  			// }
+      }
+      self.requestID = window.requestAnimationFrame(renderStep);
 		}
 
 		this.requestID = window.requestAnimationFrame(renderStep);

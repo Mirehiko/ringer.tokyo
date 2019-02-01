@@ -355,6 +355,7 @@ function drawItem(data) {
 var motionObj = new Motion( $('.infiniteBox'), [], {
   onhover: 'nothing',
   itemClass: '.boxItem',
+  delayAfterHover: 2,
 } );
 
 motionObj.appendToEnd = function() {
@@ -390,61 +391,6 @@ motionObj.prependToStart = function() {
 	computedLines = forDraw.concat(computedLines);
   redrawBackgrounds();
 }
-motionObj.replaceVertical = function(way) {
-	this.isCanReplace = false;
-  let self = this;
-  // console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
-  // console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
 
-	if (way == 'next') {
-    // this.isENDCrossProgress = false;
-
-		// Если достиг начальной границы
-		if ( this.isAcrossBGEdge() ) {
-			//Добавляем в конец новый элемент
-			this.isBGCrossProgress = true;
-			console.log('Copy element to end')
-			this.appendToEnd();
-			this.lastItem = this.container.children().last();
-			this.setLastSize();
-		}
-
-		// Если первый полностью ушел за пределы границы
-		if ( this.isFirstOut(this.firstItem) ) {
-			console.log('First element leave the screen')
-			this.isBGCrossProgress = false;
-			this.removeElem(this.firstItem);
-			this.firstItem = this.container.children().first();
-			this.itemPosition = -this.bgEdge;
-			this.setPropsToFirst(this.firstItem);
-		}
-
-	} else {
-    // this.isBGCrossProgress = false;
-
-		if ( this.isAcrossEndEdge() ) {
-			//Добавляем в начало новый элемент
-			this.isENDCrossProgress = true;
-			console.log('Copy element to start')
-			this.firstItem.css('margin', 0);
-			this.prependToStart();
-			this.firstItem = this.container.children().first();
-			this.setFirstSize();
-			this.itemPosition -= this.firstSize;
-			this.setPropsToFirst(this.firstItem);
-		}
-
-		// Если последний полностью ушел за пределы границы
-		if ( this.isLastOut(this.lastItem) ) {
-			console.log('Last element leave the screen')
-			this.isENDCrossProgress = false;
-			this.removeElem(this.lastItem);
-			this.lastItem = this.container.children().last();
-		}
-	}
-
-  	this.isCanReplace = true;
-  	this.onpause = false
-};
 
 motionObj.init();
