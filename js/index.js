@@ -393,8 +393,8 @@ motionObj.prependToStart = function() {
 motionObj.replaceVertical = function(way) {
 	this.isCanReplace = false;
   let self = this;
-  console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
-  console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
+  // console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
+  // console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
 
 	if (way == 'next') {
     // this.isENDCrossProgress = false;

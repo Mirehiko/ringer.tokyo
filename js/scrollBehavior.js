@@ -74,6 +74,7 @@ class Motion {
     this.setLastSize();
 		this.container.children().addClass(this.hoverAction);
     this.onpause = false;
+    this.mousetimer = null;
 
 		if ( this.onhover == 'none' ) {
 			this.mouseX = 0;
@@ -138,6 +139,10 @@ class Motion {
         $(this).removeClass('-hover-');
 				console.log('leave')
 			});
+      this.container.delegate(this.itemClass, 'mousemove', function(evt) {
+        clearTimeout(self.mousetimer);
+        self.mousetimer = setTimeout(function(){$(self.itemClass).removeClass('-hover-');}, 1000);
+      });
 		}
 
     $(window).on('resize', function(e) {
