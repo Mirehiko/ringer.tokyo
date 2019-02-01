@@ -388,6 +388,7 @@ motionObj.prependToStart = function() {
 	this.container.prepend(item);
 
 	computedLines = forDraw.concat(computedLines);
+  redrawBackgrounds();
 }
 motionObj.replaceVertical = function(way) {
 	this.isCanReplace = false;
