@@ -113,7 +113,7 @@ class Motion {
           self.onpause = false;
 				}, 1000); // выждав паузу запускаем движение
 			} else {
-        self.onpause = false;  
+        self.onpause = false;
       }
 		});
 
@@ -129,20 +129,22 @@ class Motion {
 				}, self.delayAfterHover); // выждав паузу запускаем движение
 			});
 		} else if ( this.onhover == 'nothing' ) {
+      this.container.delegate(window, 'mousemove', function(evt) {
+        evt.preventDefault();
+        // console.log('move')
+        self.hoverRemove(self);
+      });
 			this.container.delegate(this.itemClass, 'mouseover', function(evt) {
 				evt.preventDefault();
         $(this).addClass('-hover-');
-				console.log('over')
+        self.hoverRemove();
+				// console.log('over')
 			});
 			this.container.delegate(this.itemClass, 'mouseout', function(evt) {
 				evt.preventDefault();
         $(this).removeClass('-hover-');
-				console.log('leave')
+				// console.log('leave')
 			});
-      this.container.delegate(this.itemClass, 'mousemove', function(evt) {
-        clearTimeout(self.mousetimer);
-        self.mousetimer = setTimeout(function(){$(self.itemClass).removeClass('-hover-');}, 1000);
-      });
 		}
 
     $(window).on('resize', function(e) {
@@ -151,6 +153,12 @@ class Motion {
       self.setLastSize();
     });
 	}
+  hoverRemove(context) {
+    clearTimeout(context.mousetimer);
+    context.mousetimer = setTimeout(function(){
+      $(context.itemClass).removeClass('-hover-');
+    }, 1000);
+  }
   getLastPosition() {
     if ( this.axis == 'horizontal' ) {
       return this.lastSize + this.lastItem.offset().left;
@@ -160,9 +168,9 @@ class Motion {
   }
   setFirstSize() {
     if ( this.axis == 'horizontal' ) {
-      this.firstSize = this.firstItem.width();
+      this.firstSize = this.firstItem.outerWidth();
     } else {
-      this.firstSize = this.firstItem.height();
+      this.firstSize = this.firstItem.outerHeight();
     }
   }
   setLastSize() {
