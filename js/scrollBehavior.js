@@ -94,22 +94,14 @@ class Motion {
 		this.container.on('mousewheel', function(evt){
 			evt.preventDefault();
       self.onpause = true;
-      // console.log('=======================================================================================================================')
-      // console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
-    	// console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
-			// console.log(self.axis)
-      // console.log('evt.deltaFactor',evt.deltaFactor)
+
 			if (evt.deltaY > 0) {
         self.itemPosition += evt.deltaFactor;
-        // self.setPropsToFirst(this.firstItem);
         self.replaceObjects('prev');
 			} else {
         self.itemPosition -= evt.deltaFactor;
-        // self.setPropsToFirst(this.firstItem);
         self.replaceObjects('next');
 			}
-      // self.setPropsToFirst(self.firstItem);
-
 
 			if ( self.pauseOnScroll ) {
         clearTimeout(self.delay);
@@ -124,7 +116,6 @@ class Motion {
 		if ( this.onhover == 'pause' ) {
 			this.container.delegate('.hoverAction', 'mousemove', function(evt) {
         self.onpause = true;
-
 				self.mouseX = evt.clientX;
 				self.mouseY = evt.clientY;
 				console.log(mouseX, mouseY)
@@ -142,9 +133,9 @@ class Motion {
       });
 			this.container.delegate(this.itemClass, 'mouseover', function(evt) {
 				evt.preventDefault();
-        if ( self.mouseX != evt.pageX || self.mouseY != evt.pageY ) {
+        // if ( self.mouseX != evt.pageX || self.mouseY != evt.pageY ) {
           $(this).addClass('-hover-');
-        }
+        // }
         // self.hoverRemove(self);
 				console.log('over')
 			});
@@ -298,19 +289,18 @@ class Motion {
 		let self = this;
 
 		function renderStep() {
-      console.log('self.onpause',self.onpause)
-      console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
-    	console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
+      // console.log('=======================================================================================================================')
+      // console.log('bg progress', self.isBGCrossProgress,'bgEdge',self.bgEdge, 'this.itemPosition:',self.itemPosition)
+    	// console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
+			// console.log(self.axis)
+      // console.log('evt.deltaFactor',evt.deltaFactor)s,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
 
       if ( !self.onpause ) {
         self.itemPosition -= self.itemSpeed;
       }
       self.setPropsToFirst(self.firstItem);
       if ( !self.onpause && self.isCanReplace ) {
-        // self.setPropsToFirst(self.firstItem);
-    		// if (self.isCanReplace) {
         self.replaceObjects('next');
-  			// }
       }
       self.requestID = window.requestAnimationFrame(renderStep);
 		}

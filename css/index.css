@@ -73,7 +73,6 @@
 }
 .infiniteBox {
 	height: 100%;
-	position: absolute;
 	width: 100%;
 	/* transition: all .1s; */
 }
