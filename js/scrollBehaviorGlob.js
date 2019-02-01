@@ -58,7 +58,6 @@ class MotionGlob {
 
 	init() {
 		let self = this;
-		this.loop = null; // таймер для движения контента
 		this.delay = null; // таймер для задержки после скрола
 		this.isCanReplace = true;
 		this.hoverAction = 'hoverAction';
@@ -78,16 +77,17 @@ class MotionGlob {
 		this.container.children().addClass(this.hoverAction);
     this.onpause = false;
     this.mousetimer = null;
+    this.hoveringItem = null;
+
+    // this.evtMouseCheck = new Event('mouseCheck'); // только в новых бровзерах
 
 		if ( this.onhover == 'nothing' ) {
 			this.mouseX = 0;
 			this.mouseY = 0;
 		}
 
-
     this.isBGCrossProgress = false;
     this.isENDCrossProgress = false;
-
 
 		this.render();
 
@@ -116,39 +116,53 @@ class MotionGlob {
 		if ( this.onhover == 'pause' ) {
 			this.container.delegate('.hoverAction', 'mousemove', function(evt) {
         self.onpause = true;
-				self.mouseX = evt.clientX;
-				self.mouseY = evt.clientY;
+				// self.mouseX = evt.clientX;
+				// self.mouseY = evt.clientY;
 				// console.log(mouseX, mouseY)
 				self.delay = setTimeout(function() {
           self.onpause = false;
 				}, self.delayAfterHover); // выждав паузу запускаем движение
 			});
 		} else if ( this.onhover == 'nothing' ) {
-      this.container.delegate(window, 'mousemove', function(evt) {
-        evt.preventDefault();
+      this.container.delegate(this.itemClass, 'mousemove', function(evt) {
         self.mouseX = evt.pageX;
         self.mouseY = evt.pageY;
-        // console.log('move')
-        self.hoverRemove(self);
-      });
-			this.container.delegate(this.itemClass, 'mouseover', function(evt) {
-				evt.preventDefault();
+
         $(this).addClass('-hover-');
-				// console.log('over')
-			});
+        self.hoveringItem = $(this);
+
+        console.log('move')
+        // self.hoverRemove(self);
+      });
+			// this.container.delegate(this.itemClass, 'mouseover', function(evt) {
+			// 	evt.preventDefault();
+   //      $(evt.target).data('hovering', true);
+   //      // $(this).addClass('-hover-');
+			// 	console.log('over')
+			// });
 			this.container.delegate(this.itemClass, 'mouseout', function(evt) {
 				evt.preventDefault();
         $(this).removeClass('-hover-');
-				// console.log('leave')
+        self.hoveringItem = null;
+				console.log('leave')
 			});
 		}
 
     $(window).on('resize', function(e) {
       self.setEdges();
-      self.setFirstSize();
-      self.setLastSize();
+      self.setOriginalSize();
     });
 	}
+
+  getEdgesOfHover() {
+    this.hoverBgn = this.hoveringItem.offset().top;
+    if ( this.axis == 'horizontal' ) {
+      this.hoverEnd = this.hoveringItem.offset().left + this.hoveringItem.outerWidth();
+    } else {
+      this.hoverEnd = this.hoveringItem.offset().top + this.hoveringItem.outerHeight();
+    }
+  }
+
 
   setStartPosition() {
     this.itemPosition = -(this.bgEdge + Math.abs(this.originalSize - this.bgEdge));
@@ -278,7 +292,19 @@ class MotionGlob {
 			this.axis = 'horizontal';
 		}
 	}
-
+  isInsiteOfItem() {
+    if ( this.axis == 'horizontal' ) {
+      if ( this.mouseX >= this.hoverBgn && this.mouseX <= this.hoverEnd ) {
+        return true;
+      }
+      return false;
+    } else {
+      if ( this.mouseY >= this.hoverBgn && this.mouseY <= this.hoverEnd ) {
+        return true;
+      }
+      return false;
+    }
+  }
 
 	render() {
     const refreshRate = 1000 / 60;
@@ -290,6 +316,16 @@ class MotionGlob {
     	// console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
 			// console.log(self.axis)
       // console.log('evt.deltaFactor',evt.deltaFactor)s,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
+      // console.log('event',trig, trig.clientX,trig.clientY);
+
+      if (self.hoveringItem != null) {
+        self.getEdgesOfHover();
+        console.log('Is hovering:', self.isInsiteOfItem())
+        if ( !self.isInsiteOfItem() ) {
+          self.hoveringItem.removeClass('-hover-');
+          self.hoveringItem = null;
+        }
+      }
 
       if ( !self.onpause ) {
         self.itemPosition -= self.itemSpeed;
