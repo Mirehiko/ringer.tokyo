@@ -352,45 +352,51 @@ function drawItem(data) {
 }
 
 
-var motionObj = new Motion( $('.infiniteBox'), [], {
+// var motionObj = new Motion( $('.infiniteBox'), [], {
+//   onhover: 'nothing',
+//   itemClass: '.boxItem',
+//   delayAfterHover: 2,
+// } );
+var motionObj = new MotionGlob( $('#homePage'), {
   onhover: 'nothing',
   itemClass: '.boxItem',
   delayAfterHover: 2,
+	original: $('.infiniteBox')
 } );
 
-motionObj.appendToEnd = function() {
-	let forDraw = computedLines.splice(0,1);
-	let item = null;
-  console.log('forDraw',forDraw)
-	if ( forDraw[0].lineType == 'double' ) {
-		// this.container.append(doubleLine(forDraw));
-		item = doubleLine(forDraw[0].data);
-	} else {
-		// this.container.append(forDraw[0].lineType(forDraw[0].data));
-		item = forDraw[0].lineType(forDraw[0].data);
-	}
-	$(item).addClass(this.hoverAction);
-	this.container.append(item);
+// motionObj.appendToEnd = function() {
+// 	let forDraw = computedLines.splice(0,1);
+// 	let item = null;
+//   console.log('forDraw',forDraw)
+// 	if ( forDraw[0].lineType == 'double' ) {
+// 		// this.container.append(doubleLine(forDraw));
+// 		item = doubleLine(forDraw[0].data);
+// 	} else {
+// 		// this.container.append(forDraw[0].lineType(forDraw[0].data));
+// 		item = forDraw[0].lineType(forDraw[0].data);
+// 	}
+// 	$(item).addClass(this.hoverAction);
+// 	this.container.append(item);
+//
+// 	computedLines = computedLines.concat(forDraw);
+// 	redrawBackgrounds();
+// };
+//
+// motionObj.prependToStart = function() {
+// 	let forDraw = computedLines.splice(-1,1);
+// 	let item = null;
+//
+// 	if ( forDraw[0].lineType == 'double' ) {
+// 		item = doubleLine(forDraw[0].data);
+// 	} else {
+// 		item = forDraw[0].lineType(forDraw[0].data);
+// 	}
+// 	$(item).addClass(this.hoverAction);
+// 	this.container.prepend(item);
+//
+// 	computedLines = forDraw.concat(computedLines);
+//   redrawBackgrounds();
+// }
 
-	computedLines = computedLines.concat(forDraw);
-	redrawBackgrounds();
-};
-
-motionObj.prependToStart = function() {
-	let forDraw = computedLines.splice(-1,1);
-	let item = null;
-
-	if ( forDraw[0].lineType == 'double' ) {
-		item = doubleLine(forDraw[0].data);
-	} else {
-		item = forDraw[0].lineType(forDraw[0].data);
-	}
-	$(item).addClass(this.hoverAction);
-	this.container.prepend(item);
-
-	computedLines = forDraw.concat(computedLines);
-  redrawBackgrounds();
-}
-
-
-motionObj.init();
+// motionObj.init();
+setTimeout(function() {motionObj.init();}, 1000)

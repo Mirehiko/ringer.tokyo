@@ -2,7 +2,8 @@ var firstID = '';
 var lastID = '';
 var videoObj = {};
 
-$('#workPage').append(drawContent(textData));
+// $('#workPage').append(drawContent(textData));
+$('#wrapper').append(drawContent(textData));
 // redrawBackgrounds();
 // checkForAdditionData();z
 
@@ -158,36 +159,41 @@ function selectDrawModeAndDraw(elem) {
 	return item;
 }
 
-var motionObj = new Motion( $('.workInfo'), textData, {
+var motionObj = new MotionGlob( $('#wrapper'), {
 	direction: 'left',
 	pauseOnScroll: false,
+	original: $('.workInfo')
 } );
+// var motionObj = new Motion( $('.workInfo'), textData, {
+// 	direction: 'left',
+// 	pauseOnScroll: false,
+// } );
 
-motionObj.appendToEnd = function() {
-	let elem = this.data.splice(0,1);
-	let item = null;
+// motionObj.appendToEnd = function() {
+// 	let elem = this.data.splice(0,1);
+// 	let item = null;
+//
+// 	item = selectDrawModeAndDraw(elem[0]);
+// 	$(item).addClass(this.hoverAction);
+// 	this.container.append(item);
+//
+// 	this.data = this.data.concat(elem);
+// 	// redrawBackgrounds();
+// };
+//
+// motionObj.prependToStart = function() {
+// 	let elem = this.data.splice(-1,1);
+// 	let item = null;
+//
+// 	item = selectDrawModeAndDraw(elem[0]);
+// 	$(item).addClass(this.hoverAction);
+// 	this.container.prepend(item);
+//
+// 	//
+// 	this.data = elem.concat(this.data);
+// }
 
-	item = selectDrawModeAndDraw(elem[0]);
-	$(item).addClass(this.hoverAction);
-	this.container.append(item);
-
-	this.data = this.data.concat(elem);
-	// redrawBackgrounds();
-};
-
-motionObj.prependToStart = function() {
-	let elem = this.data.splice(-1,1);
-	let item = null;
-
-	item = selectDrawModeAndDraw(elem[0]);
-	$(item).addClass(this.hoverAction);
-	this.container.prepend(item);
-
-	//
-	this.data = elem.concat(this.data);
-}
-
-motionObj.init();
+setTimeout(function() {motionObj.init();}, 1000)
 
 
 
