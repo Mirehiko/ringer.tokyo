@@ -140,7 +140,7 @@ class MotionGlob {
    //      // $(this).addClass('-hover-');
 			// 	console.log('over')
 			// });
-			this.container.delegate(this.itemClass, 'mouseout', function(evt) {
+			this.container.delegate(this.itemClass, 'mouseleave', function(evt) {
 				evt.preventDefault();
         $(this).removeClass('-hover-');
         self.hoveringItem = null;
