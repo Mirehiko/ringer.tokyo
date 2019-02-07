@@ -1,5 +1,4 @@
 .side-header {
-	/* width: 200px; */
 	height: 100%;
 	width: 50%;
 	position: fixed;
@@ -7,7 +6,6 @@
 	right: 0;
 	left: calc(100% - 200px);
 	bottom: auto;
-	/* background-color: #000; */
 	background-color: transparent;
 	transition: all 0.3s;
 	z-index: 2;
@@ -128,4 +126,31 @@
 	/* padding: 0 10px; */
 	line-height: 30px;
 	vertical-align: middle;
+}
+
+
+
+@media screen and (min-width: 0px) {
+	.side-header {
+		width: 100%;
+		top: 0;
+		right: 0;
+		left: 100%;
+		bottom: 0;
+	}
+	.side-menu-controls {
+		display: none;
+	}
+}
+@media screen and (min-width: 768px) {
+	.side-header {
+		width: 50%;
+		top: 0;
+		right: 0;
+		left: calc(100% - 200px);
+		bottom: auto;
+	}
+	.side-menu-controls {
+		display: inline-block;
+	}
 }

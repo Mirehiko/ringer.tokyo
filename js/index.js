@@ -15,7 +15,37 @@ var firstID = '';
 var lastID = '';
 
 
-$('#homePage').append(renderPage(textData));
+// $('#homePage').append(renderPage(textData));
+
+var windowObj = $(window);
+var homePageObj = $('#homePage');
+
+renderer();
+
+
+var motionObj = new MotionGlob( $('#homePage'), {
+  onhover: 'nothing',
+  itemClass: '.boxItem',
+  delayAfterHover: 2,
+	original: $('.infiniteBox')
+} );
+
+// motionObj.init();
+// setTimeout(function() {motionObj.init();}, 1000)
+
+function renderer() {
+	if ( windowObj.width() < 768 ) {
+		homePageObj.empty();	
+		homePageObj.append( renderMobile(textData) );
+	} else {
+		homePageObj.empty();	
+		homePageObj.append( renderPage(textData) );
+
+		setTimeout(function() {motionObj.init();}, 1000)
+
+	}
+}
+
 redrawBackgrounds();
 checkForAdditionData();
 
@@ -46,10 +76,48 @@ function checkForAdditionData() {
 	}
 }
 
+function renderMobile(data) {
+	let tmpData = data;
+	let result = document.createElement('div');
+	$(result).addClass('infiniteBox');
+
+	let fragment = document.createDocumentFragment();
+
+	for ( let item of data ) {
+		$(fragment).append( mobileItem(item) );
+	}
+
+	$(result).append(fragment);
+
+	return result;
+}
+
+function mobileItem(data) {
+	return `
+		<a href="${ data.link }" class="mobItem" title="Перейти к ${ data.title }">
+			<img class="mobileItem__image" src="${ data.src }" alt="">
+			<div class="mobItem__info">
+				<h2 class="paramLine">
+					<span class="paramTitle">Title</span>
+					<span class="paramValue">${ data.title }</span>
+				</h2>
+				<div class="paramLine">
+					<span class="paramTitle">Launch</span>
+					<span class="paramValue">${ data.lauch }</span>
+				</div>
+				<div class="paramLine">
+					<span class="paramTitle">Category</span>
+					<span class="paramValue">${ data.category }</span>
+				</div>
+			</div>
+		</a>`;
+}
+
 function renderPage(data) {
 	let tmpData = data;
 	let result = document.createElement('div');
 	$(result).addClass('infiniteBox');
+
 	let linesCount = data.length;
 	// console.log('linesCount:',linesCount)
 
@@ -352,51 +420,3 @@ function drawItem(data) {
 }
 
 
-// var motionObj = new Motion( $('.infiniteBox'), [], {
-//   onhover: 'nothing',
-//   itemClass: '.boxItem',
-//   delayAfterHover: 2,
-// } );
-var motionObj = new MotionGlob( $('#homePage'), {
-  onhover: 'nothing',
-  itemClass: '.boxItem',
-  delayAfterHover: 2,
-	original: $('.infiniteBox')
-} );
-
-// motionObj.appendToEnd = function() {
-// 	let forDraw = computedLines.splice(0,1);
-// 	let item = null;
-//   console.log('forDraw',forDraw)
-// 	if ( forDraw[0].lineType == 'double' ) {
-// 		// this.container.append(doubleLine(forDraw));
-// 		item = doubleLine(forDraw[0].data);
-// 	} else {
-// 		// this.container.append(forDraw[0].lineType(forDraw[0].data));
-// 		item = forDraw[0].lineType(forDraw[0].data);
-// 	}
-// 	$(item).addClass(this.hoverAction);
-// 	this.container.append(item);
-//
-// 	computedLines = computedLines.concat(forDraw);
-// 	redrawBackgrounds();
-// };
-//
-// motionObj.prependToStart = function() {
-// 	let forDraw = computedLines.splice(-1,1);
-// 	let item = null;
-//
-// 	if ( forDraw[0].lineType == 'double' ) {
-// 		item = doubleLine(forDraw[0].data);
-// 	} else {
-// 		item = forDraw[0].lineType(forDraw[0].data);
-// 	}
-// 	$(item).addClass(this.hoverAction);
-// 	this.container.prepend(item);
-//
-// 	computedLines = forDraw.concat(computedLines);
-//   redrawBackgrounds();
-// }
-
-// motionObj.init();
-setTimeout(function() {motionObj.init();}, 1000)

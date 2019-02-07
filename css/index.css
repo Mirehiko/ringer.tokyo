@@ -79,3 +79,16 @@
 	width: 100%;
 	/* transition: all .1s; */
 }
+
+@media screen and (min-width: 0px) {
+	#pageContent, #homePage {
+		overflow: auto;
+		height: auto;
+	}
+}
+@media screen and (min-width: 768px) {
+	#pageContent, #homePage {
+		overflow: hidden;
+		height: 100%;
+	}
+}

@@ -79,8 +79,6 @@ class MotionGlob {
     this.mousetimer = null;
     this.hoveringItem = null;
 
-    // this.evtMouseCheck = new Event('mouseCheck'); // только в новых бровзерах
-
 		if ( this.onhover == 'nothing' ) {
 			this.mouseX = 0;
 			this.mouseY = 0;
@@ -116,9 +114,6 @@ class MotionGlob {
 		if ( this.onhover == 'pause' ) {
 			this.container.delegate('.hoverAction', 'mousemove', function(evt) {
         self.onpause = true;
-				// self.mouseX = evt.clientX;
-				// self.mouseY = evt.clientY;
-				// console.log(mouseX, mouseY)
 				self.delay = setTimeout(function() {
           self.onpause = false;
 				}, self.delayAfterHover); // выждав паузу запускаем движение
@@ -130,21 +125,14 @@ class MotionGlob {
 
         $(this).addClass('-hover-');
         self.hoveringItem = $(this);
-
-        console.log('move')
-        // self.hoverRemove(self);
+        // console.log('move')
       });
-			// this.container.delegate(this.itemClass, 'mouseover', function(evt) {
-			// 	evt.preventDefault();
-   //      $(evt.target).data('hovering', true);
-   //      // $(this).addClass('-hover-');
-			// 	console.log('over')
-			// });
+
 			this.container.delegate(this.itemClass, 'mouseleave', function(evt) {
 				evt.preventDefault();
         $(this).removeClass('-hover-');
         self.hoveringItem = null;
-				console.log('leave')
+				// console.log('leave')
 			});
 		}
 
@@ -242,8 +230,7 @@ class MotionGlob {
     clearTimeout(context.mousetimer);
     context.mousetimer = setTimeout(function(){
       $(context.itemClass).removeClass('-hover-');
-      console.log('remove')
-
+      // console.log('remove')
     }, 1000);
   }
 
@@ -320,7 +307,7 @@ class MotionGlob {
 
       if (self.hoveringItem != null) {
         self.getEdgesOfHover();
-        console.log('Is hovering:', self.isInsiteOfItem())
+        // console.log('Is hovering:', self.isInsiteOfItem())
         if ( !self.isInsiteOfItem() ) {
           self.hoveringItem.removeClass('-hover-');
           self.hoveringItem = null;

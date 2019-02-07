@@ -2,15 +2,7 @@ var firstID = '';
 var lastID = '';
 var videoObj = {};
 
-// $('#workPage').append(drawContent(textData));
 $('#wrapper').append(drawContent(textData));
-// redrawBackgrounds();
-// checkForAdditionData();z
-
-
-// $(window).on('resize', function(e) {
-// 	redrawBackgrounds();
-// });
 
 
 function redrawBackgrounds() {
@@ -164,34 +156,6 @@ var motionObj = new MotionGlob( $('#wrapper'), {
 	pauseOnScroll: false,
 	original: $('.workInfo')
 } );
-// var motionObj = new Motion( $('.workInfo'), textData, {
-// 	direction: 'left',
-// 	pauseOnScroll: false,
-// } );
-
-// motionObj.appendToEnd = function() {
-// 	let elem = this.data.splice(0,1);
-// 	let item = null;
-//
-// 	item = selectDrawModeAndDraw(elem[0]);
-// 	$(item).addClass(this.hoverAction);
-// 	this.container.append(item);
-//
-// 	this.data = this.data.concat(elem);
-// 	// redrawBackgrounds();
-// };
-//
-// motionObj.prependToStart = function() {
-// 	let elem = this.data.splice(-1,1);
-// 	let item = null;
-//
-// 	item = selectDrawModeAndDraw(elem[0]);
-// 	$(item).addClass(this.hoverAction);
-// 	this.container.prepend(item);
-//
-// 	//
-// 	this.data = elem.concat(this.data);
-// }
 
 setTimeout(function() {motionObj.init();}, 1000)
 
