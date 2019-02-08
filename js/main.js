@@ -4,7 +4,7 @@ var maxScroll = 0;
 reDrawImages( $('.infiniteItem') );
 // moveInfinate();
 
-$('#header-menu').on('click', function(e) {
+$('#header-menu, #hideMenu').on('click', function(e) {
 	// e.stopPropagation();
 
 	$('.side-header').toggleClass('open');

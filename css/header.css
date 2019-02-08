@@ -17,7 +17,7 @@
 
 .side-header.open {
 	background-color: rgba(34, 34, 34, 0.8);
-	right: 400px;
+	/* right: 400px; */
 	left: 50%;
 	color: #fff;
 }
@@ -128,7 +128,24 @@
 	vertical-align: middle;
 }
 
-
+#hideMenu {
+	display: block;
+	position: fixed;
+	top: 36px;
+	right: 0;
+	z-index: 5;
+}
+#mobileLogo {
+	position: fixed;
+	top: 15px;
+	left: 15px;
+	display: inline-block;
+	height: 50px;
+	min-width: 50px;
+	background-color: #ccc;
+	z-index: 5;
+	
+}
 
 @media screen and (min-width: 0px) {
 	.side-header {
@@ -141,6 +158,12 @@
 	.side-menu-controls {
 		display: none;
 	}
+	.side-header.open {
+		left: 0;
+	}
+	.side-menu-list {
+		width: 100%;
+	}
 }
 @media screen and (min-width: 768px) {
 	.side-header {
@@ -152,5 +175,11 @@
 	}
 	.side-menu-controls {
 		display: inline-block;
+	}
+	.side-header.open {
+		left: 50%;
+	}
+	.side-menu-list {
+		width: auto;
 	}
 }
