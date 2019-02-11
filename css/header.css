@@ -128,23 +128,66 @@
 	vertical-align: middle;
 }
 
+#mobileNav {
+	position: fixed;
+	z-index: 10;
+	width: 100%;
+	
+}
+#mobileNav.-open- {
+	background-color: #000;
+}
 #hideMenu {
-	display: block;
+	/* display: block; */
 	position: fixed;
 	top: 36px;
 	right: 0;
 	z-index: 5;
 }
+#hideMenu .hmenu-text {
+	padding-right: 80px;
+}
 #mobileLogo {
 	position: fixed;
 	top: 15px;
 	left: 15px;
-	display: inline-block;
-	height: 50px;
-	min-width: 50px;
-	background-color: #ccc;
+	display: block;
 	z-index: 5;
-	
+}
+#mobileLogo .logo {
+    box-shadow: 0px 1px 5px 0px #efefef;
+}
+span.logo {
+    display: inline-block;
+    font-size: 24px;
+    color: #fff;
+    line-height: 50px;
+    vertical-align: middle;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0 10px;
+    background-color: #222;
+}
+img.logo {
+	display: block;
+	height: 50px;
+	width: auto;
+	border: none;
+	background: #ccc;
+	color: #222;
+	font-size: 12px;
+}
+
+#mobileCategory {
+	margin-top: 100px;
+	padding: 4vw 5.333333333333333vw 8vw;
+}
+#mobileCategory .toggleList {
+	margin-top: 40px;
+}
+#mobileCategory .toggleBtn {
+	position: absolute;
+	right: 8.933333333333334vw;
 }
 
 @media screen and (min-width: 0px) {
@@ -164,6 +207,9 @@
 	.side-menu-list {
 		width: 100%;
 	}
+/* 	.-mobile- {
+		display: block;
+	} */
 }
 @media screen and (min-width: 768px) {
 	.side-header {
@@ -182,4 +228,7 @@
 	.side-menu-list {
 		width: auto;
 	}
+/* 	.-mobile- {
+		display: none;
+	} */
 }

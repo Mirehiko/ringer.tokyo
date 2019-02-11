@@ -221,6 +221,37 @@ a:hover, .iconBtnBox:hover .iconBtn {
 	position: relative;
 }
 
+.toggleBtn {
+	display: block;
+	padding:  10px 0;
+	color: #fff;
+	background-color: transparent;
+	border: none;
+	font-size: 14px;
+	cursor: pointer;
+}
+.toggleBtn__text {
+	vertical-align: middle;
+}
+.toggleBtn__icon {
+	padding-left: 15px;
+	vertical-align: middle;
+}
+.toggleList {
+	padding: 10px 0;
+	overflow: hidden;
+}
+.toggleList__item {
+	font-size: 14px;
+	display: block;
+	color: #fff;
+	padding: 8px 0;
+	font-weight: bold;
+}
+.toggleList__item[globcat].-active- {
+	opacity: .5;
+}
+
 @media screen and (min-width: 0px) {
 	#pageContent {
 		width: 100%;
@@ -228,6 +259,9 @@ a:hover, .iconBtnBox:hover .iconBtn {
 	}
 	.page {
 		padding: 0 10px;
+	}
+	.-mobile- {
+		display: block;
 	}
 }
 @media screen and (min-width: 768px) {
@@ -237,6 +271,9 @@ a:hover, .iconBtnBox:hover .iconBtn {
 	}
 	.page {
 	    padding: 0 30px;
+	}
+	.-mobile- {
+		display: none;
 	}
 }
 
@@ -259,3 +296,4 @@ a:hover, .iconBtnBox:hover .iconBtn {
 .mobItem__info h2 {
 	margin: 0 0 30px;
 }
+

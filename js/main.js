@@ -1,5 +1,6 @@
 var SCREEN_RATIO = 16/9;
 var maxScroll = 0;
+var WINDOW = $(window);
 
 reDrawImages( $('.infiniteItem') );
 // moveInfinate();
@@ -32,15 +33,21 @@ $('.side-header').on('click', function(e) {
 
 // Toggle accordeon item
 $('.toggleBtn').on('click', function(e) {
-	let target = $(this).attr('toggle-target');
-	let toggleData = $(`.toggleContent[toggle-data="${ target }"]`);
+	let elem = $(this);
+	let target = elem.attr('toggle-target');
+	let toggleData = $(`.toggleList[toggle-data="${ target }"]`);
 
-	if ( $(this).hasClass('collapse') ) {
-		$(this).removeClass('collapse');
-		toggleData.animate({height: 0}, 0.5);
+	elem.find('.toggleBtn__icon').empty();
+	if ( elem.hasClass('collapse') ) {
+		elem.removeClass('collapse');
+		toggleData.addClass('-hidden-');
+		// toggleData.animate({height: 0}, 0.5);
+		elem.find('.toggleBtn__icon').append('<i class="fas fa-caret-down"></i>');
 	} else {
-		$(this).addClass('collapse');
-		toggleData.animate({height: toggleData.find('.aliContent')[0].getBoundingClientRect().height+'px'}, 0.5);
+		elem.addClass('collapse');
+		toggleData.removeClass('-hidden-');
+		// toggleData.animate({height: '300px'}, 0.5);
+		elem.find('.toggleBtn__icon').append('<i class="fas fa-caret-up"></i>');
 	}
 });
 
