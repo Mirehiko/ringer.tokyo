@@ -15,15 +15,68 @@ var firstID = '';
 var lastID = '';
 
 
-$('#homePage').append(renderPage(textData));
-redrawBackgrounds();
-checkForAdditionData();
+// $('#homePage').append(renderPage(textData));
+
+var windowObj = $(window);
+var homePageObj = $('#homePage');
+
+renderer();
+
+
+var motionObj = new MotionGlob( $('#homePage'), {
+  onhover: 'nothing',
+  itemClass: '.boxItem',
+  delayAfterHover: 2,
+	original: $('.infiniteBox')
+} );
+
+// motionObj.init();
+// setTimeout(function() {motionObj.init();}, 1000)
+
+function renderer() {
+	if ( windowObj.width() < 768 ) {
+		homePageObj.empty();	
+		homePageObj.append( renderMobile(textData) );
+	} else {
+		homePageObj.empty();	
+		homePageObj.append( renderPage(textData) );
+
+		setTimeout(function() {motionObj.init();}, 1000)
+	}
+}
+
+if ( WINDOW.width() >= 768 ) {
+	redrawBackgrounds();
+	checkForAdditionData();
+}
+
 
 
 $(window).on('resize', function(e) {
 	redrawBackgrounds();
 });
 
+$('#mobileCategory>.toggleBtn').on('click', function(e) {
+	let elem = $(this);
+	let mobileNav = $('#mobileNav');
+	console.log(mobileNav)
+
+	if ( elem.hasClass('collapse') ) {
+		mobileNav.addClass('-open-');
+	} else {
+		mobileNav.removeClass('-open-');
+	}
+});
+
+$('.toggleList__item').on('click', function(e) {
+	e.preventDefault();
+	let cat = $(this).attr('globcat');
+	$('.toggleList__item.-active-').removeClass('-active-');
+	$(`.toggleList__item[globcat="${ cat }"]`).addClass('-active-');
+	let text = $(this).text()
+	console.log(text)
+	$(`.toggleBtn__text[globcat]`).text(text);
+})
 
 function checkForAdditionData() {
 	let box = $('.infiniteBox');
@@ -46,10 +99,48 @@ function checkForAdditionData() {
 	}
 }
 
+function renderMobile(data) {
+	let tmpData = data;
+	let result = document.createElement('div');
+	$(result).addClass('infiniteBox');
+
+	let fragment = document.createDocumentFragment();
+
+	for ( let item of data ) {
+		$(fragment).append( mobileItem(item) );
+	}
+
+	$(result).append(fragment);
+
+	return result;
+}
+
+function mobileItem(data) {
+	return `
+		<a href="${ data.link }" class="mobItem" title="Перейти к ${ data.title }">
+			<img class="mobileItem__image" src="${ data.src }" alt="">
+			<div class="mobItem__info">
+				<h2 class="paramLine">
+					<span class="paramTitle">Title</span>
+					<span class="paramValue">${ data.title }</span>
+				</h2>
+				<div class="paramLine">
+					<span class="paramTitle">Launch</span>
+					<span class="paramValue">${ data.lauch }</span>
+				</div>
+				<div class="paramLine">
+					<span class="paramTitle">Category</span>
+					<span class="paramValue">${ data.category }</span>
+				</div>
+			</div>
+		</a>`;
+}
+
 function renderPage(data) {
 	let tmpData = data;
 	let result = document.createElement('div');
 	$(result).addClass('infiniteBox');
+
 	let linesCount = data.length;
 	// console.log('linesCount:',linesCount)
 
@@ -352,115 +443,3 @@ function drawItem(data) {
 }
 
 
-var motionObj = new Motion( $('.infiniteBox'), [], {
-  onhover: 'nothing',
-  itemClass: '.boxItem',
-} );
-
-motionObj.appendToEnd = function() {
-	let forDraw = computedLines.splice(0,1);
-	let item = null;
-  console.log('forDraw',forDraw)
-	if ( forDraw[0].lineType == 'double' ) {
-		// this.container.append(doubleLine(forDraw));
-		item = doubleLine(forDraw[0].data);
-	} else {
-		// this.container.append(forDraw[0].lineType(forDraw[0].data));
-		item = forDraw[0].lineType(forDraw[0].data);
-	}
-	$(item).addClass(this.hoverAction);
-	this.container.append(item);
-
-	computedLines = computedLines.concat(forDraw);
-	redrawBackgrounds();
-};
-
-motionObj.prependToStart = function() {
-	let forDraw = computedLines.splice(-1,1);
-	let item = null;
-
-	if ( forDraw[0].lineType == 'double' ) {
-		item = doubleLine(forDraw[0].data);
-	} else {
-		item = forDraw[0].lineType(forDraw[0].data);
-	}
-	$(item).addClass(this.hoverAction);
-	this.container.prepend(item);
-
-	computedLines = forDraw.concat(computedLines);
-}
-motionObj.replaceVertical = function(way) {
-	let first = this.container.children().first();
-	let last = this.container.children().last();
-	this.isCanReplace = false;
-
-	if (way == 'down') {
-		if ( this.isLastOnScreen() ) {
-			this.appendToEnd();
-			redrawBackgrounds();
-			// console.log('added to end');
-		}
-
-		if ( this.isFirstLeaveScreen() ) {
-			this.firstSize = first.height();
-			this.removeElem(first);
-			this.setPropsToFirst(this.container.children().first());
-			// console.log('removefirst');
-		}
-
-	} else {
-		// console.log('12837162');
-
-		if ( this.isFirstOnScreen() ) {
-			this.prependToStart();
-			redrawBackgrounds();
-
-			this.container.children().css('margin-'+this.needSide, 0);
-			first = this.container.children().first();
-			first.css('margin-'+this.needSide, this.currentMargin - first.height());
-		}
-
-		if ( this.isLastLeaveScreen() ) {
-			this.removeElem(last);
-		}
-	}
-	this.isCanReplace = true;
-
-};
-
-motionObj.replaceHorizontal = function(way) {
-	let first = this.container.children().first();
-	let last = this.container.children().last();
-	this.isCanReplace = false;
-
-	if (way == 'left') {
-		if ( this.isLastOnScreen() ) {
-			this.appendToEnd();
-			redrawBackgrounds();
-		}
-
-		if ( this.isFirstLeaveScreen() ) {
-			this.firstSize = first.width();
-			this.removeElem(first);
-			this.setPropsToFirst(this.container.children().first());
-		}
-
-	} else {
-		if ( this.isFirstOnScreen() ) {
-			this.prependToStart();
-			redrawBackgrounds();
-
-			this.container.children().css('margin-'+this.needSide, 0);
-			first = this.container.children().first();
-			first.css('margin-'+this.needSide, this.currentMargin - first.width());
-		}
-
-		if ( this.isLastLeaveScreen() ) {
-			this.removeElem(last);
-		}
-	}
-
-	this.isCanReplace = true;
-};
-
-motionObj.init();

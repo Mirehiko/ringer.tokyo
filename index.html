@@ -1,30 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
 	<title>Home</title>
-	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/header.css">
-	<link rel="stylesheet" href="css/content.css">
-	<link rel="stylesheet" href="css/news.css">
-	<link rel="stylesheet" href="css/talent.css">
-	<link rel="stylesheet" href="css/index.css">
+	<link rel="stylesheet" charset="utf-8" href="css/main.css">
+	<link rel="stylesheet" charset="utf-8" href="css/header.css">
+	<link rel="stylesheet" charset="utf-8" href="css/content.css">
+	<link rel="stylesheet" charset="utf-8" href="css/news.css">
+	<link rel="stylesheet" charset="utf-8" href="css/talent.css">
+	<link rel="stylesheet" charset="utf-8" href="css/index.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 </head>
 <body>
+	<div id="mobileNav" class="-mobile-">
+		<a href="#" id="mobileLogo">
+			<!-- <span class="logo">Iconic Site</span> -->
+			<img class="logo" src="images/logo.jpeg" alt=""></img>
+		</a>
+		<a href="#" id="hideMenu" class="iconBtnBox" title="menu" role="menu">
+			<span class="hmenu-text">Menu</span>
+			<div class="iconBtn">
+				<div class="wrapper">
+					<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
+		              <div class="inner" style="transform: translate3d(0px, 0px, 0px);">
+		                <div class="line is-a"></div>
+		                <div class="line is-b"></div>
+		              </div>
+		            </div>
+					<svg class="bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+						<path d="M24,0A24,24,0,1,0,48,24,24,24,0,0,0,24,0Zm0,40A16,16,0,1,1,40,24,16,16,0,0,1,24,40Z" style="fill-rule:evenodd"></path>
+					</svg>
+				</div>
+			</div>
+		</a>
+		<div id="mobileCategory">
+			<a class="toggleBtn" title="Choose category" toggle-target="mobcat"><span class="toggleBtn__text" globcat>All</span><span class="toggleBtn__icon"><i class="fas fa-caret-down"></i></span></a>
+			<div class="toggleList -hidden-" toggle-data="mobcat">
+				<a href="#" class="toggleList__item -active-" globcat="all">All</a>
+				<a href="#" class="toggleList__item" globcat="cat1">3DCG</a>
+				<a href="#" class="toggleList__item" globcat="cat2">VFX</a>
+				<a href="#" class="toggleList__item" globcat="cat3">Motion Graphics</a>
+				<a href="#" class="toggleList__item" globcat="cat4">Edit</a>
+				<a href="#" class="toggleList__item" globcat="cat5">Sound Mixing</a>
+				<a href="#" class="toggleList__item" globcat="cat6">Interactive</a>
+			</div>
+		</div>
+	</div>
+
+
+
 	<div class="side-header">
 		<div class="side-menu side-menu-controls">
 			<div class="wrapper">
 				<div class="header-logo">Site name</div>
 				<div class="header-category">
 					<p class="categoryTitle">Category</p>
-					<div class="categoryList">
-						<a href="#" class="categoryList__item">All</a>
-						<a href="#" class="categoryList__item">3DCG</a>
-						<a href="#" class="categoryList__item">VFX</a>
-						<a href="#" class="categoryList__item">Motion Graphics</a>
-						<a href="#" class="categoryList__item">Edit</a>
-						<a href="#" class="categoryList__item">Sound Mixing</a>
-						<a href="#" class="categoryList__item">Interactive</a>
+					<a class="toggleBtn" title="Choose category" toggle-target="deskcat"><span class="toggleBtn__text" globcat>All</span><span class="toggleBtn__icon"><i class="fas fa-caret-down"></i></span></a>
+					<div class="toggleList -hidden-" toggle-data="deskcat">
+						<a href="#" class="toggleList__item -active-" globcat="all">All</a>
+						<a href="#" class="toggleList__item" globcat="cat1">3DCG</a>
+						<a href="#" class="toggleList__item" globcat="cat2">VFX</a>
+						<a href="#" class="toggleList__item" globcat="cat3">Motion Graphics</a>
+						<a href="#" class="toggleList__item" globcat="cat4">Edit</a>
+						<a href="#" class="toggleList__item" globcat="cat5">Sound Mixing</a>
+						<a href="#" class="toggleList__item" globcat="cat6">Interactive</a>
 					</div>
 				</div>
 				<a id="header-menu" class="header-menu iconBtnBox">
@@ -70,10 +112,10 @@
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous" defer></script>
-	<script src="js/main.js" type="text/javascript" charset="utf-8" defer></script>
-
 	<script src="js/jquery-mousewheel-3.1.12/jquery.mousewheel.js" type="text/javascript" charset="utf-8" defer></script>
-	<script src="js/scrollBehavior.js" type="text/javascript" charset="utf-8" defer></script>
+	<script src="js/main.js" type="text/javascript" charset="utf-8" defer></script>
+	<!-- <script src="js/scrollBehavior.js" type="text/javascript" charset="utf-8" defer></script> -->
+	<script type="text/javascript" src="js/scrollBehaviorGlob.js" charset="utf-8" defer></script>
 	<script src="js/dataformainpage.js" type="text/javascript" charset="utf-8" defer></script>
 	<script src="js/index.js" type="text/javascript" charset="utf-8" defer></script>
 

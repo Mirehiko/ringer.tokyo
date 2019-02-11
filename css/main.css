@@ -216,3 +216,84 @@ a:hover, .iconBtnBox:hover .iconBtn {
   border-bottom: 2px solid #fff;
 	z-index: 1;
 }
+
+.page {
+	position: relative;
+}
+
+.toggleBtn {
+	display: block;
+	padding:  10px 0;
+	color: #fff;
+	background-color: transparent;
+	border: none;
+	font-size: 14px;
+	cursor: pointer;
+}
+.toggleBtn__text {
+	vertical-align: middle;
+}
+.toggleBtn__icon {
+	padding-left: 15px;
+	vertical-align: middle;
+}
+.toggleList {
+	padding: 10px 0;
+	overflow: hidden;
+}
+.toggleList__item {
+	font-size: 14px;
+	display: block;
+	color: #fff;
+	padding: 8px 0;
+	font-weight: bold;
+}
+.toggleList__item[globcat].-active- {
+	opacity: .5;
+}
+
+@media screen and (min-width: 0px) {
+	#pageContent {
+		width: 100%;
+		margin: 0;
+	}
+	.page {
+		padding: 0 10px;
+	}
+	.-mobile- {
+		display: block;
+	}
+}
+@media screen and (min-width: 768px) {
+	#pageContent {
+		width: auto;
+		margin: 0 200px 0 0;
+	}
+	.page {
+	    padding: 0 30px;
+	}
+	.-mobile- {
+		display: none;
+	}
+}
+
+.mobItem {
+	display: block;
+	margin: 0 0 15px;
+	border-radius: 5px;
+	width: 100%;
+	overflow: hidden;
+}
+.mobileItem__image {
+	display: block;
+	width: 100%;
+	/* margin: 0 0 10px; */
+}
+.mobItem__info {
+	padding: 15px 10px;
+	background-color: #222;
+}
+.mobItem__info h2 {
+	margin: 0 0 30px;
+}
+

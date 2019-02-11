@@ -2,14 +2,7 @@ var firstID = '';
 var lastID = '';
 var videoObj = {};
 
-$('#workPage').append(drawContent(textData));
-// redrawBackgrounds();
-// checkForAdditionData();z
-
-
-// $(window).on('resize', function(e) {
-// 	redrawBackgrounds();
-// });
+$('#wrapper').append(drawContent(textData));
 
 
 function redrawBackgrounds() {
@@ -158,73 +151,13 @@ function selectDrawModeAndDraw(elem) {
 	return item;
 }
 
-var motionObj = new Motion( $('.workInfo'), textData, {
+var motionObj = new MotionGlob( $('#wrapper'), {
 	direction: 'left',
 	pauseOnScroll: false,
+	original: $('.workInfo')
 } );
 
-motionObj.appendToEnd = function() {
-	let elem = this.data.splice(0,1);
-	let item = null;
-
-	item = selectDrawModeAndDraw(elem[0]);
-	$(item).addClass(this.hoverAction);
-	this.container.append(item);
-
-	this.data = this.data.concat(elem);
-	// redrawBackgrounds();
-};
-
-motionObj.prependToStart = function() {
-	let elem = this.data.splice(-1,1);
-	let item = null;
-
-	item = selectDrawModeAndDraw(elem[0]);
-	$(item).addClass(this.hoverAction);
-	this.container.prepend(item);
-
-	//
-	this.data = elem.concat(this.data);
-}
-
-motionObj.replaceHorizontal = function(way) {
-	let first = this.container.children().first();
-	let last = this.container.children().last();
-	this.isCanReplace = false;
-	// console.log('replaceHorizontal');
-	console.log(way)
-
-	if (way == 'left') {
-		if ( this.isLastOnScreen() ) {
-			this.appendToEnd();
-			// redrawBackgrounds();
-		}
-
-		if ( this.isFirstLeaveScreen() ) {
-			this.firstSize = first.width();
-			this.removeElem(first);
-			this.setPropsToFirst(this.container.children().first());
-		}
-
-	} else {
-		if ( this.isFirstOnScreen() ) {
-			this.prependToStart();
-			// redrawBackgrounds();
-
-			this.container.children().css('margin-'+this.needSide, 0);
-			first = this.container.children().first();
-			first.css('margin-'+this.needSide, this.currentMargin - first.width());
-		}
-
-		if ( this.isLastLeaveScreen() ) {
-			this.removeElem(last);
-		}
-	}
-
-	this.isCanReplace = true;
-};
-
-motionObj.init();
+setTimeout(function() {motionObj.init();}, 1000)
 
 
 
@@ -248,12 +181,12 @@ $('body').delegate('.prevIcon', 'click', function(e) {
 
 function showVideo() {
 	$('.fullView').removeClass('-hidden-');
-	motionObj.clearTimers();
+	motionObj.stop();
 }
 function closeVideo() {
 	$('.fullView').addClass('-hidden-');
 	$('#videoContent').empty();
-	motionObj.simpleMotion();
+	motionObj.render();
 }
 
 function drawOwnVideo(data) {

@@ -39,12 +39,9 @@
 		indent: // Отступ от границы
 	}
 */
-class Motion {
-	constructor(container, data, options) {
+class MotionGlob {
+	constructor(container, options) {
 		this.container = container;
-		this.firstID = 'abraham';
-		this.container.children().first().attr('id',this.firstID);
-		this.data = data;
 
 		this.direction = options.direction || 'down';
 		this.delayAfterHover = options.delayAfterHover*1000 || 1000; // задержка после скрола
@@ -56,38 +53,39 @@ class Motion {
     this.itemPosition = 0 + this.indent; // для движения
     this.itemSpeed = options.speed || 1; // скорость движения в пикселях
 
+    this.original = options.original;
 	}
 
 	init() {
 		let self = this;
-		this.loop = null; // таймер для движения контента
 		this.delay = null; // таймер для задержки после скрола
 		this.isCanReplace = true;
 		this.hoverAction = 'hoverAction';
 
-    this.firstSize = 0; // высота/ширина первого элемента
-		this.lastSize = 0; // высота/ширина последнего элемента
-		this.lastPosition = 0; // отступ
 		this.needSide = '';
 		this.axis = '';
+    this.motion = null; // функция движения
+		this.setMotionDirection(); // задаем направление движения
+    this.setEdges();
+    this.setOriginalSize();
+    this.setStartPosition();
+    this.addToStart();
+    this.addToEnd();
     this.firstItem = this.container.children().first();
     this.lastItem = this.container.children().last();
-    this.setFirstSize();
-    this.setLastSize();
+    this.setPropsToFirst(this.firstItem);
 		this.container.children().addClass(this.hoverAction);
     this.onpause = false;
     this.mousetimer = null;
+    this.hoveringItem = null;
 
 		if ( this.onhover == 'nothing' ) {
 			this.mouseX = 0;
 			this.mouseY = 0;
 		}
 
-		this.motion = null; // функция движения
-		this.setMotionDirection(); // задаем направление движения
     this.isBGCrossProgress = false;
     this.isENDCrossProgress = false;
-    this.setEdges();
 
 		this.render();
 
@@ -116,72 +114,126 @@ class Motion {
 		if ( this.onhover == 'pause' ) {
 			this.container.delegate('.hoverAction', 'mousemove', function(evt) {
         self.onpause = true;
-				self.mouseX = evt.clientX;
-				self.mouseY = evt.clientY;
-				console.log(mouseX, mouseY)
 				self.delay = setTimeout(function() {
           self.onpause = false;
 				}, self.delayAfterHover); // выждав паузу запускаем движение
 			});
 		} else if ( this.onhover == 'nothing' ) {
-      this.container.delegate(window, 'mousemove', function(evt) {
-        evt.preventDefault();
+      this.container.delegate(this.itemClass, 'mousemove', function(evt) {
         self.mouseX = evt.pageX;
         self.mouseY = evt.pageY;
-        console.log('move')
-        self.hoverRemove(self);
+
+        $(this).addClass('-hover-');
+        self.hoveringItem = $(this);
+        // console.log('move')
       });
-			this.container.delegate(this.itemClass, 'mouseover', function(evt) {
-				evt.preventDefault();
-        // if ( self.mouseX != evt.pageX || self.mouseY != evt.pageY ) {
-          $(this).addClass('-hover-');
-        // }
-        // self.hoverRemove(self);
-				console.log('over')
-			});
-			this.container.delegate(this.itemClass, 'mouseout', function(evt) {
+
+			this.container.delegate(this.itemClass, 'mouseleave', function(evt) {
 				evt.preventDefault();
         $(this).removeClass('-hover-');
-				console.log('leave')
+        self.hoveringItem = null;
+				// console.log('leave')
 			});
 		}
 
     $(window).on('resize', function(e) {
       self.setEdges();
-      self.setFirstSize();
-      self.setLastSize();
+      self.setOriginalSize();
     });
 	}
+
+  getEdgesOfHover() {
+    this.hoverBgn = this.hoveringItem.offset().top;
+    if ( this.axis == 'horizontal' ) {
+      this.hoverEnd = this.hoveringItem.offset().left + this.hoveringItem.outerWidth();
+    } else {
+      this.hoverEnd = this.hoveringItem.offset().top + this.hoveringItem.outerHeight();
+    }
+  }
+
+
+  setStartPosition() {
+    this.itemPosition = -(this.bgEdge + Math.abs(this.originalSize - this.bgEdge));
+  }
+  addToStart() {
+    let item = this.original.clone();
+    this.container.prepend(item);
+  }
+  addToEnd() {
+    this.container.append(this.original.clone());
+  }
+  replaceObjects(way) {
+    this.isCanReplace = false;
+    let self = this;
+    self.setPropsToFirst(self.firstItem);
+
+  	if (way == 'next') {
+  		// Если достиг начальной границы
+  		if ( this.isAcrossBGEdge() ) {
+  			//Добавляем в конец новый элемент
+  			this.isBGCrossProgress = true;
+  			// console.log('Copy element to end')
+  			this.addToEnd();
+  			this.lastItem = this.container.children().last();
+  		}
+
+  		// Если первый полностью ушел за пределы границы
+  		if ( this.isFirstOut(this.firstItem) ) {
+  			// console.log('First element leave the screen')
+        this.isBGCrossProgress = false;
+  			this.removeElem(this.firstItem);
+  			this.firstItem = this.container.children().first();
+  			this.itemPosition += this.originalSize;
+  			this.setPropsToFirst(this.firstItem);
+  		}
+
+  	} else {
+
+  		if ( this.isAcrossEndEdge() ) {
+  			//Добавляем в начало новый элемент
+  			this.isENDCrossProgress = true;
+  			// console.log('Copy element to start')
+  			this.firstItem.css('margin', 0);
+  			this.addToStart();
+  			this.firstItem = this.container.children().first();
+  			this.itemPosition -= this.originalSize;
+  			this.setPropsToFirst(this.firstItem);
+  		}
+
+  		// Если последний полностью ушел за пределы границы
+  		if ( this.isLastOut(this.lastItem) ) {
+  			// console.log('Last element leave the screen')
+  			this.isENDCrossProgress = false;
+  			this.removeElem(this.lastItem);
+  			this.lastItem = this.container.children().last();
+  		}
+  	}
+
+    this.isCanReplace = true;
+  }
+  setOriginalSize() {
+    if ( this.axis == 'horizontal' ) {
+      this.originalSize = this.original.outerWidth();
+    } else {
+      this.originalSize = this.original.outerHeight();
+    }
+  }
+  getLastPosition() {
+    if ( this.axis == 'horizontal' ) {
+      return this.originalSize + this.lastItem.offset().left;
+    } else {
+      return this.originalSize + this.lastItem.offset().top;
+    }
+  }
 
   hoverRemove(context) {
     clearTimeout(context.mousetimer);
     context.mousetimer = setTimeout(function(){
       $(context.itemClass).removeClass('-hover-');
-      console.log('remove')
-
+      // console.log('remove')
     }, 1000);
   }
-  getLastPosition() {
-    if ( this.axis == 'horizontal' ) {
-      return this.lastSize + this.lastItem.offset().left;
-    } else {
-      return this.lastSize + this.lastItem.offset().top;
-    }
-  }
-  setFirstSize() {
-    if ( this.axis == 'horizontal' ) {
-      this.firstSize = this.firstItem.outerWidth();
-    } else {
-      this.firstSize = this.firstItem.outerHeight();
-    }
-  }
-  setLastSize() {
-    if ( this.axis == 'horizontal' ) {
-      this.lastSize = this.lastItem.outerWidth();
-    } else {
-      this.lastSize = this.lastItem.outerHeight();
-    }
-  }
+
   setEdges() {
     if ( this.axis == 'horizontal' ) {
       this.bgEdge = $(window).width() / 2;
@@ -205,7 +257,7 @@ class Motion {
   }
   isFirstOut(first) {
     if ( (this.itemPosition < (-(this.bgEdge + first.outerHeight())) && this.axis == 'vertical') ||
-         (this.itemPosition < (-(this.bgEdge + first.outerWidth())) && this.axis == 'horizontal')) {
+         (this.itemPosition < (-(this.bgEdge + first.outerWidth())) && this.axis == 'horizontal') ) {
       return true;
     }
 		return false;
@@ -227,62 +279,19 @@ class Motion {
 			this.axis = 'horizontal';
 		}
 	}
-	replaceObjects(way) {
-    this.isCanReplace = false;
-    let self = this;
-    self.setPropsToFirst(self.firstItem);
-
-  	if (way == 'next') {
-  		// Если достиг начальной границы
-  		if ( this.isAcrossBGEdge() ) {
-  			//Добавляем в конец новый элемент
-  			this.isBGCrossProgress = true;
-  			// console.log('Copy element to end')
-  			this.appendToEnd();
-  			this.lastItem = this.container.children().last();
-  			this.setLastSize();
-  		}
-
-  		// Если первый полностью ушел за пределы границы
-  		if ( this.isFirstOut(this.firstItem) ) {
-  			// console.log('First element leave the screen')
-        this.isBGCrossProgress = false;
-  			this.removeElem(this.firstItem);
-  			let delta = this.firstSize;
-  			this.firstItem = this.container.children().first();
-  			this.itemPosition += delta;
-  			this.setPropsToFirst(this.firstItem);
-  			this.setFirstSize();
-  		}
-
-  	} else {
-
-  		if ( this.isAcrossEndEdge() ) {
-  			//Добавляем в начало новый элемент
-  			this.isENDCrossProgress = true;
-  			// console.log('Copy element to start')
-  			this.firstItem.css('margin', 0);
-  			this.prependToStart();
-  			this.firstItem = this.container.children().first();
-  			this.setFirstSize();
-  			this.itemPosition -= this.firstSize;
-  			this.setPropsToFirst(this.firstItem);
-  		}
-
-  		// Если последний полностью ушел за пределы границы
-  		if ( this.isLastOut(this.lastItem) ) {
-  			// console.log('Last element leave the screen')
-  			this.isENDCrossProgress = false;
-  			this.removeElem(this.lastItem);
-  			this.lastItem = this.container.children().last();
-        this.setLastSize();
-  		}
-  	}
-
-    this.isCanReplace = true;
-	}
-	replaceVertical(way) {}
-	replaceHorizontal(way) {}
+  isInsiteOfItem() {
+    if ( this.axis == 'horizontal' ) {
+      if ( this.mouseX >= this.hoverBgn && this.mouseX <= this.hoverEnd ) {
+        return true;
+      }
+      return false;
+    } else {
+      if ( this.mouseY >= this.hoverBgn && this.mouseY <= this.hoverEnd ) {
+        return true;
+      }
+      return false;
+    }
+  }
 
 	render() {
     const refreshRate = 1000 / 60;
@@ -294,6 +303,16 @@ class Motion {
     	// console.log('end progress', self.isENDCrossProgress,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
 			// console.log(self.axis)
       // console.log('evt.deltaFactor',evt.deltaFactor)s,'endEdge',self.endEdge, 'this.itemPosition:',self.lastItem.offset().left + self.lastSize)
+      // console.log('event',trig, trig.clientX,trig.clientY);
+
+      if (self.hoveringItem != null) {
+        self.getEdgesOfHover();
+        // console.log('Is hovering:', self.isInsiteOfItem())
+        if ( !self.isInsiteOfItem() ) {
+          self.hoveringItem.removeClass('-hover-');
+          self.hoveringItem = null;
+        }
+      }
 
       if ( !self.onpause ) {
         self.itemPosition -= self.itemSpeed;
@@ -314,6 +333,7 @@ class Motion {
 	appendToEnd() {}
 	prependToStart(){}
 	setPropsToFirst(elem) {
+    this.container.children().css('margin', 0);
     let indent = 'margin-'+this.needSide;
     elem.css(indent, this.itemPosition + 'px');
 	}
