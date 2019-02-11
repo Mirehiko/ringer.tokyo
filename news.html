@@ -11,32 +11,44 @@
 
 </head>
 <body>
+	<div id="mobileNav" class="-mobile-">
+		<a href="#" id="mobileLogo">
+			<!-- <span class="logo">Iconic Site</span> -->
+			<img class="logo" src="images/logo.jpeg" alt=""></img>
+		</a>
+		<a href="#" id="hideMenu" class="iconBtnBox" title="menu" role="menu">
+			<span class="hmenu-text">Menu</span>
+			<div class="iconBtn">
+				<div class="wrapper">
+					<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
+		              <div class="inner" style="transform: translate3d(0px, 0px, 0px);">
+		                <div class="line is-a"></div>
+		                <div class="line is-b"></div>
+		              </div>
+		            </div>
+					<svg class="bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+						<path d="M24,0A24,24,0,1,0,48,24,24,24,0,0,0,24,0Zm0,40A16,16,0,1,1,40,24,16,16,0,0,1,24,40Z" style="fill-rule:evenodd"></path>
+					</svg>
+				</div>
+			</div>
+		</a>
+	</div>
+
 	<div class="side-header">
 		<div class="side-menu side-menu-controls">
 			<div class="wrapper">
 				<div class="header-logo">Site name</div>
-				<div class="header-category">
-					<p class="categoryTitle">Category</p>
-					<div class="categoryList">
-						<a href="#" class="categoryList__item">All</a>
-						<a href="#" class="categoryList__item">3DCG</a>
-						<a href="#" class="categoryList__item">VFX</a>
-						<a href="#" class="categoryList__item">Motion Graphics</a>
-						<a href="#" class="categoryList__item">Edit</a>
-						<a href="#" class="categoryList__item">Sound Mixing</a>
-						<a href="#" class="categoryList__item">Interactive</a>
-					</div>
-				</div>
+
 				<a id="header-menu" class="header-menu iconBtnBox">
 					<span class="hmenu-text">Menu</span>
 					<div class="iconBtn">
 						<div class="wrapper">
 							<div class="shape" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
-	              <div class="inner" style="transform: translate3d(0px, 0px, 0px);">
-	                <div class="line is-a"></div>
-	                <div class="line is-b"></div>
-	              </div>
-	            </div>
+				              <div class="inner" style="transform: translate3d(0px, 0px, 0px);">
+				                <div class="line is-a"></div>
+				                <div class="line is-b"></div>
+				              </div>
+				            </div>
 							<svg class="bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
 								<path d="M24,0A24,24,0,1,0,48,24,24,24,0,0,0,24,0Zm0,40A16,16,0,1,1,40,24,16,16,0,0,1,24,40Z" style="fill-rule:evenodd"></path>
 							</svg>
@@ -63,9 +75,9 @@
 	</div>
 
 	<div class="breadcrumbs">
-		<a href="index.html">Home</a>
-		<span>-></span>
-		<span>News</span>
+		<a href="index.html" class="breadcrumbs__item" title="Homepage">Home</a>
+		<span><img class="arw" src="images/system/right.svg" alt=""></span>
+		<span class="breadcrumbs__item">News</span>
 	</div>
 
 	<div id="pageContent" class="content">

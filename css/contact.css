@@ -77,3 +77,8 @@
     font-weight: bold;
     font-size: 24px;
 }
+/* .isContact .arw {
+  background-color: #000;
+  -webkit-mask: url(../images/system/right.svg) no-repeat center;
+  mask: url(../images/system/right.svg) no-repeat center;
+} */
