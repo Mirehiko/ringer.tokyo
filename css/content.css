@@ -97,3 +97,19 @@
 .access .map {
 	margin: 0 -30px;
 }
+@media screen and (min-width: 0px) {
+	.expl {
+		width: 100%;
+	}
+	.videoBox {
+		margin: 0 -10px 30px;
+	}
+}
+@media screen and (min-width: 768px) {
+	.expl {
+		width: 50%;
+	}
+	.videoBox {
+	    margin: 0 -30px 30px;
+	}
+}
