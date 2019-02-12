@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-	<title>Home</title>
-	<link rel="stylesheet" charset="utf-8" href="css/main.css">
-	<link rel="stylesheet" charset="utf-8" href="css/header.css">
-	<link rel="stylesheet" charset="utf-8" href="css/content.css">
-	<link rel="stylesheet" charset="utf-8" href="css/news.css">
-	<link rel="stylesheet" charset="utf-8" href="css/talent.css">
-	<link rel="stylesheet" charset="utf-8" href="css/index.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Recruit</title>
+	<link rel="stylesheet" href="../css/main.css">
+	<link rel="stylesheet" href="../css/header.css">
+	<link rel="stylesheet" href="../css/content.css">
+	<link rel="stylesheet" href="../css/news.css">
+	<link rel="stylesheet" href="../css/talent.css">
 
 </head>
-<body>
+<body class="isRecruit">
 	<div id="mobileNav" class="-mobile-">
 		<a href="#" id="mobileLogo">
 			<!-- <span class="logo">Iconic Site</span> -->
@@ -36,39 +32,13 @@
 				</div>
 			</div>
 		</a>
-		<div id="mobileCategory">
-			<a class="toggleBtn" title="Choose category" toggle-target="mobcat"><span class="toggleBtn__text" globcat>All</span><span class="toggleBtn__icon"><i class="fas fa-caret-down"></i></span></a>
-			<div class="toggleList -hidden-" toggle-data="mobcat">
-				<a href="#" class="toggleList__item -active-" globcat="all">All</a>
-				<a href="#" class="toggleList__item" globcat="cat1">3DCG</a>
-				<a href="#" class="toggleList__item" globcat="cat2">VFX</a>
-				<a href="#" class="toggleList__item" globcat="cat3">Motion Graphics</a>
-				<a href="#" class="toggleList__item" globcat="cat4">Edit</a>
-				<a href="#" class="toggleList__item" globcat="cat5">Sound Mixing</a>
-				<a href="#" class="toggleList__item" globcat="cat6">Interactive</a>
-			</div>
-		</div>
 	</div>
-
-
 
 	<div class="side-header">
 		<div class="side-menu side-menu-controls">
 			<div class="wrapper">
 				<div class="header-logo">Site name</div>
-				<div class="header-category">
-					<p class="categoryTitle">Category</p>
-					<a class="toggleBtn" title="Choose category" toggle-target="deskcat"><span class="toggleBtn__text" globcat>All</span><span class="toggleBtn__icon"><i class="fas fa-caret-down"></i></span></a>
-					<div class="toggleList -hidden-" toggle-data="deskcat">
-						<a href="#" class="toggleList__item -active-" globcat="all">All</a>
-						<a href="#" class="toggleList__item" globcat="cat1">3DCG</a>
-						<a href="#" class="toggleList__item" globcat="cat2">VFX</a>
-						<a href="#" class="toggleList__item" globcat="cat3">Motion Graphics</a>
-						<a href="#" class="toggleList__item" globcat="cat4">Edit</a>
-						<a href="#" class="toggleList__item" globcat="cat5">Sound Mixing</a>
-						<a href="#" class="toggleList__item" globcat="cat6">Interactive</a>
-					</div>
-				</div>
+
 				<a id="header-menu" class="header-menu iconBtnBox">
 					<span class="hmenu-text">Menu</span>
 					<div class="iconBtn">
@@ -104,20 +74,22 @@
 		<video class="inner" src="video/about.mp4" width="100%" height="100%" muted="" loop="" playsinline="" autoplay></video>
 	</div>
 
-	<div id="pageContent" class="content">
-		<div id="homePage" class="page"></div>
+	<div class="breadcrumbs">
+		<a href="index.html" class="breadcrumbs__item" title="Homepage">Home</a>
+		<span><img class="arw" src="images/system/right-black.svg" alt=""></span>
+		<span class="breadcrumbs__item">News</span>
 	</div>
+
+	<div id="pageContent" class="content">
+		<div id="recruitPage" class="page"></div>
+	</div>
+
 
 	<script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous" defer></script>
-	<script src="js/jquery-mousewheel-3.1.12/jquery.mousewheel.js" type="text/javascript" charset="utf-8" defer></script>
 	<script src="js/main.js" type="text/javascript" charset="utf-8" defer></script>
-	<!-- <script src="js/scrollBehavior.js" type="text/javascript" charset="utf-8" defer></script> -->
-	<script type="text/javascript" src="js/scrollBehaviorGlob.js" charset="utf-8" defer></script>
-	<script src="js/dataformainpage.js" type="text/javascript" charset="utf-8" defer></script>
-	<script src="js/index.js" type="text/javascript" charset="utf-8" defer></script>
 
 </body>
 </html>
