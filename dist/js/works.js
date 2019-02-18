@@ -4,6 +4,7 @@ var videoObj = {};
 
 var windowObj = $(window);
 var edge = 768;
+var motionObj;
 
 function redrawBackgrounds() {
 	let items = $('.boxItem');
@@ -13,15 +14,25 @@ function redrawBackgrounds() {
 	});
 }
 
+windowObj.on('resize', function(e){
+	checkDimentions();
+});
+
 checkDimentions();
 
 function checkDimentions() {
-	if ( windowObj.width() < edge ) {
-		// mobileView(textData);
+	if ( motionObj ){
+		motionObj.stop();
+		motionObj.offSroll();
+	}
+	$('#wrapper').empty();
 	$('#wrapper').append(drawContent(textData));
+	if ( windowObj.width() >= edge ) {
+		// mobileView(textData);
+		desktopView(textData);
 		return;
 	}
-	desktopView(textData);
+	
 }
 
 function drawContent(data) {
@@ -161,19 +172,15 @@ function selectDrawModeAndDraw(elem) {
 }
 
 function desktopView() {
-	$('#wrapper').append(drawContent(textData));
+	// $('#wrapper').append(drawContent(textData));
 
-	var motionObj = new MotionGlob( $('#wrapper'), {
+	motionObj = new MotionGlob( $('#wrapper'), {
 		direction: 'left',
 		pauseOnScroll: false,
 		original: $('.workInfo')
 	});
 
-	// setTimeout(function() {motionObj.init();}, 1000);
-}
-
-function mobileView(data) {
-	$('#wrapper').append(mobileBuild(data));
+	setTimeout(function() {motionObj.init();}, 1000);
 }
 
 

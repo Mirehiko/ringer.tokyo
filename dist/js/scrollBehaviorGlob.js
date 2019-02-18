@@ -151,6 +151,11 @@ class MotionGlob {
     }
   }
 
+  offSroll() {
+    this.container.css('margin', 0);
+    this.container.off('mousewheel mousemove mouseleave');
+  }
+
 
   setStartPosition() {
     this.itemPosition = -(this.bgEdge + Math.abs(this.originalSize - this.bgEdge));
@@ -321,13 +326,20 @@ class MotionGlob {
       if ( !self.onpause && self.isCanReplace ) {
         self.replaceObjects('next');
       }
-      self.requestID = window.requestAnimationFrame(renderStep);
+
+      if ( self.requestID ) {
+         self.requestID = window.requestAnimationFrame(renderStep);
+      }
+      console.log('render')
 		}
 
 		this.requestID = window.requestAnimationFrame(renderStep);
 	}
 	stop() {
-		window.cancelAnimationFrame(this.requestID);
+    if (this.requestID) {
+      window.cancelAnimationFrame(this.requestID);
+      this.requestID = undefined;
+    }
 	}
 
 	appendToEnd() {}
