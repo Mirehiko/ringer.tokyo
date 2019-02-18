@@ -198,6 +198,9 @@
   .itmEtc .paramTitle {
     margin-right: 1.066666666666667vw;
   }
+  .breadcrumbs {
+    display: none;
+  }
 }
 @media screen and (min-width: 768px) {
   .workInfo {
@@ -270,10 +273,16 @@
     white-space: nowrap;
   }
   .itmEtc {
-    position: absolute;
+    /* position: absolute; */
     bottom: 0;
     left: 0;
-    padding: 0 30px 30px;
+    /* padding: 0 30px 30px; */
+  }
+  .itmEtc .paramLine {
+    font-size: 14px;
+  }
+  .itmEtc .paramLine:not(:last-child){
+    margin-bottom: 8px;
   }
   .itmEtc .paramTitle {
     margin-right: 15px;
@@ -283,6 +292,9 @@
     color: #fff;
     background: #222;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .main.paramTitle, .main.paramValue {
@@ -292,5 +304,8 @@
   }
   .main.paramTitle {
     margin: 0;
+  }
+  .breadcrumbs {
+    display: block;
   }
 }

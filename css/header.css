@@ -46,7 +46,7 @@
 	height: 100%;
 	top: 0;
 	left: 0;
-	z-index: 1;
+	z-index: 3;
 	background-color: #be4e9f;
 	display: none;
 }
@@ -132,7 +132,7 @@
 	position: fixed;
 	z-index: 10;
 	width: 100%;
-	
+
 }
 #mobileNav.-open- {
 	background-color: #000;
@@ -179,15 +179,16 @@ img.logo {
 }
 
 #mobileCategory {
-	/* margin-top: 100px; */
+  margin-top: 34.666666666666664vw;
 	padding: 4vw 5.333333333333333vw 8vw;
 }
 #mobileCategory .toggleList {
-	margin-top: 40px;
+	/* margin-top: 40px; */
 }
 #mobileCategory .toggleBtn {
 	position: absolute;
 	right: 8.933333333333334vw;
+	top: 29.333333333333332vw;
 }
 
 @media screen and (min-width: 0px) {
