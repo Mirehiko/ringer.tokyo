@@ -33,21 +33,21 @@ $('.side-header').on('click', function(e) {
 
 // Toggle accordeon item
 $('.toggleBtn').on('click', function(e) {
-	let elem = $(this);
-	let target = elem.attr('toggle-target');
-	let toggleData = $(`.toggleList[toggle-data="${ target }"]`);
+	var elemItem = $(this);
+	var target = elemItem.attr('toggle-target');
+	var toggleData = $(`.toggleList[toggle-data="${ target }"]`);
 
-	elem.find('.toggleBtn__icon').empty();
-	if ( elem.hasClass('collapse') ) {
-		elem.removeClass('collapse');
+	elemItem.find('.toggleBtn__icon').empty();
+	if ( elemItem.hasClass('collapse') ) {
+		elemItem.removeClass('collapse');
 		toggleData.addClass('-hidden-');
 		// toggleData.animate({height: 0}, 0.5);
-		elem.find('.toggleBtn__icon').append('<i class="fas fa-caret-down"></i>');
+		elemItem.find('.toggleBtn__icon').append('<i class="fas fa-caret-down"></i>');
 	} else {
-		elem.addClass('collapse');
+		elemItem.addClass('collapse');
 		toggleData.removeClass('-hidden-');
 		// toggleData.animate({height: '300px'}, 0.5);
-		elem.find('.toggleBtn__icon').append('<i class="fas fa-caret-up"></i>');
+		elemItem.find('.toggleBtn__icon').append('<i class="fas fa-caret-up"></i>');
 	}
 });
 

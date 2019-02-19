@@ -1,12 +1,24 @@
-const path = require('path')
-const webpack = require('webpack')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+// Basic vars
+const path = require('path');
+const webpack = require('webpack');
 
+// additional plugins
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin'); //minify js
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+var isProduction = (process.env.NODE_ENV === 'production');
 
 module.exports = {
 	context: path.resolve(__dirname, 'src'),
 	entry: {
-		app: './js/index.js',
+		app: [
+			'./js/index.js',
+			'./css/style.css',
+		],
 	},
 	output: {
 		filename: 'js/[name].js',
@@ -14,32 +26,87 @@ module.exports = {
 		publicPath: '../'
 	},
 	module: {
-		rules: [{
-			test: /\.js$/,
-			loader: 'babel-loader',
-			exclude: '/node_modules/'
-		}, {
-			test: /\.css$/,
-			use: [
-				MiniCssExtractPlugin.loader,
-				{
-					loader: "css-loader",
-					options: { sourceMap: true }
-				}, {
-					loader: "postcss-loader",
-					options: { sourceMap: true, config: { path: 'src/js/postcss.config.js' } }
-				},
-			]
-		}]
+		rules: [
+			{
+				test: /\.js$/,
+				loader: 'babel-loader',
+				exclude: '/node_modules/'
+			},
+			{
+				test: /\.css$/,
+				use: [
+					{ loader: MiniCssExtractPlugin.loader },
+					{
+						loader: "css-loader",
+						options: { sourceMap: true }
+					},
+					{
+						loader: "postcss-loader",
+						options: { sourceMap: true, config: { path: 'src/js/postcss.config.js' } }
+					},
+				]
+			},
+			// images
+			{
+				test: /\.(png|gif|jpe?g)$/,
+				loaders: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: '[path][name].ext',
+						},
+					},
+					'img-loader',
+				]
+			},
+		]
 	},
 	devServer: {
-		overlay: true
+		overlay: true,
+		contentBase: './app'
 	},
+	devtool: (isProduction) ? '' : 'inline-source-map',
 	plugins: [
 		new MiniCssExtractPlugin({
-			filename: "[name].css"
+			filename: "./css/[name].css",
+			// filename: "./css/[name].css",
+			// chunkFilename: "[id].css"
+		}),
+
+		new CleanWebpackPlugin(['dist']),
+
+		new CopyWebpackPlugin([
+			{ from:'./images', to: 'images' }
+		],{
+			ignore: [
+				{ glob: 'system/*' }
+			]
+		}),
+	],
+};
+
+// Production only
+if ( isProduction ) {
+	// module.exports.plugins.push(
+	// 	new UglifyJSPlugin({
+	// 		sourceMap: true
+	// 	}),
+	// ); not supports ES6
+	module.exports['optimization'] = {
+		minimizer: [new TerserPlugin()]
+	}
+
+	module.exports.plugins.push(
+		new ImageminPlugin({
+			test: /\.(png|jpe?g|gif|svg)$/
+		}),
+	);
+
+	module.exports.plugins.push(
+		new webpack.LoaderOptionsPlugin({
+			minimize: true
 		})
-	]
+	);
 }
 
 // const path = require('path')
