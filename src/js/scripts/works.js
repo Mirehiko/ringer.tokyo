@@ -2,8 +2,9 @@ var firstID = '';
 var lastID = '';
 var videoObj = {};
 
-$('#wrapper').append(drawContent(textData));
-
+var windowObj = $(window);
+var edge = 768;
+var motionObj;
 
 function redrawBackgrounds() {
 	let items = $('.boxItem');
@@ -13,7 +14,26 @@ function redrawBackgrounds() {
 	});
 }
 
+windowObj.on('resize', function(e){
+	checkDimentions();
+});
 
+checkDimentions();
+
+function checkDimentions() {
+	if ( motionObj ){
+		motionObj.stop();
+		motionObj.offSroll();
+	}
+	$('#wrapper').empty();
+	$('#wrapper').append(drawContent(textData));
+	if ( windowObj.width() >= edge ) {
+		// mobileView(textData);
+		desktopView(textData);
+		return;
+	}
+
+}
 
 function drawContent(data) {
 	let results = document.createElement('div');
@@ -32,6 +52,7 @@ function drawImageItem(data) {
 	item += '" alt="' + data.alt + '"></div>';
 	return item;
 }
+
 function drawVideoItem(data) {
 	let item = '<div class="workItem videoItem">';
 	item += '<img ';
@@ -51,6 +72,7 @@ function drawVideoItem(data) {
 
 	return item;
 }
+
 function drawIntegratedVideoItem(data) {
 	let item = '<div class="workItem videoItem">';
 	item += '<img ';
@@ -70,15 +92,16 @@ function drawIntegratedVideoItem(data) {
 
 	return item;
 }
+
 function drawInfoItem(data) {
 	let item = document.createElement('div');
 	$(item).addClass('workItem infoItem');
 
 	let workTitle = document.createElement('div');
-	$(workTitle).addClass('paramTitle');
+	$(workTitle).addClass('paramTitle main');
 	$(workTitle).text('Title');
 	let workTitle__value = document.createElement('h1');
-	$(workTitle__value).addClass('paramValue');
+	$(workTitle__value).addClass('paramValue main');
 	$(workTitle__value).text(data.title);
 
 	let itemEtc = document.createElement('div');
@@ -123,8 +146,10 @@ function drawInfoItem(data) {
 	$(itemEtc).append(workCategory);
 	$(itemEtc).append(workClient);
 
-	$(item).append(workTitle);
-	$(item).append(workTitle__value);
+	let header = document.createElement('div');
+	$(header).append(workTitle);
+	$(header).append(workTitle__value);
+	$(item).append(header);
 	$(item).append(itemEtc);
 
 	return item;
@@ -151,14 +176,21 @@ function selectDrawModeAndDraw(elem) {
 	return item;
 }
 
-var motionObj = new MotionGlob( $('#wrapper'), {
-	direction: 'left',
-	pauseOnScroll: false,
-	original: $('.workInfo')
-} );
+function desktopView() {
 
-setTimeout(function() {motionObj.init();}, 1000)
+	if ( motionObj === undefined ) {
+		motionObj = new MotionGlob( $('#wrapper'), {
+			direction: 'left',
+			pauseOnScroll: false,
+			original: $('.workInfo')
+		});
 
+		setTimeout(function() {motionObj.init();}, 1000);
+	} else {
+		// motionObj.init();
+		motionObj.render();
+	}
+}
 
 
 $(document).on('keyup', function(e) {
