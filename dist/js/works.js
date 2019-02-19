@@ -32,7 +32,7 @@ function checkDimentions() {
 		desktopView(textData);
 		return;
 	}
-	
+
 }
 
 function drawContent(data) {
@@ -52,6 +52,7 @@ function drawImageItem(data) {
 	item += '" alt="' + data.alt + '"></div>';
 	return item;
 }
+
 function drawVideoItem(data) {
 	let item = '<div class="workItem videoItem">';
 	item += '<img ';
@@ -71,6 +72,7 @@ function drawVideoItem(data) {
 
 	return item;
 }
+
 function drawIntegratedVideoItem(data) {
 	let item = '<div class="workItem videoItem">';
 	item += '<img ';
@@ -90,6 +92,7 @@ function drawIntegratedVideoItem(data) {
 
 	return item;
 }
+
 function drawInfoItem(data) {
 	let item = document.createElement('div');
 	$(item).addClass('workItem infoItem');
@@ -143,8 +146,10 @@ function drawInfoItem(data) {
 	$(itemEtc).append(workCategory);
 	$(itemEtc).append(workClient);
 
-	$(item).append(workTitle);
-	$(item).append(workTitle__value);
+	let header = document.createElement('div');
+	$(header).append(workTitle);
+	$(header).append(workTitle__value);
+	$(item).append(header);
 	$(item).append(itemEtc);
 
 	return item;
@@ -172,15 +177,19 @@ function selectDrawModeAndDraw(elem) {
 }
 
 function desktopView() {
-	// $('#wrapper').append(drawContent(textData));
 
-	motionObj = new MotionGlob( $('#wrapper'), {
-		direction: 'left',
-		pauseOnScroll: false,
-		original: $('.workInfo')
-	});
+	if ( motionObj === undefined ) {
+		motionObj = new MotionGlob( $('#wrapper'), {
+			direction: 'left',
+			pauseOnScroll: false,
+			original: $('.workInfo')
+		});
 
-	setTimeout(function() {motionObj.init();}, 1000);
+		setTimeout(function() {motionObj.init();}, 1000);
+	} else {
+		// motionObj.init();
+		motionObj.render();
+	}
 }
 
 
@@ -225,46 +234,4 @@ function drawOwnVideo(data) {
 }
 function drawVideo(id) {
 	$('#videoContent').append(videoObj[id].src);
-}
-
-
-function mobileBuild(data) {
-	let prepared_data = document.createElement('div');
-	$(prepared_data).addClass('some');
-
-	let fragment = document.createDocumentFragment();
-	for (let item of data) {
-		$(fragment).append(selectDrawModeAndDraw(item));
-	}
-
-	return prepared_data;
-}
-
-function selectType() {
-	let item = null;
-
-	if (elem.type == 'info') {
-		item = drawInfoItem(elem);
-	} else if (elem.type == 'video') {
-		item = drawVideoItem(elem);
-		videoObj[elem.id] = elem;
-	} else if (elem.type == 'integrated_video') {
-		item = drawIntegratedVideoItem(elem);
-		videoObj[elem.id] = {
-			src: elem.src,
-			title: elem.title,
-		};
-	} else {
-		item = mobileImageItem(elem);
-	}
-
-	return item;
-}
-
-function mobileImageItem(item) {
-	return `
-		<div class="itemImage-mob">
-			<img src="${ item.src }" alt="${ item.alt }">
-		</div>
-	`;
 }

@@ -301,10 +301,13 @@
   .main.paramTitle, .main.paramValue {
     font-size: initial;
     line-height: initial;
-    display: initial;
+    display: block;
   }
   .main.paramTitle {
     margin: 0;
+  }
+  .main.paramValue {
+    font-size: 24px;
   }
   .breadcrumbs {
     display: block;
