@@ -173,7 +173,7 @@ a:hover, .iconBtnBox:hover .iconBtn {
 
 .toggleContent {
 	transition: all .5s;
-	height: 0;
+	/* height: 0; */
 	overflow: hidden;
 }
 .breadcrumbs {
@@ -341,4 +341,3 @@ a:hover, .iconBtnBox:hover .iconBtn {
 .mobItem__info h2 {
 	margin: 0 0 30px;
 }
-
