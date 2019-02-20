@@ -1,3 +1,7 @@
+import { MotionGlob } from '../scripts/scrollBehaviorGlob';
+import { SCREEN_RATIO, maxScroll, WINDOW } from '../scripts/main';
+
+
 var videoObj = {};
 var edge = 768;
 var motionObj;

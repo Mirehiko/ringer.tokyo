@@ -1,6 +1,6 @@
-var SCREEN_RATIO = 16/9;
-var maxScroll = 0;
-var WINDOW = $(window);
+export var SCREEN_RATIO = 16/9;
+export var maxScroll = 0;
+export var WINDOW = $(window);
 
 reDrawImages( $('.infiniteItem') );
 // moveInfinate();
@@ -29,7 +29,6 @@ $('.side-header').on('click', function(e) {
 		$('.hmenu-text').html('Menu');
 	}
 });
-
 
 // Toggle accordeon item
 $('.toggleBtn').on('click', function(e) {
@@ -62,20 +61,11 @@ $('.iconBtnBox').on('click', function(e){
 	}
 });
 
-$(window).on('resize', function(e){
+WINDOW.on('resize', function(e){
 	reDrawImages( $('.infiniteItem') );
 });
 
-// $('.infiniteBlock').scroll(function(e) {
-// 	let scrollable = $('.infiniteList');
 
-// 	console.log();
-// 	console.log($(this).scrollLeft())
-
-// 	// if () {
-//   //
-// 	// }
-// });
 
 function moveInfinate() {
 	let mar = 0;

@@ -15,9 +15,33 @@ var isProduction = (process.env.NODE_ENV === 'production');
 module.exports = {
 	context: path.resolve(__dirname, 'src'),
 	entry: {
-		app: [
-			'./js/index.js',
-			'./css/style.css',
+		mousewheel: [
+			'./js/scripts/jquery-mousewheel-3.1.12/jquery.mousewheel.js',
+		],
+		common: [
+			'./css/main.css',
+			'./css/header.css',
+			'./js/bundles/common.js',
+		],
+		talent: [
+			'./css/talent.css',
+		],
+		news: [
+			'./css/news.css',
+		],
+		homepage: [
+			'./js/bundles/homepage.js',
+			'./css/index.css',
+		],
+		workpage: [
+			'./js/bundles/workpage.js',
+			'./css/works.css',
+		],
+		content: [
+			'./css/content.css',
+		],
+		contact: [
+			'./css/contact.css',
 		],
 	},
 	output: {

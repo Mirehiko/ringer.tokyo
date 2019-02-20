@@ -1,3 +1,4 @@
+
 (function() {
   var lastTime = 0;
   var vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -39,7 +40,7 @@
 		indent: // Отступ от границы
 	}
 */
-class MotionGlob {
+export class MotionGlob {
 	constructor(container, options) {
 		this.container = container;
 
@@ -89,7 +90,8 @@ class MotionGlob {
 
 		this.render();
 
-		this.container.on('mousewheel', function(evt){
+		this.container.on('mousewheel', function(evt) {
+      console.log('mousewheel', evt.deltaY, evt.deltaFactor)
 			evt.preventDefault();
       self.onpause = true;
 
@@ -112,27 +114,27 @@ class MotionGlob {
 		});
 
 		if ( this.onhover == 'pause' ) {
+
 			this.container.delegate('.hoverAction', 'mousemove', function(evt) {
         self.onpause = true;
 				self.delay = setTimeout(function() {
           self.onpause = false;
 				}, self.delayAfterHover); // выждав паузу запускаем движение
 			});
+
 		} else if ( this.onhover == 'nothing' ) {
+
       this.container.delegate(this.itemClass, 'mousemove', function(evt) {
         self.mouseX = evt.pageX;
         self.mouseY = evt.pageY;
-
         $(this).addClass('-hover-');
         self.hoveringItem = $(this);
-        // console.log('move')
       });
 
 			this.container.delegate(this.itemClass, 'mouseleave', function(evt) {
 				evt.preventDefault();
         $(this).removeClass('-hover-');
         self.hoveringItem = null;
-				// console.log('leave')
 			});
 		}
 
@@ -156,17 +158,19 @@ class MotionGlob {
     this.container.off('mousewheel mousemove mouseleave');
   }
 
-
   setStartPosition() {
     this.itemPosition = -(this.bgEdge + Math.abs(this.originalSize - this.bgEdge));
   }
+
   addToStart() {
     let item = this.original.clone();
     this.container.prepend(item);
   }
+
   addToEnd() {
     this.container.append(this.original.clone());
   }
+
   replaceObjects(way) {
     this.isCanReplace = false;
     let self = this;
@@ -216,6 +220,7 @@ class MotionGlob {
 
     this.isCanReplace = true;
   }
+
   setOriginalSize() {
     if ( this.axis == 'horizontal' ) {
       this.originalSize = this.original.outerWidth();
@@ -223,6 +228,7 @@ class MotionGlob {
       this.originalSize = this.original.outerHeight();
     }
   }
+
   getLastPosition() {
     if ( this.axis == 'horizontal' ) {
       return this.originalSize + this.lastItem.offset().left;
@@ -248,18 +254,21 @@ class MotionGlob {
       this.endEdge = $(window).height() + this.bgEdge;
     }
   }
+
   isAcrossBGEdge() {
     if ( this.itemPosition <= (-this.bgEdge) && !this.isBGCrossProgress ) {
       return true;
     }
     return false;
   }
+
   isAcrossEndEdge() {
     if ( this.getLastPosition() >= this.endEdge && !this.isENDCrossProgress ) {
       return true;
     }
     return false;
   }
+
   isFirstOut(first) {
     if ( (this.itemPosition < (-(this.bgEdge + first.outerHeight())) && this.axis == 'vertical') ||
          (this.itemPosition < (-(this.bgEdge + first.outerWidth())) && this.axis == 'horizontal') ) {
@@ -267,6 +276,7 @@ class MotionGlob {
     }
 		return false;
   }
+
   isLastOut(last) {
 		if ( ( last.offset().top > this.endEdge && this.axis == 'vertical' ) ||
 			 ( last.offset().left > this.endEdge && this.axis == 'horizontal' ) ) {
@@ -284,6 +294,7 @@ class MotionGlob {
 			this.axis = 'horizontal';
 		}
 	}
+
   isInsiteOfItem() {
     if ( this.axis == 'horizontal' ) {
       if ( this.mouseX >= this.hoverBgn && this.mouseX <= this.hoverEnd ) {
@@ -330,12 +341,12 @@ class MotionGlob {
       if ( self.requestID ) {
          self.requestID = window.requestAnimationFrame(renderStep);
       }
-      console.log('render')
 		}
 
 		this.requestID = window.requestAnimationFrame(renderStep);
 	}
-	stop() {
+
+  stop() {
     if (this.requestID) {
       window.cancelAnimationFrame(this.requestID);
       this.requestID = undefined;
@@ -343,13 +354,16 @@ class MotionGlob {
 	}
 
 	appendToEnd() {}
-	prependToStart(){}
-	setPropsToFirst(elem) {
+
+  prependToStart(){}
+
+  setPropsToFirst(elem) {
     this.container.children().css('margin', 0);
     let indent = 'margin-'+this.needSide;
     elem.css(indent, this.itemPosition + 'px');
 	}
-	removeElem(elem) {
+
+  removeElem(elem) {
 		elem.remove();
 	}
 

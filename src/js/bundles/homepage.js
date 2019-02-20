@@ -1,6 +1,15 @@
+// import defaultExport from '../scripts/jquery-mousewheel-3.1.12/jquery.mousewheel';
+import { MotionGlob } from '../scripts/scrollBehaviorGlob';
+import { SCREEN_RATIO, maxScroll, WINDOW } from '../scripts/main';
+
+// console.log('MotionGlob',MotionGlob)
+
 var computedLines = [];
 var renderedData = [];
 var isScrolling = false;
+var homePageObj = $('#homePage');
+var motionObj;
+
 Array.prototype.shuffle = function() {
   for (var i = this.length - 1; i > 0; i--) {
     var num = Math.floor(Math.random() * (i + 1));
@@ -12,18 +21,13 @@ Array.prototype.shuffle = function() {
 }
 
 
-var firstID = '';
-var lastID = '';
-var windowObj = $(window);
-var homePageObj = $('#homePage');
-var motionObj;
 
 renderer();
 
 
 
 function renderer() {
-	if ( windowObj.width() < 768 ) {
+	if ( WINDOW.width() < 768 ) {
 		homePageObj.empty();
 		homePageObj.append( renderMobile(textData) );
 	} else {
@@ -48,7 +52,7 @@ if ( WINDOW.width() >= 768 ) {
 
 
 
-$(window).on('resize', function(e) {
+WINDOW.on('resize', function(e) {
 	redrawBackgrounds();
 });
 
@@ -151,7 +155,7 @@ function renderPage(data) {
 
 	if (tripleLines.length) {
 		// Для линий с тремя объектами вычисляем тип плитки
-		for (item of tripleLines) {
+		for (let item of tripleLines) {
 			lineTypes.push(autoSelectType())
 		}
 		// console.log('lineTypes:',lineTypes)
@@ -171,7 +175,7 @@ function renderPage(data) {
 
 	if ( doubleLines.length ) {
 		// Отбираем данные для отображения
-		for (item of doubleLines) {
+		for (let item of doubleLines) {
 			doubleData.push({
         lineType: 'double',
         data: [].concat(tmpData.splice(0, item)),
@@ -185,7 +189,7 @@ function renderPage(data) {
 	// console.log('computedLines:',computedLines)
 
 	// Собираем данные для отрисовки
-	for ( item of computedLines ) {
+	for ( let item of computedLines ) {
 		// console.log('line:', item)
 		if ( item.lineType == 'double' ) {
 			$(result).append(doubleLine(item.data));
