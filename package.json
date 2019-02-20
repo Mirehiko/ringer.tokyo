@@ -5,7 +5,7 @@
   "main": "index.js",
   "browserslist": [
     "> 1%",
-    "last 3 version"
+    "ie > 9"
   ],
   "babel": {
     "presets": [
@@ -31,8 +31,10 @@
     "imagemin-webpack-plugin": "^2.4.2",
     "img-loader": "^3.0.1",
     "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^4.11.0",
     "path": "^0.12.7",
     "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "svg-url-loader": "^2.3.2",
     "terser-webpack-plugin": "^1.2.2",
