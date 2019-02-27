@@ -4,8 +4,16 @@
   "description": "",
   "main": "index.js",
   "browserslist": [
-    "> 1%",
-    "ie > 9"
+    "last 1 major version",
+    ">= 1%",
+    "Chrome >= 45",
+    "Firefox >= 30",
+    "Edge >= 12",
+    "Explorer >= 9",
+    "iOS >= 9",
+    "Safari >= 9",
+    "Android >= 4.4",
+    "Opera >= 30"
   ],
   "babel": {
     "presets": [
@@ -15,12 +23,13 @@
   "dependencies": {
     "jquery": "^3.3.1",
     "package.json": "^2.0.1",
+    "postcss-cli": "^6.1.2",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
-    "autoprefixer": "^9.4.7",
+    "autoprefixer": "^9.4.9",
     "babel-loader": "^8.0.5",
     "clean-webpack-plugin": "^1.0.1",
     "copy-webpack-plugin": "^4.6.0",

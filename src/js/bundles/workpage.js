@@ -1,3 +1,5 @@
+import '../../css/works.css';
+
 import { MotionGlob } from '../scripts/scrollBehaviorGlob';
 import { SCREEN_RATIO, maxScroll, WINDOW } from '../scripts/main';
 

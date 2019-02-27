@@ -19,29 +19,25 @@ module.exports = {
 			'./js/scripts/jquery-mousewheel-3.1.12/jquery.mousewheel.js',
 		],
 		common: [
-			'./css/main.css',
-			'./css/header.css',
 			'./js/bundles/common.js',
 		],
 		talent: [
-			'./css/talent.css',
+			'./js/bundles/talentpage.js',
 		],
 		news: [
-			'./css/news.css',
+			'./js/bundles/newspage.js',
 		],
 		homepage: [
 			'./js/bundles/homepage.js',
-			'./css/index.css',
 		],
 		workpage: [
 			'./js/bundles/workpage.js',
-			'./css/works.css',
 		],
 		content: [
-			'./css/content.css',
+			'./js/bundles/contentpage.js',
 		],
 		contact: [
-			'./css/contact.css',
+			'./js/bundles/contactpage.js',
 		],
 	},
 	output: {
@@ -61,13 +57,13 @@ module.exports = {
 				// test: /\.scss$/,
 				use: [
 					{ loader: MiniCssExtractPlugin.loader },
+					// {
+					// 	loader: "style-loader",
+					// },
 					{
 						loader: "css-loader",
 						options: { sourceMap: true }
 					},
-					// {
-					// 	loader: "style-loader",
-					// },
 					{
 						loader: "postcss-loader",
 						options: { sourceMap: true, config: { path: 'src/js/postcss.config.js' } }

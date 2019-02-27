@@ -1,3 +1,5 @@
+import '../../css/index.css';
+
 // import defaultExport from '../scripts/jquery-mousewheel-3.1.12/jquery.mousewheel';
 import { MotionGlob } from '../scripts/scrollBehaviorGlob';
 import { SCREEN_RATIO, maxScroll, WINDOW } from '../scripts/main';
