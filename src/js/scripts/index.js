@@ -34,8 +34,8 @@ function renderer() {
       onhover: 'nothing',
       itemClass: '.boxItem',
       delayAfterHover: 2,
-    	original: $('.infiniteBox')
-    } );
+      original: $('.infiniteBox')
+    });
 
 		setTimeout(function() {motionObj.init();}, 1000)
 	}
@@ -55,7 +55,7 @@ $(window).on('resize', function(e) {
 $('#mobileCategory>.toggleBtn').on('click', function(e) {
 	let elem = $(this);
 	let mobileNav = $('#mobileNav');
-	console.log(mobileNav)
+	// console.log(mobileNav);
 
 	if ( elem.hasClass('collapse') ) {
 		mobileNav.addClass('-open-');
@@ -69,8 +69,8 @@ $('.toggleList__item').on('click', function(e) {
 	let cat = $(this).attr('globcat');
 	$('.toggleList__item.-active-').removeClass('-active-');
 	$(`.toggleList__item[globcat="${ cat }"]`).addClass('-active-');
-	let text = $(this).text()
-	console.log(text)
+	let text = $(this).text();
+	// console.log(text);
 	$(`.toggleBtn__text[globcat]`).text(text);
 })
 
@@ -91,7 +91,7 @@ function checkForAdditionData() {
 			computedLines = computedLines.concat(forDraw);
 			redrawBackgrounds();
 			// console.log('computedLines:after:', computedLines)
-		} catch(e) {console.log(e)}
+		} catch(e) {console.log(e);}
 	}
 }
 
@@ -102,8 +102,11 @@ function renderMobile(data) {
 
 	let fragment = document.createDocumentFragment();
 
-	for ( let item of data ) {
-		$(fragment).append( mobileItem(item) );
+	// for ( let item of data ) {
+	// 	$(fragment).append( mobileItem(item) );
+	// }
+	for ( let i = 0; i < data.length; i++ ) {
+		$(fragment).append( mobileItem(data[i]) );
 	}
 
 	$(result).append(fragment);
@@ -151,8 +154,11 @@ function renderPage(data) {
 
 	if (tripleLines.length) {
 		// Для линий с тремя объектами вычисляем тип плитки
-		for (item of tripleLines) {
-			lineTypes.push(autoSelectType())
+		// for (item of tripleLines) {
+		// 	lineTypes.push(autoSelectType());
+		// }
+		for (let i = 0; i < tripleLines.length; i++ ) {
+			lineTypes.push(autoSelectType());
 		}
 		// console.log('lineTypes:',lineTypes)
 
@@ -171,30 +177,40 @@ function renderPage(data) {
 
 	if ( doubleLines.length ) {
 		// Отбираем данные для отображения
-		for (item of doubleLines) {
+		for (let i = 0; i < doubleLines.length; i++ ) {
 			doubleData.push({
-        lineType: 'double',
-        data: [].concat(tmpData.splice(0, item)),
-      });
+		        lineType: 'double',
+		        data: [].concat(tmpData.splice(0, doubleLines[i])),
+      		});
 		}
+		// for (item of doubleLines) {
+		// 	doubleData.push({
+		//         lineType: 'double',
+		//         data: [].concat(tmpData.splice(0, item)),
+  //     		});
+		// }
 	}
 
 	// Собираем все плитки воедино
 	computedLines = doubleData.concat(tripleData);
 	computedLines.shuffle(); // Задаем случайное положение
-	// console.log('computedLines:',computedLines)
 
 	// Собираем данные для отрисовки
-	for ( item of computedLines ) {
-		// console.log('line:', item)
+	for (let i = 0; i < computedLines.length; i++ ) {
+		let item = computedLines[i];
 		if ( item.lineType == 'double' ) {
 			$(result).append(doubleLine(item.data));
 		} else {
 			$(result).append(item.lineType(item.data));
 		}
 	}
-	// console.log('result:',result)
-
+	// for ( item of computedLines ) {
+	// 	if ( item.lineType == 'double' ) {
+	// 		$(result).append(doubleLine(item.data));
+	// 	} else {
+	// 		$(result).append(item.lineType(item.data));
+	// 	}
+	// }
 
 	return result;
 }
@@ -281,9 +297,9 @@ function calcView(num) {
 }
 
 function randomInteger(min, max) {
-  var rand = min - 0.5 + Math.random() * (max - min + 1)
-  rand = Math.round(rand);
-  return rand;
+	var rand = min - 0.5 + Math.random() * (max - min + 1)
+	rand = Math.round(rand);
+	return rand;
 }
 
 function tsobLine(data){

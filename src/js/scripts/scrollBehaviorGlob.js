@@ -40,7 +40,8 @@
 		indent: // Отступ от границы
 	}
 */
-export class MotionGlob {
+// export class MotionGlob {
+class MotionGlob {
 	constructor(container, options) {
 		this.container = container;
 
@@ -91,7 +92,7 @@ export class MotionGlob {
 		this.render();
 
 		this.container.on('mousewheel', function(evt) {
-      console.log('mousewheel', evt.deltaY, evt.deltaFactor)
+      // console.log('mousewheel', evt.deltaY, evt.deltaFactor)
 			evt.preventDefault();
       self.onpause = true;
 

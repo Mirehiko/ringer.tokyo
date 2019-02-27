@@ -55,7 +55,6 @@ class Motion {
     this.indent = options.indent || 0;
     this.itemPosition = 0 + this.indent; // для движения
     this.itemSpeed = options.speed || 1; // скорость движения в пикселях
-
 	}
 
 	init() {
@@ -118,7 +117,7 @@ class Motion {
         self.onpause = true;
 				self.mouseX = evt.clientX;
 				self.mouseY = evt.clientY;
-				console.log(mouseX, mouseY)
+				// console.log(mouseX, mouseY)
 				self.delay = setTimeout(function() {
           self.onpause = false;
 				}, self.delayAfterHover); // выждав паузу запускаем движение
@@ -128,21 +127,18 @@ class Motion {
         evt.preventDefault();
         self.mouseX = evt.pageX;
         self.mouseY = evt.pageY;
-        console.log('move')
+        // console.log('move')
         self.hoverRemove(self);
       });
 			this.container.delegate(this.itemClass, 'mouseover', function(evt) {
 				evt.preventDefault();
-        // if ( self.mouseX != evt.pageX || self.mouseY != evt.pageY ) {
-          $(this).addClass('-hover-');
-        // }
-        // self.hoverRemove(self);
-				console.log('over')
+        $(this).addClass('-hover-');
+				// console.log('over')
 			});
 			this.container.delegate(this.itemClass, 'mouseout', function(evt) {
 				evt.preventDefault();
         $(this).removeClass('-hover-');
-				console.log('leave')
+				// console.log('leave')
 			});
 		}
 
@@ -157,8 +153,7 @@ class Motion {
     clearTimeout(context.mousetimer);
     context.mousetimer = setTimeout(function(){
       $(context.itemClass).removeClass('-hover-');
-      console.log('remove')
-
+      // console.log('remove')
     }, 1000);
   }
   getLastPosition() {
@@ -237,7 +232,6 @@ class Motion {
   		if ( this.isAcrossBGEdge() ) {
   			//Добавляем в конец новый элемент
   			this.isBGCrossProgress = true;
-  			// console.log('Copy element to end')
   			this.appendToEnd();
   			this.lastItem = this.container.children().last();
   			this.setLastSize();
@@ -245,7 +239,6 @@ class Motion {
 
   		// Если первый полностью ушел за пределы границы
   		if ( this.isFirstOut(this.firstItem) ) {
-  			// console.log('First element leave the screen')
         this.isBGCrossProgress = false;
   			this.removeElem(this.firstItem);
   			let delta = this.firstSize;
@@ -260,7 +253,6 @@ class Motion {
   		if ( this.isAcrossEndEdge() ) {
   			//Добавляем в начало новый элемент
   			this.isENDCrossProgress = true;
-  			// console.log('Copy element to start')
   			this.firstItem.css('margin', 0);
   			this.prependToStart();
   			this.firstItem = this.container.children().first();
@@ -271,7 +263,6 @@ class Motion {
 
   		// Если последний полностью ушел за пределы границы
   		if ( this.isLastOut(this.lastItem) ) {
-  			// console.log('Last element leave the screen')
   			this.isENDCrossProgress = false;
   			this.removeElem(this.lastItem);
   			this.lastItem = this.container.children().last();

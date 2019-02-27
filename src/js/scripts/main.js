@@ -1,22 +1,21 @@
-export var SCREEN_RATIO = 16/9;
-export var maxScroll = 0;
-export var WINDOW = $(window);
+// export var SCREEN_RATIO = 16/9;
+// export var maxScroll = 0;
+// export var WINDOW = $(window);
+var SCREEN_RATIO = 16/9;
+var maxScroll = 0;
+var WINDOW = $(window);
 
 reDrawImages( $('.infiniteItem') );
-// moveInfinate();
 
 $('#header-menu, #hideMenu').on('click', function(e) {
 	// e.stopPropagation();
-
 	$('.side-header').toggleClass('open');
 	$('.backlayer').toggleClass('-visible-');
 
 	if ( $('.side-header').hasClass('open') ) {
-		// closeIcon($('.side-header .line.is-b'));
 		$('.hmenu-text').html('Close');
 
 	} else {
-		// openIcon($('.side-header .line.is-b'));
 		$('.hmenu-text').html('Menu');
 	}
 });
@@ -40,12 +39,10 @@ $('.toggleBtn').on('click', function(e) {
 	if ( elemItem.hasClass('collapse') ) {
 		elemItem.removeClass('collapse');
 		toggleData.addClass('-hidden-');
-		// toggleData.animate({height: 0}, 0.5);
 		elemItem.find('.toggleBtn__icon').append('<i class="fas fa-caret-down"></i>');
 	} else {
 		elemItem.addClass('collapse');
 		toggleData.removeClass('-hidden-');
-		// toggleData.animate({height: '300px'}, 0.5);
 		elemItem.find('.toggleBtn__icon').append('<i class="fas fa-caret-up"></i>');
 	}
 });

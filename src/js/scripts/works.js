@@ -21,14 +21,14 @@ function checkDimentions() {
 		motionObj.stop();
 		motionObj.offSroll();
 	}
+
 	$('#wrapper').empty();
 	$('#wrapper').append(drawContent(textData));
+	
 	if ( WINDOW.width() >= edge ) {
-		// mobileView(textData);
 		desktopView(textData);
 		return;
 	}
-
 }
 
 function drawContent(data) {
@@ -183,13 +183,13 @@ function desktopView() {
 
 		setTimeout(function() {motionObj.init();}, 1000);
 	} else {
-		// motionObj.init();
 		motionObj.render();
 	}
 }
 
 
 $(document).on('keyup', function(e) {
+
 	if (e.keyCode == 27) {
 		closeVideo();
 	}
@@ -199,11 +199,13 @@ $('body').delegate('.fullView__close', 'click', closeVideo);
 
 $('body').delegate('.prevIcon', 'click', function(e) {
 	e.preventDefault();
+
 	if ( $(this).attr('own') == 'true' ) {
 		drawOwnVideo( videoObj[$(this).attr('vid')] );
 	} else {
 		drawVideo( $(this).attr('vid') );
 	}
+
 	showVideo();
 });
 
@@ -226,6 +228,7 @@ function drawOwnVideo(data) {
 		 ${ data.srcwebm ? '<source src="' + data.srcwebm + '" type="video/webm">' : '' }
 		 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 		</video>`;
+		
 	$('#videoContent').append(video);
 }
 function drawVideo(id) {
