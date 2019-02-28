@@ -35,8 +35,11 @@ function drawContent(data) {
 	let results = document.createElement('div');
 	$(results).addClass('workInfo');
 
-	for (let item of data) {
-		$(results).append(selectDrawModeAndDraw(item));
+	// for (let item of data) {
+	// 	$(results).append(selectDrawModeAndDraw(item));
+	// }
+	for (let i = 0; i < data.length; i++) {
+		$(results).append(selectDrawModeAndDraw(data[i]));
 	}
 
 	return results;
