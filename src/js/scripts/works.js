@@ -22,9 +22,9 @@ function checkDimentions() {
 		motionObj.offSroll();
 	}
 
-	$('#wrapper').empty();
-	$('#wrapper').append(drawContent(textData));
-	
+	$('#wrapper2').empty();
+	$('#wrapper2').append(drawContent(textData));
+
 	if ( WINDOW.width() >= edge ) {
 		desktopView(textData);
 		return;
@@ -47,14 +47,14 @@ function drawContent(data) {
 
 function drawImageItem(data) {
 	let item = '<div class="workItem">';
-	item += '<img class="workImage workContent" src="' + data.src;
+	item += '<img class="workImage workContent imgcfg" src="' + data.src;
 	item += '" alt="' + data.alt + '"></div>';
 	return item;
 }
 
 function drawVideoItem(data) {
 	let item = '<div class="workItem videoItem">';
-	item += '<img ';
+	item += '<img class="imgcfg" ';
 
 	if ( data.previewImage ) {
 		item += 'src="' + data.previewImage + '"';
@@ -74,7 +74,7 @@ function drawVideoItem(data) {
 
 function drawIntegratedVideoItem(data) {
 	let item = '<div class="workItem videoItem">';
-	item += '<img ';
+	item += '<img class="imgcfg" ';
 
 	if ( data.previewImage ) {
 		item += 'src="' + data.previewImage + '"';
@@ -95,6 +95,9 @@ function drawIntegratedVideoItem(data) {
 function drawInfoItem(data) {
 	let item = document.createElement('div');
 	$(item).addClass('workItem infoItem');
+
+	let wraper = document.createElement('div');
+	$(wraper).addClass('infoWrapper');
 
 	let workTitle = document.createElement('div');
 	$(workTitle).addClass('paramTitle main');
@@ -148,8 +151,10 @@ function drawInfoItem(data) {
 	let header = document.createElement('div');
 	$(header).append(workTitle);
 	$(header).append(workTitle__value);
-	$(item).append(header);
-	$(item).append(itemEtc);
+
+	$(item).append(wraper);
+	$(wraper).append(header);
+	$(wraper).append(itemEtc);
 
 	return item;
 }
@@ -178,11 +183,26 @@ function selectDrawModeAndDraw(elem) {
 function desktopView() {
 
 	if ( motionObj === undefined ) {
-		motionObj = new MotionGlob( $('#wrapper'), {
+		motionObj = new MotionGlob( $('#wrapper2'), {
 			direction: 'left',
 			pauseOnScroll: false,
 			original: $('.workInfo')
 		});
+
+		let contentWidth = $('.infoItem').width();
+		$(".imgcfg").one("load", function() {
+      let [w, h] = getSize($(this));
+      $(this).parent().width(w);
+			contentWidth += w;
+			$('.workInfo').width(contentWidth);
+    }).each(function() {
+      if(this.complete) {
+          // $(this).load(); // For jQuery < 3.0
+          $(this).trigger('load'); // For jQuery >= 3.0
+      }
+    });
+
+
 
 		setTimeout(function() {motionObj.init();}, 1000);
 	} else {
@@ -190,6 +210,9 @@ function desktopView() {
 	}
 }
 
+function getSize(elem) {
+  return [elem.width(), elem.height()];
+}
 
 $(document).on('keyup', function(e) {
 
@@ -231,7 +254,7 @@ function drawOwnVideo(data) {
 		 ${ data.srcwebm ? '<source src="' + data.srcwebm + '" type="video/webm">' : '' }
 		 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 		</video>`;
-		
+
 	$('#videoContent').append(video);
 }
 function drawVideo(id) {

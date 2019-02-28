@@ -27,14 +27,15 @@ function checkDimentions() {
 		motionObj.stop();
 		motionObj.offSroll();
 	}
+
 	$('#wrapper').empty();
 	$('#wrapper').append(drawContent(textData));
+	
 	if ( WINDOW.width() >= edge ) {
 		// mobileView(textData);
 		desktopView(textData);
 		return;
 	}
-
 }
 
 function drawContent(data) {

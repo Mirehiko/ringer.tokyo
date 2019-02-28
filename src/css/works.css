@@ -162,8 +162,11 @@
   }
   .infoItem {
     margin-top: 35.333333333333336vw;
-    padding: 0 4vw;
+    /* padding: 0 4vw; */
     margin-bottom: 11.333333333333334vw;
+  }
+  .infoWrapper {
+    padding: 0 4vw;
   }
   .main.paramTitle, .main.paramValue {
     font-size: 4.8vw;
@@ -193,8 +196,9 @@
   .workInfo {
     height: 100%;
     width: initial;
-    display: flex;
-    flex-direction: row;
+    /* display: flex; */
+    /* flex-direction: row; */
+    display: inline-block;
   }
   .workItem {
     display: inline-block;
@@ -219,6 +223,12 @@
     white-space: nowrap;
     display: flex;
     flex-direction: row;
+  }
+  #wrapper2 {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
   }
   .workContent {
     width: auto;
@@ -276,10 +286,14 @@
     margin-right: 15px;
   }
   .infoItem {
-    padding: 30px;
     color: #fff;
     background: #222;
     margin: 0;
+  }
+
+  .infoWrapper {
+    height: 100%;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
