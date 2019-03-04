@@ -120,7 +120,7 @@
 .navigation.nav-bottom {
   bottom: 0;
 }
-.nav__item {
+.nav__item>* {
   padding-bottom: 4px;
   border-bottom: 2px solid #fff;
 }
@@ -191,6 +191,53 @@
   .breadcrumbs {
     display: none;
   }
+
+  #nav_foot {
+
+    position: absolute;
+    top: auto;
+    left: 0;
+    bottom: 0;
+    right: auto;
+    width: 100%;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -o-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -moz-box-pack: justify;
+    -o-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    padding: 22px 29px;
+    white-space: nowrap;
+
+
+    position: relative;
+    top: 0px;
+    left: 0px;
+    bottom: auto;
+    right: auto;
+    padding: 0 4vw;
+    margin-top: 24.8vw;
+    margin-bottom: 23.066666666666666vw;
+  }
+  #nav_foot>.nav__item {
+    font-size: 4.8vw;
+  }
+  #nav_foot>.nav__item.all {
+    margin-top: 22.666666666666668vw;
+  }
+
 }
 @media screen and (min-width: 768px) {
   .workInfo {
@@ -313,4 +360,40 @@
   .breadcrumbs {
     display: block;
   }
+  #nav_foot {
+    position: absolute;
+    top: auto;
+    left: 0;
+    bottom: 0;
+    right: auto;
+    width: 100%;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -o-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -moz-box-pack: justify;
+    -o-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    padding: 22px 29px;
+    white-space: nowrap;
+    margin:0;
+  }
+  #nav_foot>.nav__item {
+    font-size: 24px;
+  }
+  #nav_foot>.nav__item.all {
+    margin-top: 0;
+  }
+
 }
