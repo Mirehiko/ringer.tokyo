@@ -1,3 +1,5 @@
+var path = 'app/images/works/';
+
 var textData = [
 	{
 		title: 'testTitle',
@@ -5,9 +7,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_42.jpg',
+			src: path + 'deki2_42.jpg',
 		},
-		src: 'images/works/deki2_42.jpg',
+		src: path + 'deki2_42.jpg',
 		link: 'works.html',
 	},
 	{
@@ -16,9 +18,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_41.jpg',
+			src: path + 'deki2_41.jpg',
 		},
-		src: 'images/works/deki2_41.jpg',
+		src: path + 'deki2_41.jpg',
 		link: 'works.html',
 	},
 	{
@@ -27,9 +29,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_40.jpg',
+			src: path + 'deki2_40.jpg',
 		},
-		src: 'images/works/deki2_40.jpg',
+		src: path + 'deki2_40.jpg',
 		link: 'works.html',
 	},
 	{
@@ -38,9 +40,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_39.jpg',
+			src: path + 'deki2_39.jpg',
 		},
-		src: 'images/works/deki2_39.jpg',
+		src: path + 'deki2_39.jpg',
 		link: 'works.html',
 	},
 	{
@@ -49,9 +51,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_38.jpg',
+			src: path + 'deki2_38.jpg',
 		},
-		src: 'images/works/deki2_38.jpg',
+		src: path + 'deki2_38.jpg',
 		link: 'works.html',
 	},
 	{
@@ -60,9 +62,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_37.jpg',
+			src: path + 'deki2_37.jpg',
 		},
-		src: 'images/works/deki2_37.jpg',
+		src: path + 'deki2_37.jpg',
 		link: 'works.html',
 	},
 	{
@@ -71,9 +73,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_36.jpg',
+			src: path + 'deki2_36.jpg',
 		},
-		src: 'images/works/deki2_36.jpg',
+		src: path + 'deki2_36.jpg',
 		link: 'works.html',
 	},
 	{
@@ -82,9 +84,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_35.jpg',
+			src: path + 'deki2_35.jpg',
 		},
-		src: 'images/works/deki2_35.jpg',
+		src: path + 'deki2_35.jpg',
 		link: 'works.html',
 	},
 	{
@@ -93,9 +95,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_34.jpg',
+			src: path + 'deki2_34.jpg',
 		},
-		src: 'images/works/deki2_34.jpg',
+		src: path + 'deki2_34.jpg',
 		link: 'works.html',
 	},
 	{
@@ -104,9 +106,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_33.jpg',
+			src: path + 'deki2_33.jpg',
 		},
-		src: 'images/works/deki2_33.jpg',
+		src: path + 'deki2_33.jpg',
 		link: 'works.html',
 	},
 	{
@@ -115,9 +117,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_32.jpg',
+			src: path + 'deki2_32.jpg',
 		},
-		src: 'images/works/deki2_32.jpg',
+		src: path + 'deki2_32.jpg',
 		link: 'works.html',
 	},
 	{
@@ -126,9 +128,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_31.jpg',
+			src: path + 'deki2_31.jpg',
 		},
-		src: 'images/works/deki2_31.jpg',
+		src: path + 'deki2_31.jpg',
 		link: 'works.html',
 	},
 	{
@@ -137,9 +139,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_30.jpg',
+			src: path + 'deki2_30.jpg',
 		},
-		src: 'images/works/deki2_30.jpg',
+		src: path + 'deki2_30.jpg',
 		link: 'works.html',
 	},
 	{
@@ -148,9 +150,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_29.jpg',
+			src: path + 'deki2_29.jpg',
 		},
-		src: 'images/works/deki2_29.jpg',
+		src: path + 'deki2_29.jpg',
 		link: 'works.html',
 	},
 	{
@@ -159,9 +161,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_28.jpg',
+			src: path + 'deki2_28.jpg',
 		},
-		src: 'images/works/deki2_28.jpg',
+		src: path + 'deki2_28.jpg',
 		link: 'works.html',
 	},
 	{
@@ -170,9 +172,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_27.jpg',
+			src: path + 'deki2_27.jpg',
 		},
-		src: 'images/works/deki2_27.jpg',
+		src: path + 'deki2_27.jpg',
 		link: 'works.html',
 	},
 	{
@@ -181,9 +183,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_26.jpg',
+			src: path + 'deki2_26.jpg',
 		},
-		src: 'images/works/deki2_26.jpg',
+		src: path + 'deki2_26.jpg',
 		link: 'works.html',
 	},
 	{
@@ -192,9 +194,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_25.jpg',
+			src: path + 'deki2_25.jpg',
 		},
-		src: 'images/works/deki2_25.jpg',
+		src: path + 'deki2_25.jpg',
 		link: 'works.html',
 	},
 	{
@@ -203,9 +205,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_21.jpg',
+			src: path + 'deki2_21.jpg',
 		},
-		src: 'images/works/deki2_21.jpg',
+		src: path + 'deki2_21.jpg',
 		link: 'works.html',
 	},
 	{
@@ -214,9 +216,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_22.jpg',
+			src: path + 'deki2_22.jpg',
 		},
-		src: 'images/works/deki2_22.jpg',
+		src: path + 'deki2_22.jpg',
 		link: 'works.html',
 	},
 	{
@@ -225,9 +227,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_23.jpg',
+			src: path + 'deki2_23.jpg',
 		},
-		src: 'images/works/deki2_23.jpg',
+		src: path + 'deki2_23.jpg',
 		link: 'works.html',
 	},
 	{
@@ -236,9 +238,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_24.jpg',
+			src: path + 'deki2_24.jpg',
 		},
-		src: 'images/works/deki2_24.jpg',
+		src: path + 'deki2_24.jpg',
 		link: 'works.html',
 	},
 	{
@@ -247,9 +249,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_2.jpg',
+			src: path + 'deki2_2.jpg',
 		},
-		src: 'images/works/deki2_2.jpg',
+		src: path + 'deki2_2.jpg',
 		link: 'works.html',
 	},
 	{
@@ -258,9 +260,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_4.jpg',
+			src: path + 'deki2_4.jpg',
 		},
-		src: 'images/works/deki2_4.jpg',
+		src: path + 'deki2_4.jpg',
 		link: 'works.html',
 	},
 	{
@@ -269,9 +271,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_6.jpg',
+			src: path + 'deki2_6.jpg',
 		},
-		src: 'images/works/deki2_6.jpg',
+		src: path + 'deki2_6.jpg',
 		link: 'works.html',
 	},
 	{
@@ -280,9 +282,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/deki2_8.jpg',
+			src: path + 'deki2_8.jpg',
 		},
-		src: 'images/works/deki2_8.jpg',
+		src: path + 'deki2_8.jpg',
 		link: 'works.html',
 	},
 	{
@@ -291,9 +293,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/victas_iamnext_03.jpg',
+			src: path + 'victas_iamnext_03.jpg',
 		},
-		src: 'images/works/victas_iamnext_03.jpg',
+		src: path + 'victas_iamnext_03.jpg',
 		link: 'works.html',
 	},
 	{
@@ -302,9 +304,9 @@ var textData = [
 		category: 'development',
 		preview: {
 			type: 'image',
-			src: 'images/works/iamnext.jpg',
+			src: path + 'iamnext.jpg',
 		},
-		src: 'images/works/iamnext.jpg',
+		src: path + 'iamnext.jpg',
 		link: 'works.html',
 	},
 ];

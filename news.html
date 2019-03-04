@@ -2,19 +2,20 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Contact</title>
+	<title>News</title>
 	<!-- main with header -->
-	<link rel="stylesheet" charset="utf-8" href="../dist/css/common.css">
+	<link rel="stylesheet" charset="utf-8" href="dist/css/common.css">
 
-	<link rel="stylesheet" href="../dist/css/content.css">
-	<link rel="stylesheet" href="../dist/css/contact.css">
+	<link rel="stylesheet" href="dist/css/content.css">
+	<link rel="stylesheet" href="dist/css/news.css">
+	<link rel="stylesheet" href="dist/css/talent.css">
 
 </head>
-<body class="isContact">
+<body>
 	<div id="mobileNav" class="-mobile-">
 		<a href="index.html" id="mobileLogo">
 			<!-- <span class="logo">Iconic Site</span> -->
-			<img class="logo" src="../dist/images/logo.jpeg" alt=""></img>
+			<img class="logo" src="dist/images/logo.jpeg" alt=""></img>
 		</a>
 		<a href="#" id="hideMenu" class="iconBtnBox" title="menu" role="menu">
 			<span class="hmenu-text">Menu</span>
@@ -71,49 +72,33 @@
 	</div>
 
 	<div class="backlayer">
-		<video class="inner" src=app/video/about.mp4" width="100%" height="100%" muted="" loop="" playsinline="" autoplay></video>
+		<video class="inner" src="app/video/about.mp4" width="100%" height="100%" muted="" loop="" playsinline="" autoplay></video>
 	</div>
 
 	<div class="breadcrumbs">
 		<a href="index.html" class="breadcrumbs__item" title="Homepage">Home</a>
-		<span><img class="arw" src="images/system/right-black.svg" alt=""></span>
-		<!-- <span class="arw"></span> -->
-		<span class="breadcrumbs__item">Contact</span>
+		<span><img class="arw" src="images/system/right.svg" alt=""></span>
+		<span class="breadcrumbs__item">News</span>
 	</div>
 
 	<div id="pageContent" class="content">
-		<div id="contactPage" class="page">
-			<form class="contactForm" method="post">
-        <input type="text" name="name" class="contactForm__text" placeholder="Name">
-        <input type="text" name="company" class="contactForm__text" placeholder="Company Name">
-        <input type="text" name="mail" class="contactForm__text" placeholder="Mail">
-        <input type="text" name="website" class="contactForm__text" placeholder="Website">
-        <div class="contactForm__subject">
-          <!-- <p class="text is-change">
-            <span class="default">Subject</span>
-            <span class="lang-en">CONSULT</span>
-            <span class="lang-ja">ご相談</span>
-          </p>
-          <img class="icon" src="/assets/img/cmn/icon_down.svg"> -->
-          <select class="contactForm__select">
-            <option value="ご相談" data-en="CONSULT" data-ja="ご相談" selected="">CONSULT</option>
-            <option value="リール" data-en="REEL" data-ja="リール">REEL</option>
-            <option value="その他" data-en="OTHER" data-ja="その他">OTHER</option>
-          </select>
-        </div>
-        <textarea name="message" class="contactForm__message" placeholder="Message"></textarea>
-        <a class="contactForm__send">
-          <p class="text">
-            <span class="lang-en">Send</span>
-            <!-- <span class="lang-ja">送信する</span> -->
-          </p>
-          <!-- <img class="arw" src="/assets/img/cmn/arw_2.svg"> -->
-        </a>
-        <span>
-          <a class="p-contact_policy" href="http://www.taiyokikaku.com/policy/" target="_blank">Privacy Policy</a>
-        </span>
-      </form>
-
+		<div id="newsPage" class="page">
+			<div class="newsList">
+				<div class="newsItem">
+					<div class="publicationDate">
+						<span class="newsDate">2018.09.10</span>
+						<span class="newsState">Release</span>
+					</div>
+					<a href="#" class="newsTitle" target="_blank">"Touching Sound,"the VR content first revealed at SXSW in the spring of 2018 that created so much buzz in the VR world, was further improved over the summer! It can now be enjoyed by two pairs of people at J-WAVE Innovation Festa 2018, which will be held from Saturday, September 29, to Sunday, September 30, at Roppongi Hills. Come and experience it with family members or friends.</a>
+				</div>
+				<div class="newsItem">
+					<div class="publicationDate">
+						<span class="newsDate">2018.08.16</span>
+						<span class="span newsState">Release</span>
+					</div>
+					<a href="#" class="newsTitle" target="_blank">"The Man from the Sea" is the latest movie by director Koji Fukuda, a rising star in the world of film and winner of the 2016 Jury Prize in the Un Certain Regard category of the 69th Cannes Film Festival for his film, "Harmonium." TAIYOKIKAKU R&D was involved in the production of the film, and the VFX was handled by +Ring. The film is currently being shown at Kineca Omori in Tokyo, so don't miss it! You're certain to be enthralled by this moving and beautiful fantasy film!</a>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -122,7 +107,7 @@
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous" defer></script>
-	<script src="../dist/js/common.js" type="text/javascript" charset="utf-8" defer></script>
+	<script src="dist/js/common.js" type="text/javascript" charset="utf-8" defer></script>
 
 </body>
 </html>

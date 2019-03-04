@@ -30,7 +30,7 @@ function checkDimentions() {
 
 	$('#wrapper').empty();
 	$('#wrapper').append(drawContent(textData));
-	
+
 	if ( WINDOW.width() >= edge ) {
 		// mobileView(textData);
 		desktopView(textData);

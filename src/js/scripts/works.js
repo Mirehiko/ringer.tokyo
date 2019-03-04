@@ -250,8 +250,8 @@ function drawOwnVideo(data) {
 		<video id="${ data.id }" class="video-js vjs-default-skin" controls
 		 preload="auto" width="640" height="264" poster="${ data.previewImage }"
 		 data-setup="{}" title="${ data.title }">
-		 ${ data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : '' }
-		 ${ data.srcwebm ? '<source src="' + data.srcwebm + '" type="video/webm">' : '' }
+		 ${ data.srcMP4 ? '<source src="' + data.srcMP4 + '" type=app/video/mp4">' : '' }
+		 ${ data.srcwebm ? '<source src="' + data.srcwebm + '" type=app/video/webm">' : '' }
 		 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 		</video>`;
 

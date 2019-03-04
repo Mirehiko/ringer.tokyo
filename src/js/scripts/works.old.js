@@ -110,7 +110,7 @@ function drawVideoItem(data) {
     data.id +
     '" own="'.concat(
       data.type == "video" ? "true" : "false",
-      '">\n\t\t<img class="playIcon" src="images/system/play.svg" alt="play icon">\n\t</a><div class="previewcover"></div></div>'
+      '">\n\t\t<img class="playIcon" src="app/images/system/play.svg" alt="play icon">\n\t</a><div class="previewcover"></div></div>'
     );
   return item;
 }
@@ -133,7 +133,7 @@ function drawIntegratedVideoItem(data) {
     data.title +
     '" vid="' +
     data.id +
-    '">\n\t\t<img class="playIcon" src="images/system/play.svg" alt="play icon">\n\t</a><div class="previewcover"></div></div>';
+    '">\n\t\t<img class="playIcon" src="app/images/system/play.svg" alt="play icon">\n\t</a><div class="previewcover"></div></div>';
   return item;
 }
 

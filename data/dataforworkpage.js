@@ -1,3 +1,5 @@
+var path = 'app/images/works/';
+var video_path = 'app/video/';
 var textData = [
 	{
 		type: 'info',
@@ -12,7 +14,7 @@ var textData = [
 		title: 'Integrated video 1',
 		id: 'video1',
 		color: '',
-		previewImage: 'images/works/preview1.jpeg',
+		previewImage: path + 'preview1.jpeg',
 	},
 	{
 		type: 'integrated_video',
@@ -20,24 +22,24 @@ var textData = [
 		title: 'Integrated video 2',
 		id: 'video2',
 		color: '',
-		previewImage: 'images/works/preview2.jpg',
+		previewImage: path + 'preview2.jpg',
 	},
 	{
 		type: 'video',
-		srcMP4: 'video/my_first_story_missing_you_720p.mp4',
+		srcMP4: video_path + 'my_first_story_missing_you_720p.mp4',
 		title: 'Own video 3',
 		id: 'video3',
 		color: '',
-		previewImage: 'images/works/preview3.jpg',
+		previewImage: path + 'preview3.jpg',
 	},
 	{
 		type: 'image',
-		src: 'images/works/iamnext.jpg',
+		src: path + 'iamnext.jpg',
 		alt: 'image3',
 	},
 	{
 		type: 'image',
-		src: 'images/works/deki2_4.jpg',
+		src: path + 'deki2_4.jpg',
 		alt: 'image4',
 	}
 ];
