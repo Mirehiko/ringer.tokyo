@@ -2,7 +2,7 @@
 *~
 *.zip
 __pycache__
-env
+ringovenv
 /node_modules
 /dist
 db.sqlite3
