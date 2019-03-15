@@ -49,6 +49,7 @@ if (WINDOW.width() >= 768) {
 $(window).on('resize', function (e) {
   redrawBackgrounds();
 });
+
 $('#mobileCategory>.toggleBtn').on('click', function (e) {
   var elem = $(this);
   var mobileNav = $('#mobileNav'); // console.log(mobileNav);
@@ -59,6 +60,7 @@ $('#mobileCategory>.toggleBtn').on('click', function (e) {
     mobileNav.removeClass('-open-');
   }
 });
+
 $('.toggleList__item').on('click', function (e) {
   e.preventDefault();
   var cat = $(this).attr('globcat');
@@ -126,6 +128,7 @@ function renderPage(data) {
 
   var lines = calcView(linesCount); // console.log('lines:',lines)
   // Отбираем данные для тройной плитки
+  console.log('lines', lines)
 
   var tripleLines = lines.filter(function (length) {
     return length == 3;
@@ -241,7 +244,11 @@ function calcView(num) {
     step = 2;
   }
 
-  if (num != 0) {
+  if (num < 2 && num > 0) {
+    return [2];
+  }
+  else if (num != 0) {
+    // if (num >= 2) {
     while (c) {
       count += step;
 
@@ -249,6 +256,7 @@ function calcView(num) {
         tmp = num - lastState;
         count = 0;
         result = [];
+
       } else {
         result.push(step);
 
@@ -265,6 +273,10 @@ function calcView(num) {
 
       lastState = count;
     }
+  } else {
+    tmp = num - lastState;
+    count = 0;
+    result = [];
   }
 
   if (step >= 3) {

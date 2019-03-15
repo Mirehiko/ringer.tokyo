@@ -6,7 +6,9 @@
 var SCREEN_RATIO = 16 / 9;
 var maxScroll = 0;
 var WINDOW = $(window);
+
 reDrawImages($('.infiniteItem'));
+
 $('#header-menu, #hideMenu').on('click', function (e) {
   // e.stopPropagation();
   $('.side-header').toggleClass('open');
