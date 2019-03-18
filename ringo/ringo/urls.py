@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from django.conf import settings
+from django.views.static import serve
+
 urlpatterns = [
     path('works/', include('works.urls')),
     path('admin/', admin.site.urls),
