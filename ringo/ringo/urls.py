@@ -20,6 +20,6 @@ from django.conf import settings
 from django.views.static import serve
 
 urlpatterns = [
-    path('works/', include('works.urls')),
+    path('', include('works.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -6,21 +6,20 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-	<title>Home</title>
+	<title>{% block title %}Home{% endblock %}</title>
 	<!-- main with header -->
 	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'works/css/common.css' %}">
+	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'works/css/content.css' %}">
+	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'works/css/news.css' %}">
+	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'works/css/talent.css' %}">
+	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'works/css/homepage.css' %}">
 
-  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'works/css/content.css' %}">
-  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'works/css/news.css' %}">
-  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'works/css/talent.css' %}">
-  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'works/css/homepage.css' %}">
-
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
+	{% block css %}
+	{% endblock %}
 </head>
 <body>
 	<div id="mobileNav" class="-mobile-">
-		<a href="#" id="mobileLogo">
+		<a href="/" id="mobileLogo">
 			<!-- <span class="logo">Iconic Site</span> -->
 			<img class="logo" src="dist/images/logo.jpeg" alt=""></img>
 		</a>
@@ -112,6 +111,10 @@
     </div>
 	</div>
 
+	{% block fonts %}
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	{% endblock %}
+
   <script type="text/javascript" charset="utf-8">
     var textData = [];
     var path = 'app/images/works/';
@@ -132,6 +135,8 @@
     {% endfor %}
   </script>
 
+
+
 	<script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -145,3 +150,12 @@
 	<script type="text/javascript" src="{% static 'works/js/index.old.js' %}" charset="utf-8" defer></script>
 </body>
 </html>
+
+
+{% block tail %}
+	<script type="text/javascript" src="{% static 'works/js/jquery-mousewheel-3.1.12/jquery.mousewheel.js' %}" charset="utf-8" defer></script>
+	<!-- <script type="text/javascript" src="dist/js/homepage.js" defer></script> -->
+	<script type="text/javascript" src="{% static 'works/js/main.old.js' %}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'works/js/scrollBehaviorGlob.old.js' %}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'works/js/index.old.js' %}" charset="utf-8" defer></script>
+{% endblock %}

@@ -28,7 +28,7 @@ class Work(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     # category = models.ForeignKey(Category, on_delete=models.CASCADE)
     launch_date = models.DateTimeField(verbose_name='Дата запуска')
-    poster = models.ImageField(upload_to=fs, default='default.jpg', verbose_name='Постер')
+    poster = models.ImageField(upload_to=fs, default='default.jpg', verbose_name='Постер', max_length=255)
 
     user = models.ManyToManyField(User, verbose_name='Компания', blank=True)
     category = models.ManyToManyField(Category, verbose_name='Категория', blank=True)
