@@ -2,9 +2,12 @@
 *~
 *.zip
 __pycache__
-ringovenv
+ringovenve
+env
+npm-debug.log
+/media
 /node_modules
 /dist
 db.sqlite3
-/static
+# /static
 .DS_Store

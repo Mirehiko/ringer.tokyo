@@ -1,0 +1,10 @@
+{% load static %}
+<div class="breadcrumbs">
+	<a href="/" class="breadcrumbs__item" title="Homepage">{{ homepage_name }}</a>
+	{% if is_dark %}
+		<span><img class="arw" src="{% static 'system/right-black.svg' %}" alt=""></span>
+	{% else %}
+		<span><img class="arw" src="{% static 'system/right.svg' %}" alt=""></span>
+	{% endif %}
+	<span class="breadcrumbs__item">{{ page_name }}</span>
+</div>

@@ -15,9 +15,9 @@ $('#header-menu, #hideMenu').on('click', function (e) {
   $('.backlayer').toggleClass('-visible-');
 
   if ($('.side-header').hasClass('open')) {
-    $('.hmenu-text').html('Close');
+    $('.hmenu-text').html('Закрыть');
   } else {
-    $('.hmenu-text').html('Menu');
+    $('.hmenu-text').html('Меню');
   }
 });
 $('.side-header').on('click', function (e) {
@@ -25,7 +25,7 @@ $('.side-header').on('click', function (e) {
     $('.side-header').removeClass('open');
     $('.backlayer').removeClass('-visible-');
     $('.side-header .line.is-b').css('display', 'block');
-    $('.hmenu-text').html('Menu');
+    $('.hmenu-text').html('Меню');
   }
 }); // Toggle accordeon item
 
