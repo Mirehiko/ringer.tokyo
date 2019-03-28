@@ -1,10 +1,12 @@
 *.pyc
-
+*~
 *.zip
 __pycache__
 ringovenve
 env
-
+npm-debug.log
+/media
+/node_modules
 /dist
 db.sqlite3
 # /static
