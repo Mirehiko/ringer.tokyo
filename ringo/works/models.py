@@ -25,7 +25,7 @@ class Work(models.Model):
     description = models.TextField(max_length=500, default='', verbose_name='Описание', blank=True)
     pub_date = models.DateTimeField(auto_now_add=True)
     # category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    launch_date = models.DateTimeField(verbose_name='Дата запуска', blank=True)
+    launch_date = models.DateTimeField(verbose_name='Дата запуска')
     poster = models.ImageField(null=True, upload_to='works', default='default.jpg', verbose_name='Постер', max_length=255, blank=True)
 
     user = models.ManyToManyField(User, verbose_name='Компания', blank=True)
@@ -61,7 +61,7 @@ class NewsStatus(models.Model):
 
     def __str__(self):
         return self.name
-        
+
 
 class News(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Заголовок')
