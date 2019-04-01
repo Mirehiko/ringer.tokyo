@@ -1,9 +1,5 @@
 "use strict";
 
-var computedLines = [];
-var renderedData = [];
-var isScrolling = false;
-
 Array.prototype.shuffle = function () {
   for (var i = this.length - 1; i > 0; i--) {
     var num = Math.floor(Math.random() * (i + 1));
@@ -15,18 +11,23 @@ Array.prototype.shuffle = function () {
   return this;
 };
 
+var computedLines = [];
+var renderedData = [];
+var isScrolling = false;
 var firstID = '';
 var lastID = '';
 var windowObj = $(window);
 var homePageObj = $('#homePage');
 var motionObj;
+
 renderer();
 
 function renderer() {
   if (windowObj.width() < 768) {
     homePageObj.empty();
     homePageObj.append(renderMobile(textData));
-  } else {
+  }
+  else {
     homePageObj.empty();
     homePageObj.append(renderPage(textData));
     motionObj = new MotionGlob($('#homePage'), {
@@ -56,18 +57,20 @@ $('#mobileCategory>.toggleBtn').on('click', function (e) {
 
   if (elem.hasClass('collapse')) {
     mobileNav.addClass('-open-');
-  } else {
+  }
+  else {
     mobileNav.removeClass('-open-');
   }
 });
 
 $('.toggleList__item').on('click', function (e) {
   e.preventDefault();
+
   var cat = $(this).attr('globcat');
   $('.toggleList__item.-active-').removeClass('-active-');
   $(".toggleList__item[globcat=\"".concat(cat, "\"]")).addClass('-active-');
-  var text = $(this).text(); // console.log(text);
 
+  var text = $(this).text(); // console.log(text);
   $(".toggleBtn__text[globcat]").text(text);
 });
 
@@ -79,12 +82,12 @@ function checkForAdditionData() {
 
   while (is_true) {
     try {
-      // console.log('computedLines:before:', computedLines)
       var forDraw = computedLines.splice(0, 1);
 
       if (forDraw.length == 2) {
         box.append(doubleLine(forDraw));
-      } else {
+      }
+      else {
         box.append(forDraw[0].lineType(forDraw[0].data));
       }
 
@@ -92,7 +95,8 @@ function checkForAdditionData() {
       redrawBackgrounds(); // console.log('computedLines:after:', computedLines)
 
       is_true = $('.infirow:last-child').offset().top - w.height() < 0;
-    } catch (e) {
+    }
+    catch (e) {
       is_true = false;
       console.log(e);
     }
@@ -133,19 +137,16 @@ function renderPage(data) {
   var tripleLines = lines.filter(function (length) {
     return length == 3;
   });
+
   var tripleData = [];
   var lineTypes = [];
 
   if (tripleLines.length) {
     // Для линий с тремя объектами вычисляем тип плитки
-    // for (item of tripleLines) {
-    // 	lineTypes.push(autoSelectType());
-    // }
+
     for (var i = 0; i < tripleLines.length; i++) {
       lineTypes.push(autoSelectType());
-    } // console.log('lineTypes:',lineTypes)
-    // Отбираем данные для отображения
-
+    }// Отбираем данные для отображения
 
     for (var _i = 0; _i < tripleLines.length; _i++) {
       tripleData.push({
@@ -154,7 +155,6 @@ function renderPage(data) {
       });
     }
   } // Отбираем данные для двойной плитки
-
 
   var doubleLines = lines.filter(function (length) {
     return length == 2;
@@ -168,13 +168,7 @@ function renderPage(data) {
         lineType: 'double',
         data: [].concat(tmpData.splice(0, doubleLines[_i2]))
       });
-    } // for (item of doubleLines) {
-    // 	doubleData.push({
-    //         lineType: 'double',
-    //         data: [].concat(tmpData.splice(0, item)),
-    //     		});
-    // }
-
+    }
   } // Собираем все плитки воедино
 
 
@@ -240,15 +234,17 @@ function calcView(num) {
   var c = true;
   var step = 3;
 
-  if (num < 5) {
-    step = 2;
-  }
 
-  if (num < 2 && num > 0) {
+  if (num < 3) {
     return [2];
   }
-  else if (num != 0) {
-    // if (num >= 2) {
+  else if (num == 3) {
+    return [3];
+  }
+  else if (num == 4) {
+    return [2, 2];
+  }
+  else {
     while (c) {
       count += step;
 
@@ -256,8 +252,8 @@ function calcView(num) {
         tmp = num - lastState;
         count = 0;
         result = [];
-
-      } else {
+      }
+      else {
         result.push(step);
 
         if (count + tmp == num) {
@@ -265,7 +261,8 @@ function calcView(num) {
             tmp = num - lastState;
             result = [];
             count = 0;
-          } else {
+          }
+          else {
             c = false;
           }
         }
@@ -273,16 +270,13 @@ function calcView(num) {
 
       lastState = count;
     }
-  } else {
-    tmp = num - lastState;
-    count = 0;
-    result = [];
   }
 
   if (step >= 3) {
     if (tmp == 2) {
       result.push(2);
-    } else if (tmp != 0) {
+    }
+    else if (tmp != 0) {
       for (var i = 0; i < tmp / 2; i++) {
         result.push(2);
       }

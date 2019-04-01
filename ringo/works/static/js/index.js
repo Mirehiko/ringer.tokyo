@@ -46,8 +46,6 @@ if ( WINDOW.width() >= 768 ) {
 	checkForAdditionData();
 }
 
-
-
 $(window).on('resize', function(e) {
 	redrawBackgrounds();
 });
@@ -55,7 +53,6 @@ $(window).on('resize', function(e) {
 $('#mobileCategory>.toggleBtn').on('click', function(e) {
 	let elem = $(this);
 	let mobileNav = $('#mobileNav');
-	// console.log(mobileNav);
 
 	if ( elem.hasClass('collapse') ) {
 		mobileNav.addClass('-open-');
@@ -69,8 +66,8 @@ $('.toggleList__item').on('click', function(e) {
 	let cat = $(this).attr('globcat');
 	$('.toggleList__item.-active-').removeClass('-active-');
 	$(`.toggleList__item[globcat="${ cat }"]`).addClass('-active-');
+  
 	let text = $(this).text();
-	// console.log(text);
 	$(`.toggleBtn__text[globcat]`).text(text);
 })
 
