@@ -5,7 +5,7 @@ __pycache__
 ringovenve
 env
 npm-debug.log
-/media
+ringo/media
 /node_modules
 /dist
 db.sqlite3
