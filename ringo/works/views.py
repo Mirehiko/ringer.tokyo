@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import render
 
@@ -20,7 +20,10 @@ def index(request):
     return render(request, 'works/home.html', context )
 
 
-def category(request, category_id):
+def category(request, category):
+    category_name = request.GET.get('category', None)
+    category_id = Category.objects.get(category_url=category).id
+
     try:
         work_list = Work.objects.filter(category = category_id).order_by('-pub_date')
     except Work.DoesNotExist:
@@ -34,6 +37,30 @@ def category(request, category_id):
     }
 
     return render(request, 'works/home.html', context )
+
+# def category(request, category):
+#     category_name = request.GET.get('category', None)
+#
+#     try:
+#         # work_list = Work.objects.filter(category = category_id).order_by('-pub_date')
+#         if category_name == 'all':
+#             work_list = Work.objects.order_by('-pub_date')
+#         else:
+#             category_id = Category.objects.get(category_url=category).id
+#             work_list = Work.objects.filter(category = category_id).order_by('-pub_date')
+#
+#     except Work.DoesNotExist:
+#         raise Http404("Work does not exist")
+#
+#     # category_list = Category.objects.all()
+#
+#     context = {
+#         'work_list': work_list,
+#         # 'category_list': category_list,
+#     }
+#
+#
+#     return JsonResponse(context)
 
 
 def news(request):
@@ -79,6 +106,22 @@ def talent(request):
     }
 
     return render(request, 'works/talent.html', context )
+
+
+# def getWorksByCategory(request, category_name):
+#     category_name = request.GET.get('category', None)
+#     if category_name = 'all':
+#         work_list = Work.objects.order_by('-pub_date').exists()
+#     else:
+#         work_list = Work.objects.filter(category = category_id).order_by('-pub_date').exists()
+#
+#     data = {
+#         # 'is_taken': User.objects.filter(username__iexact=username).exists()
+#         'work_list': work_list
+#     }
+#
+#     return JsonResponse(data)
+
 
 # def workAdmin(request):
 #     work_list = Work.objects.order_by('-pub_date')

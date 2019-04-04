@@ -70,6 +70,21 @@ $('.toggleList__item').on('click', function (e) {
   $('.toggleList__item.-active-').removeClass('-active-');
   $(".toggleList__item[globcat=\"".concat(cat, "\"]")).addClass('-active-');
 
+  $.ajax({
+    url: '/category/',
+    type: "GET",
+    data: {
+      category: 'music'
+    },
+    dataType: 'json',
+    success: function (data) {
+      console.log(data)
+      if (data.work_list) {
+        console.log(data)
+      }
+    }
+  });
+
   var text = $(this).text(); // console.log(text);
   $(".toggleBtn__text[globcat]").text(text);
 });

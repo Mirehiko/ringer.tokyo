@@ -6,7 +6,8 @@ from django.utils import timezone
 
 
 class Category(models.Model):
-    category = models.CharField(max_length=200, default='', verbose_name='Категория')
+    category = models.CharField(max_length=200, verbose_name='Категория', blank=False)
+    category_url = models.CharField(max_length=200, verbose_name='Ссылка на категорию', blank=False)
 
     def __str__(self):
         return self.category
