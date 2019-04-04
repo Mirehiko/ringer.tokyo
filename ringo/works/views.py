@@ -20,8 +20,7 @@ def index(request):
     return render(request, 'works/home.html', context )
 
 
-def category(request, category_id=''):
-    print('adkjalskdfj')
+def category(request, category_id):
     try:
         work_list = Work.objects.filter(category = category_id).order_by('-pub_date')
     except Work.DoesNotExist:

@@ -27,7 +27,7 @@
 		<div class="toggleList -hidden-" toggle-data="mobcat">
 			<a href="#" class="toggleList__item -active-" globcat="all">Все</a>
 			{% for category in category_list %}
-				<a href="#" class="toggleList__item" globcat="cat{{ category.id }}">{{ category.category }}</a>
+				<a href="#" class="toggleList__item" globcat="{{ category.id }}">{{ category.category }}</a>
 			{% endfor %}
 		</div>
 	</div>
@@ -46,7 +46,7 @@
 					<div class="toggleList -hidden-" toggle-data="deskcat">
 						<a href="#" class="toggleList__item -active-" globcat="all">Все</a>
 						{% for category in category_list %}
-							<a href="#" class="toggleList__item" globcat="cat{{ category.id }}">{{ category.category }}</a>
+							<a href="#" class="toggleList__item" globcat="{{ category.id }}">{{ category.category }}</a>
 						{% endfor %}
 					</div>
 				</div>
