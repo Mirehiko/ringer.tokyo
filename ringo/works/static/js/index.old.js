@@ -71,7 +71,7 @@ $('.toggleList__item').on('click', function (e) {
   $(".toggleList__item[globcat=\"".concat(cat, "\"]")).addClass('-active-');
 
   $.ajax({
-    url: '/category/',
+    url: '/api/',
     type: "GET",
     data: {
       category: 'music'

@@ -22,14 +22,9 @@ from django.views.static import serve
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-#asdasd
-from works.api.views import WorkListAPIView
-
 urlpatterns = [
     path('', include('works.urls')),
     path('admin/', admin.site.urls),
-    # path(r'^api/', include('works.api.urls', namespace='api')),
-    path(r'^api/', WorkListAPIView.as_view())#asdasd
 ]
 
 urlpatterns += staticfiles_urlpatterns()
