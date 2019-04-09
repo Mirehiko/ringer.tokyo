@@ -26,9 +26,10 @@ class WorksViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = Work.objects.all()
         category = self.request.GET.get('category', None)
 
-        if category:
+        if category and category != 'all':
             category_id = Category.objects.get(category_url=category).id
             queryset = queryset.filter(category=category_id).order_by('-pub_date')
+            
         return queryset
 
 

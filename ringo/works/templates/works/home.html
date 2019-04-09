@@ -34,8 +34,8 @@
           type: 'image',
           src: '{{ work.poster.url }}',
         },
-        src: '{{ work.poster.url }}',
-        link: '{{ work.id }}',
+        poster: '{{ work.poster.url }}',
+        id: '{{ work.id }}',
       });
 			console.log('ctid:{% for category in work.category.all %} {{ category.id }}{% endfor %}')
     {% endfor %}

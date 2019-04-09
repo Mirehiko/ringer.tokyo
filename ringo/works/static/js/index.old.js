@@ -13,39 +13,44 @@ Array.prototype.shuffle = function () {
 
 var computedLines = [];
 var renderedData = [];
-var isScrolling = false;
 var firstID = '';
 var lastID = '';
 var windowObj = $(window);
 var homePageObj = $('#homePage');
 var motionObj;
 
-renderer();
+function reset() {
+  computedLines = renderedData = [];
+  firstID = lastID = '';
+  motionObj = null;
+}
 
-function renderer() {
+renderer(textData);
+
+function renderer(data) {
   if (windowObj.width() < 768) {
     homePageObj.empty();
-    homePageObj.append(renderMobile(textData));
+    homePageObj.append(renderMobile(data));
   }
   else {
     homePageObj.empty();
-    homePageObj.append(renderPage(textData));
-    motionObj = new MotionGlob($('#homePage'), {
+    homePageObj.append(renderPage(data));
+    motionObj = new MotionGlob(homePageObj, {
       onhover: 'nothing',
       itemClass: '.boxItem',
       delayAfterHover: 2,
       original: $('.infiniteBox')
     });
+
     setTimeout(function () {
       motionObj.init();
     }, 1000);
+
+    redrawBackgrounds();
+    checkForAdditionData();
   }
 }
 
-if (WINDOW.width() >= 768) {
-  redrawBackgrounds();
-  checkForAdditionData();
-}
 
 $(window).on('resize', function (e) {
   redrawBackgrounds();
@@ -65,22 +70,29 @@ $('#mobileCategory>.toggleBtn').on('click', function (e) {
 
 $('.toggleList__item').on('click', function (e) {
   e.preventDefault();
-
   var cat = $(this).attr('globcat');
-  $('.toggleList__item.-active-').removeClass('-active-');
-  $(".toggleList__item[globcat=\"".concat(cat, "\"]")).addClass('-active-');
 
   $.ajax({
     url: '/api/',
     type: "GET",
     data: {
-      category: 'music'
+      category: cat,
     },
     dataType: 'json',
     success: function (data) {
-      console.log(data)
-      if (data.work_list) {
-        console.log(data)
+      if (data.length) {
+        let db = data.slice()
+        console.log(db)
+        // console.log(motionObj)
+        motionObj.stop();
+        motionObj.offSroll();
+        reset();
+        renderer(data);
+        $('.toggleList__item.-active-').removeClass('-active-');
+        $(".toggleList__item[globcat=\"".concat(cat, "\"]")).addClass('-active-');
+      }
+      else {
+        console.log('Нет данных')
       }
     }
   });
@@ -135,7 +147,7 @@ function renderMobile(data) {
 }
 
 function mobileItem(data) {
-  return "\n\t\t<a href=\"".concat(data.link, "\" class=\"mobItem\" title=\"\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A ").concat(data.title, "\">\n\t\t\t<img class=\"mobileItem__image\" src=\"").concat(data.src, "\" alt=\"\">\n\t\t\t<div class=\"mobItem__info\">\n\t\t\t\t<h2 class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Title</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.title, "</span>\n\t\t\t\t</h2>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Launch</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.launch, "</span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Category</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.category, "</span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</a>");
+  return "\n\t\t<a href=\"".concat(data.id, "\" class=\"mobItem\" title=\"\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A ").concat(data.title, "\">\n\t\t\t<img class=\"mobileItem__image\" src=\"").concat(data.poster, "\" alt=\"\">\n\t\t\t<div class=\"mobItem__info\">\n\t\t\t\t<h2 class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Title</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.title, "</span>\n\t\t\t\t</h2>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Launch</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.launch, "</span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Category</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.category, "</span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</a>");
 }
 
 function renderPage(data) {
@@ -398,14 +410,14 @@ function redrawBackgrounds() {
 
 function drawItem(data) {
   var item = document.createElement('a');
-  item.href = data.link;
+  item.href = data.id;
   $(item).addClass('boxItem');
   var wrapper = document.createElement('div');
   $(wrapper).addClass('itemWrapper');
   $(item).append(wrapper);
   var back = document.createElement('div');
   $(back).addClass('itemBack');
-  $(back).css('background-image', 'url(' + data.src + ')');
+  $(back).css('background-image', 'url(' + data.poster + ')');
   $(back).css('background-size', 'cover');
   $(back).css('background-repeat', 'no-repeat');
   $(wrapper).append(back);
