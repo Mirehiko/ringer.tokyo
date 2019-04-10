@@ -9,6 +9,9 @@ from rest_framework import routers, serializers, viewsets
 
 # Serializers define the API representation.
 class WorksSerializer(serializers.ModelSerializer):
+    category = serializers.StringRelatedField(many=True)
+    user = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Work
         fields = ('id', 'title', 'description', 'pub_date', 'launch_date', 'poster', 'user', 'category')
@@ -29,7 +32,7 @@ class WorksViewSet(viewsets.ReadOnlyModelViewSet):
         if category and category != 'all':
             category_id = Category.objects.get(category_url=category).id
             queryset = queryset.filter(category=category_id).order_by('-pub_date')
-            
+
         return queryset
 
 
