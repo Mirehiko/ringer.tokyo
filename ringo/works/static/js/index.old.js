@@ -84,8 +84,10 @@ $('.toggleList__item').on('click', function (e) {
         let db = data.slice()
         console.log(db)
         // console.log(motionObj)
-        motionObj.stop();
-        motionObj.offSroll();
+        if (windowObj.width() >= 768) {
+          motionObj.stop();
+          motionObj.offSroll();
+        }
         reset();
         renderer(data);
         $('.toggleList__item.-active-').removeClass('-active-');
