@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Work, WorkImages, News, Category, User
+from .models import Work, WorkImages, News, Category, User, WorkVideo
 
 from multiupload.admin import MultiUploadAdmin
 from django.urls import reverse
@@ -16,7 +16,19 @@ class PosterInlineForm(forms.ModelForm):
 class PosterInlineWork(admin.TabularInline):
     model = WorkImages
     form = PosterInlineForm
-    extra = 1
+    extra = 0
+
+
+class VideoInlineForm(forms.ModelForm):
+    class Meta:
+        model = WorkVideo
+        fields = ['title', 'url', 'is_html']
+
+
+class VideoInlineWork(admin.TabularInline):
+    model = WorkVideo
+    form = VideoInlineForm
+    extra = 0
 
 
 # class WorkForm(forms.ModelForm):
@@ -51,7 +63,7 @@ class PosterInlineWork(admin.TabularInline):
 
 class WorkAdmin(MultiUploadAdmin):
 
-    inlines = [PosterInlineWork]
+    inlines = [PosterInlineWork, VideoInlineWork]
     # list_display = [
     #     'id',
     #     'title',

@@ -260,10 +260,14 @@ $(document).on("keyup", function(e) {
 $("body").delegate(".fullView__close", "click", closeVideo);
 $("body").delegate(".prevIcon", "click", function(e) {
   e.preventDefault();
+  console.log('test1')
 
   if ($(this).attr("own") == "true") {
     drawOwnVideo(videoObj[$(this).attr("vid")]);
+    console.log('test2-1')
   } else {
+    console.log('test2-2')
+
     drawVideo($(this).attr("vid"));
   }
 
@@ -303,5 +307,6 @@ function drawOwnVideo(data) {
 }
 
 function drawVideo(id) {
-  $("#videoContent").append(videoObj[id].src);
+  let text_elem = $.parseHTML(videoObj[id].src)[0].data;
+  $("#videoContent")[0].innerHTML = text_elem;
 }

@@ -62,7 +62,6 @@ class Work(models.Model):
 class WorkImages(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Заголовок')
     url = models.ImageField(null=True, upload_to='works', default='default.jpg', verbose_name='Изображение', max_length=255, blank=True)
-    # is_main = models.BooleanField(verbose_name='Обложка', blank=True, default=False)
     work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
 
     def __str__(self):
@@ -75,6 +74,19 @@ class WorkImages(models.Model):
             height=obj.headshot.height,
         )
     )
+
+
+class WorkVideo(models.Model):
+    title = models.CharField(max_length=200, default='', verbose_name='Название')
+    url = models.TextField(max_length=1500, default='', verbose_name='Ссылка на видеофайл', blank=True)
+    work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
+
+    is_html = models.BooleanField(verbose_name='HTML-код', default=False, blank=True)
+    # is_url = models.BooleanField(verbose_name='Ссылка', default=False, blank=True)
+    # is_upload = 
+    
+    def __str__(self):
+        return self.title
 
 
 class NewsStatus(models.Model):

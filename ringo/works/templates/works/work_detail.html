@@ -64,9 +64,33 @@
 				src: '/media/{{image.url}}',
 				alt: '{{image.title}}',
 			});
-    		console.log('{{image.title}}', '{{image.work.id}}', '{{image.url}}')
     	{% endfor %}
     {% endif %}
+
+    {% if images %}
+    	{% for video in videofiles.all %}
+    		{% if video.is_html %}
+				textData.push({
+					type: 'integrated_video',
+					title: '{{video.title}}',
+					src: '{{video.url}}',
+					id: 'video{{ video.id }}',
+					color: '',
+					previewImage: '',
+				});
+    		{% else %}
+				textData.push({
+					type: 'video',
+					title: '{{video.title}}',
+					src: '{{video.url}}',
+					id: 'video{{ video.id }}',
+					color: '',
+					previewImage: '',
+				});
+    		{% endif %}
+    	{% endfor %}
+    {% endif %}
+    console.log('textData:',textData)
 
   </script>
 {% endblock %}
