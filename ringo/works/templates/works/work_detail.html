@@ -54,7 +54,20 @@
 		src: '{{ work.poster.url }}',
 		alt: '{{ work.title }}',
 	});
-    console.log('textData:',textData)
+	// console.log('asdasd:{{ work.poster.url }}')
+    // console.log('textData:',textData)
+
+    {% if images %}
+    	{% for image in images.all %}
+			textData.push({
+				type: 'image',
+				src: '/media/{{image.url}}',
+				alt: '{{image.title}}',
+			});
+    		console.log('{{image.title}}', '{{image.work.id}}', '{{image.url}}')
+    	{% endfor %}
+    {% endif %}
+
   </script>
 {% endblock %}
 

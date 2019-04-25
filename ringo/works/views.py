@@ -6,6 +6,8 @@ from django.shortcuts import render
 from .models import Work
 from .models import News
 from .models import Category
+from .models import WorkImages
+
 
 
 
@@ -94,12 +96,14 @@ def contacts(request):
 
 
 def detail(request, work_id):
+    images = []
     try:
         work = Work.objects.get(pk=work_id)
+        images = WorkImages.objects.filter(work=work_id)
     except Work.DoesNotExist:
         raise Http404("Work does not exist")
 
-    return render(request, 'works/work_detail.html', {'work': work})
+    return render(request, 'works/work_detail.html', {'work': work, 'images': images})
 
 
 def talent(request):

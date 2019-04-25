@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 
 
+
 class Category(models.Model):
     category = models.CharField(max_length=200, verbose_name='Категория', blank=False)
     category_url = models.CharField(max_length=200, verbose_name='Ссылка на категорию', blank=False)
@@ -54,8 +55,27 @@ class Work(models.Model):
             url = obj.headshot.url,
             width=obj.headshot.width,
             height=obj.headshot.height,
-            )
+        )
     )
+
+
+class WorkImages(models.Model):
+    title = models.CharField(max_length=200, default='', verbose_name='Заголовок')
+    url = models.ImageField(null=True, upload_to='works', default='default.jpg', verbose_name='Изображение', max_length=255, blank=True)
+    # is_main = models.BooleanField(verbose_name='Обложка', blank=True, default=False)
+    work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
+
+    def __str__(self):
+        return self.title
+
+    def preview_image(self, obj):
+        return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
+            url = obj.headshot.url,
+            width=obj.headshot.width,
+            height=obj.headshot.height,
+        )
+    )
+
 
 class NewsStatus(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='Название')
