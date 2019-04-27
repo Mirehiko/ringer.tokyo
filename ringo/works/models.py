@@ -79,6 +79,7 @@ class WorkImages(models.Model):
 class WorkVideo(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Название')
     url = models.TextField(max_length=1500, default='', verbose_name='Ссылка на видеофайл', blank=True)
+    preview = models.ImageField(null=True, upload_to='works', default='default.jpg', verbose_name='Превью', max_length=255, blank=True)
     work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
 
     is_html = models.BooleanField(verbose_name='HTML-код', default=False, blank=True)

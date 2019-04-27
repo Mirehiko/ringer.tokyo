@@ -22,7 +22,7 @@ class PosterInlineWork(admin.TabularInline):
 class VideoInlineForm(forms.ModelForm):
     class Meta:
         model = WorkVideo
-        fields = ['title', 'url', 'is_html']
+        fields = ['title', 'preview', 'url', 'is_html']
 
 
 class VideoInlineWork(admin.TabularInline):

@@ -76,7 +76,7 @@
 					src: '{{video.url}}',
 					id: 'video{{ video.id }}',
 					color: '',
-					previewImage: '',
+					previewImage: '{{ video.preview.url }}',
 				});
     		{% else %}
 				textData.push({
@@ -86,7 +86,7 @@
 					srcwebm: '{{video.url}}',
 					id: 'video{{ video.id }}',
 					color: '',
-					previewImage: '',
+					previewImage: '{{ video.preview.url }}',
 				});
     		{% endif %}
     	{% endfor %}
