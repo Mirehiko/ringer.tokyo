@@ -10,7 +10,7 @@ from inline_orderable.admin import OrderableStackedInline, OrderableTabularInlin
 class PosterInlineForm(forms.ModelForm):
     class Meta:
         model = WorkImages
-        fields = ['title', 'url']
+        fields = ['title', 'link', 'url']
 
 
 class PosterInlineWork(admin.TabularInline):

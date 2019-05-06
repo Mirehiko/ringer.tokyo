@@ -62,6 +62,7 @@ class Work(models.Model):
 class WorkImages(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Заголовок')
     url = models.ImageField(null=True, upload_to='works', default='default.jpg', verbose_name='Изображение', max_length=255, blank=True)
+    link = models.CharField(max_length=500, default='', verbose_name='Внешняя ссылка', blank=True)
     work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
 
     def __str__(self):
@@ -78,7 +79,7 @@ class WorkImages(models.Model):
 
 class WorkVideo(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Название')
-    url = models.TextField(max_length=1500, default='', verbose_name='Ссылка на видеофайл', blank=True)
+    url = models.TextField(max_length=1500, default='', verbose_name='Ссылка на видеофайл')
     preview = models.ImageField(null=True, upload_to='works', default='default.jpg', verbose_name='Превью', max_length=255, blank=True)
     work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
 

@@ -32,14 +32,15 @@
         category: '{% for category in work.category.all %} {{ category }}{% endfor %}',
         preview: {
           type: 'image',
-          src: '{{ work.poster.url }}',
+          src: '{% if work.poster %} {{ work.poster.url }} {% else %}/media/default.jpg{% endif %}',
         },
-        poster: '{{ work.poster.url }}',
+        poster: '{% if work.poster %} {{ work.poster.url }} {% else %}/media/default.jpg{% endif %}',
         id: '{{ work.id }}',
       });
-			console.log('ctid:{% for category in work.category.all %} {{ category.id }}{% endfor %}')
+			// console.log('ctid:{% for category in work.category.all %} {{ category.id }}{% endfor %}')
+      console.log('title:','{{work.title}}','poster:','{{work.poster}}')
     {% endfor %}
-    console.log('textData:',textData)
+    // console.log('textData:',textData)
   </script>
 {% endblock %}
 

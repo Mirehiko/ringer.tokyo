@@ -51,19 +51,21 @@
 
 	textData.push({
 		type: 'image',
-		src: '{{ work.poster.url }}',
+		src: '{% if work.poster %} {{ work.poster.url }} {% else %}/media/default.jpg{% endif %}',
 		alt: '{{ work.title }}',
+		link: '#',
 	});
-	// console.log('asdasd:{{ work.poster.url }}')
     // console.log('textData:',textData)
 
     {% if images %}
     	{% for image in images.all %}
 			textData.push({
 				type: 'image',
-				src: '/media/{{image.url}}',
-				alt: '{{image.title}}',
+				src: '/media/{{ image.url }}',
+				alt: '{{ image.title }}',
+				link: '{% if image.link %}{{ image.link }}{% else %}#{% endif %}',
 			});
+			console.log('link: {{ image.link }}')
     	{% endfor %}
     {% endif %}
 
@@ -76,7 +78,7 @@
 					src: '{{video.url}}',
 					id: 'video{{ video.id }}',
 					color: '',
-					previewImage: '{{ video.preview.url }}',
+					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/media/default.jpg{% endif %}',
 				});
     		{% else %}
 				textData.push({
@@ -86,7 +88,7 @@
 					srcwebm: '{{video.url}}',
 					id: 'video{{ video.id }}',
 					color: '',
-					previewImage: '{{ video.preview.url }}',
+					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/media/default.jpg{% endif %}',
 				});
     		{% endif %}
     	{% endfor %}

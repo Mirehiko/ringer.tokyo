@@ -84,9 +84,9 @@ function drawContent(data) {
 }
 
 function drawImageItem(data) {
-  var item = '<div class="workItem">';
+  var item = '<div class="workItem"><a href="' + data.link + '" target="_blank">';
   item += '<img class="workImage workContent imgcfg" src="' + data.src;
-  item += '" alt="' + data.alt + '"></div>';
+  item += '" alt="' + data.alt + '"></a></div>';
   return item;
 }
 
