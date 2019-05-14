@@ -53,7 +53,7 @@
 		type: 'image',
 		src: '{% if work.poster %} {{ work.poster.url }} {% else %}/media/default.jpg{% endif %}',
 		alt: '{{ work.title }}',
-		link: '#',
+		link: '',
 	});
     // console.log('textData:',textData)
 
@@ -63,7 +63,7 @@
 				type: 'image',
 				src: '/media/{{ image.url }}',
 				alt: '{{ image.title }}',
-				link: '{% if image.link %}{{ image.link }}{% else %}#{% endif %}',
+				link: '{% if image.link %}{{ image.link }}{% endif %}',
 			});
 			console.log('link: {{ image.link }}')
     	{% endfor %}

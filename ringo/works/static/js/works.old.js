@@ -84,9 +84,17 @@ function drawContent(data) {
 }
 
 function drawImageItem(data) {
-  var item = '<div class="workItem"><a href="' + data.link + '" target="_blank">';
-  item += '<img class="workImage workContent imgcfg" src="' + data.src;
-  item += '" alt="' + data.alt + '"></a></div>';
+  var item = '<div class="workItem">';
+  if ( data.link ) {
+    item += '<a href="' + data.link + '" target="_blank">';
+    item += '<img class="workImage workContent imgcfg" src="' + data.src;
+    item += '" alt="' + data.alt + '"></a></div>';
+  }
+  else {
+    item += '<img class="workImage workContent imgcfg" src="' + data.src;
+    item += '" alt="' + data.alt + '"></div>';
+  }
+
   return item;
 }
 
