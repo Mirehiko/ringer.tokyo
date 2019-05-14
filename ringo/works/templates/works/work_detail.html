@@ -69,27 +69,27 @@
     	{% endfor %}
     {% endif %}
 
-    {% if images %}
+    {% if videofiles %}
     	{% for video in videofiles.all %}
     		{% if video.is_html %}
-				textData.push({
-					type: 'integrated_video',
-					title: '{{video.title}}',
-					src: '{{video.url}}',
-					id: 'video{{ video.id }}',
-					color: '',
-					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/media/default.jpg{% endif %}',
-				});
+  				textData.push({
+  					type: 'integrated_video',
+  					title: '{{video.title}}',
+  					src: '{{video.url}}',
+  					id: 'video{{ video.id }}',
+  					color: '',
+  					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/media/default.jpg{% endif %}',
+  				});
     		{% else %}
-				textData.push({
-					type: 'video',
-					title: '{{video.title}}',
-					srcMP4: '{{video.url}}',
-					srcwebm: '{{video.url}}',
-					id: 'video{{ video.id }}',
-					color: '',
-					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/media/default.jpg{% endif %}',
-				});
+  				textData.push({
+  					type: 'video',
+  					title: '{{video.title}}',
+  					srcMP4: '{{video.url}}',
+  					srcwebm: '{{video.url}}',
+  					id: 'video{{ video.id }}',
+  					color: '',
+  					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/media/default.jpg{% endif %}',
+  				});
     		{% endif %}
     	{% endfor %}
     {% endif %}
