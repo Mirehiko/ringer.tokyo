@@ -85,8 +85,8 @@ class WorkVideo(models.Model):
 
     is_html = models.BooleanField(verbose_name='HTML-код', default=False, blank=True)
     # is_url = models.BooleanField(verbose_name='Ссылка', default=False, blank=True)
-    # is_upload = 
-    
+    # is_upload =
+
     def __str__(self):
         return self.title
 
@@ -109,3 +109,10 @@ class News(models.Model):
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+
+class Default(models.Model):
+    site_name = models.CharField(max_length=200, default='', verbose_name='Название сайта')
+    site_icon = models.ImageField(upload_to='system', default='default.jpg', verbose_name='Иконка сайта', max_length=255)
+    poster_default = models.ImageField(upload_to='system', default='default.jpg', verbose_name='Изображение по умолчанию', max_length=255)
+    video_preview_default = models.ImageField(upload_to='system', default='default.jpg', verbose_name='Превью видео по умолчанию', max_length=255)
