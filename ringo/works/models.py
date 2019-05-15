@@ -9,24 +9,18 @@ def default_poster(instance, filename):
     print(filename,'============ file name =========')
     parts = filename.rsplit('.', 1)
     new_filename = 'default_poster'
-    # new_filename = hashlib.sha224(filename.encode('utf-8'))
-    # return 'default/%s.%s' % (new_filename.hexdigest(), parts[1])
     return 'default/%s.%s' % (new_filename, parts[1])
 
 def default_preview(instance, filename):
     print(filename,'============ file name =========')
     parts = filename.rsplit('.', 1)
     new_filename = 'default_preview'
-    # new_filename = hashlib.sha224(filename.encode('utf-8'))
-    # return 'default/%s.%s' % (new_filename.hexdigest(), parts[1])
     return 'default/%s.%s' % (new_filename, parts[1])
 
 def default_icon(instance, filename):
     print(filename,'============ file name =========')
     parts = filename.rsplit('.', 1)
     new_filename = 'icon'
-    # new_filename = hashlib.sha224(filename.encode('utf-8'))
-    # return 'default/%s.%s' % (new_filename.hexdigest(), parts[1])
     return 'default/%s.%s' % (new_filename, parts[1])
 
 
@@ -52,7 +46,7 @@ class Work(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     # category = models.ForeignKey(Category, on_delete=models.CASCADE)
     launch_date = models.DateTimeField(verbose_name='Дата запуска')
-    poster = models.ImageField(null=True, upload_to='works', default='default.jpg', verbose_name='Постер', max_length=255, blank=True)
+    poster = models.ImageField(null=True, upload_to='works', verbose_name='Постер', max_length=255, blank=True)
 
     user = models.ManyToManyField(User, verbose_name='Компания', blank=True)
     category = models.ManyToManyField(Category, verbose_name='Категория', blank=True)
@@ -104,7 +98,7 @@ class WorkImages(models.Model):
 class WorkVideo(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Название')
     url = models.TextField(max_length=1500, default='', verbose_name='Ссылка на видеофайл')
-    preview = models.ImageField(null=True, upload_to='works', default='default.jpg', verbose_name='Превью', max_length=255, blank=True)
+    preview = models.ImageField(null=True, upload_to='works', verbose_name='Превью', max_length=255, blank=True)
     work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
 
     is_html = models.BooleanField(verbose_name='HTML-код', default=False, blank=True)
@@ -139,6 +133,6 @@ class News(models.Model):
 
 class Default(models.Model):
     site_name = models.CharField(max_length=200, default='', verbose_name='Название сайта')
-    site_icon = models.ImageField(upload_to=default_icon, default='default.jpg', verbose_name='Иконка сайта', max_length=255)
-    poster_default = models.ImageField(upload_to=default_poster, default='default.jpg', verbose_name='Изображение по умолчанию', max_length=255)
-    video_preview_default = models.ImageField(upload_to=default_preview, default='default.jpg', verbose_name='Превью видео по умолчанию', max_length=255)
+    site_icon = models.ImageField(upload_to=default_icon, verbose_name='Иконка сайта', max_length=255, blank=True)
+    poster_default = models.ImageField(upload_to=default_poster, verbose_name='Изображение по умолчанию', max_length=255, blank=True)
+    video_preview_default = models.ImageField(upload_to=default_preview, verbose_name='Превью видео по умолчанию', max_length=255, blank=True)

@@ -48,7 +48,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('<int:work_id>/', views.detail, name='detail'),
     path('contacts/', views.contacts, name='contacts'),
-    path('category/$', views.category, name='category'),
+    # path('category/$', views.category, name='category'),
     path('talent/', views.talent, name='talent'),
     path('api/', include(router.urls)),
 ]

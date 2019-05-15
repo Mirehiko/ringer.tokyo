@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='work',
             name='poster',
-            field=models.ImageField(default='default.jpg', upload_to=django.core.files.storage.FileSystemStorage(location='/media/works'), verbose_name='Постер'),
+            field=models.ImageField(default='static/files/default_poster.jpg', upload_to=django.core.files.storage.FileSystemStorage(location='/media/works'), verbose_name='Постер'),
         ),
         migrations.AlterField(
             model_name='category',

@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='workvideo',
             name='poster',
-            field=models.ImageField(blank=True, default='default.jpg', max_length=255, null=True, upload_to='works', verbose_name='Превью'),
+            field=models.ImageField(blank=True, default='static/files/default_preview.jpg', max_length=255, null=True, upload_to='works', verbose_name='Превью'),
         ),
     ]

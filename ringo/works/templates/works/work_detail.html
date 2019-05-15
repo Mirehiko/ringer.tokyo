@@ -51,7 +51,7 @@
 
 	textData.push({
 		type: 'image',
-		src: '{% if work.poster %} {{ work.poster.url }} {% else %}/media/default.jpg{% endif %}',
+		src: '{% if work.poster %} {{ work.poster.url }} {% else %}/static/files/default_poster.jpg{% endif %}',
 		alt: '{{ work.title }}',
 		link: '',
 	});
@@ -78,7 +78,7 @@
   					src: '{{video.url}}',
   					id: 'video{{ video.id }}',
   					color: '',
-  					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/media/default.jpg{% endif %}',
+  					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/static/files/default_preview.png{% endif %}',
   				});
     		{% else %}
   				textData.push({
@@ -88,7 +88,7 @@
   					srcwebm: '{{video.url}}',
   					id: 'video{{ video.id }}',
   					color: '',
-  					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/media/default.jpg{% endif %}',
+  					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/static/files/default_preview.png{% endif %}',
   				});
     		{% endif %}
     	{% endfor %}

@@ -33,9 +33,9 @@
         category: '{% for category in work.category.all %} {{ category }}{% endfor %}',
         preview: {
           type: 'image',
-          src: '{% if work.poster %} {{ work.poster.url }} {% else %}/media/default.jpg{% endif %}',
+          src: '{% if work.poster %} {{ work.poster.url }} {% else %}/static/files/default_poster.jpg{% endif %}',
         },
-        poster: '{% if work.poster %} {{ work.poster.url }} {% else %}/media/default.jpg{% endif %}',
+        poster: '{% if work.poster %} {{ work.poster.url }} {% else %}/static/files/default_poster.jpg{% endif %}',
         id: '{{ work.id }}',
       });
 			// console.log('ctid:{% for category in work.category.all %} {{ category.id }}{% endfor %}')
