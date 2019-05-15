@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Work, WorkImages, News, Category, User, WorkVideo
+from .models import Work, WorkImages, News, Category, User, WorkVideo, Default
 
 from multiupload.admin import MultiUploadAdmin
 from django.urls import reverse
@@ -151,6 +151,7 @@ admin.site.register(Work, WorkAdmin)
 admin.site.register(News)
 admin.site.register(Category)
 admin.site.register(User)
+admin.site.register(Default)
 
 # fields = ( 'image_tag', )
 # readonly_fields = ('image_tag',)

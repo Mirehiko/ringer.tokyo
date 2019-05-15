@@ -5,6 +5,30 @@ from django.db import models
 from django.utils import timezone
 
 
+def default_poster(instance, filename):
+    print(filename,'============ file name =========')
+    parts = filename.rsplit('.', 1)
+    new_filename = 'default_poster'
+    # new_filename = hashlib.sha224(filename.encode('utf-8'))
+    # return 'default/%s.%s' % (new_filename.hexdigest(), parts[1])
+    return 'default/%s.%s' % (new_filename, parts[1])
+
+def default_preview(instance, filename):
+    print(filename,'============ file name =========')
+    parts = filename.rsplit('.', 1)
+    new_filename = 'default_preview'
+    # new_filename = hashlib.sha224(filename.encode('utf-8'))
+    # return 'default/%s.%s' % (new_filename.hexdigest(), parts[1])
+    return 'default/%s.%s' % (new_filename, parts[1])
+
+def default_icon(instance, filename):
+    print(filename,'============ file name =========')
+    parts = filename.rsplit('.', 1)
+    new_filename = 'icon'
+    # new_filename = hashlib.sha224(filename.encode('utf-8'))
+    # return 'default/%s.%s' % (new_filename.hexdigest(), parts[1])
+    return 'default/%s.%s' % (new_filename, parts[1])
+
 
 class Category(models.Model):
     category = models.CharField(max_length=200, verbose_name='Категория', blank=False)
@@ -111,8 +135,10 @@ class News(models.Model):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
 
+
+
 class Default(models.Model):
     site_name = models.CharField(max_length=200, default='', verbose_name='Название сайта')
-    site_icon = models.ImageField(upload_to='system', default='default.jpg', verbose_name='Иконка сайта', max_length=255)
-    poster_default = models.ImageField(upload_to='system', default='default.jpg', verbose_name='Изображение по умолчанию', max_length=255)
-    video_preview_default = models.ImageField(upload_to='system', default='default.jpg', verbose_name='Превью видео по умолчанию', max_length=255)
+    site_icon = models.ImageField(upload_to=default_icon, default='default.jpg', verbose_name='Иконка сайта', max_length=255)
+    poster_default = models.ImageField(upload_to=default_poster, default='default.jpg', verbose_name='Изображение по умолчанию', max_length=255)
+    video_preview_default = models.ImageField(upload_to=default_preview, default='default.jpg', verbose_name='Превью видео по умолчанию', max_length=255)
