@@ -40,12 +40,13 @@ class MultiUploadAdmin(admin.ModelAdmin):
     multiupload_list = True
     multiupload_form = True
     # integer in bytes
-    multiupload_maxfilesize = 3 * 2 ** 20  # 3 Mb
+    multiupload_maxfilesize = 15 * 2 ** 20 # 10 Mb
     multiupload_minfilesize = 0
     # tuple with mimetype accepted
     multiupload_acceptedformats = ("image/jpeg",
                                    "image/pjpeg",
-                                   "image/png", )
+                                   "image/png",
+                                   "image/jpg" )
 
     multiupload_view_context = {}
 

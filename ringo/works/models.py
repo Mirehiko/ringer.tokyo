@@ -25,8 +25,8 @@ def default_icon(instance, filename):
 
 
 class Category(models.Model):
-    category = models.CharField(max_length=200, verbose_name='Категория', blank=False)
-    category_url = models.CharField(max_length=200, verbose_name='Ссылка на категорию', blank=False)
+    category = models.CharField(max_length=200, default='', verbose_name='Категория', blank=False)
+    category_url = models.CharField(max_length=200, default='', verbose_name='Ссылка на категорию', blank=False)
 
     def __str__(self):
         return self.category
@@ -57,12 +57,8 @@ class Work(models.Model):
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
-    # def getCategoryList(self):
-    #     if self.category.all().count() > 0:
-    #         # print(self.category.all())
-    #         return self.category.all()
-    #     else:
-    #         return ''
+    def get_absolute_url(self):
+        return "/%i" % self.id
 
     def getPoster(self):
         if not self.image:
@@ -75,6 +71,15 @@ class Work(models.Model):
             height=obj.headshot.height,
         )
     )
+
+    def save(self, *args, **kwargs):
+        try:
+            this = Work.objects.get(id=self.id)
+            if this.poster != self.poster:
+                this.poster.delete()
+        except: pass
+        super(Work, self).save(*args, **kwargs)
+
 
 
 class WorkImages(models.Model):

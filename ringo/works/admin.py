@@ -31,36 +31,6 @@ class VideoInlineWork(admin.TabularInline):
     extra = 0
 
 
-# class WorkForm(forms.ModelForm):
-#     class Meta:
-#         model = Work
-#         fields = ['title', 'description', 'launch_date', 'poster', 'user', 'category']
-
-
-# class PosterForm(forms.ModelForm):
-#     def __init__(self, *args, **kwargs):
-#         super(PosterForm, self).__init__(*args, **kwargs)
-#         instance = getattr(self, 'instance', None)
-#         self.fields['added_date'].initial = initial=timezone.now()
-#         if self.instance.id:
-#             self.fields['not_active_author'].initial = Author.objects.filter(active=False, photoalbum__id=self.instance.id)
-#             self.fields['author_photo_not_active'].initial = [a.author for a in Author.ph_author_photo.through.objects.filter(photoalbum_id=self.instance.id,author__photoreporter=False)]
-#         user = self.current_user
-#         if not user.has_perm('frontend.can_socialnet'):
-#             self.fields['socialnet'].disabled = True
-
-#     class MyModelMultipleChoiceField(forms.ModelMultipleChoiceField):
-#         def label_from_instance(self, obj):
-#             return "%s, %s" % (obj.last_name, obj.first_name)
-
-#     title_untypo = forms.CharField(label=u'Заголовок', widget=forms.TextInput(attrs={ 'size': 120 }))
-#     image_desc = forms.CharField(label=u'Подпись к фото', required=False, help_text=u'Что изображено, автор, правообладатель и т.п.', widget=forms.TextInput(attrs={ 'size': 120 }))
-
-#     class Meta:
-#         model = Poster
-#         fields = '__all__'
-
-
 class WorkAdmin(MultiUploadAdmin):
 
     inlines = [PosterInlineWork, VideoInlineWork]
@@ -82,6 +52,7 @@ class WorkAdmin(MultiUploadAdmin):
     actions_on_bottom = True
     multiupload_list = False
     multiupload_maxfilesize = 15 * 2 ** 20 # 10 Mb
+    view_on_site = True
 
     # clear cache signal
     def save_model(self, request, obj, form, change):

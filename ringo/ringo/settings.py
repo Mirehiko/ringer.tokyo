@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'works.apps.WorksConfig',
     'django.contrib.admin',
     'django.contrib.auth',
+    # 'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
