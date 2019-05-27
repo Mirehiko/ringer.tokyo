@@ -161,7 +161,7 @@ class WorkImages(models.Model):
 
 class WorkVideo(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Название')
-    url = models.TextField(max_length=1500, default='', verbose_name='Ссылка на видеофайл')
+    url = models.TextField(max_length=1500, default='', verbose_name='Ссылка на видеофайл', blank=True)
     preview = models.ImageField(null=True, upload_to=content_file_name_related, verbose_name='Превью', max_length=255, blank=True)
     video = models.FileField(null=True, upload_to=content_file_name_related_video, verbose_name='Видеофайл', max_length=255, blank=True)
 

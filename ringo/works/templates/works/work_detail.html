@@ -84,8 +84,8 @@
   				textData.push({
   					type: 'video',
   					title: '{{video.title}}',
-  					srcMP4: '{{video.url}}',
-  					srcwebm: '{{video.url}}',
+  					srcMP4: '{% if video.video and not video.is_html %}{{ video.video.url }}{% else %}{{ video.url }}{% endif %}',
+  					srcwebm: '{% if video.video and not video.is_html %}{{ video.video.url }}{% else %}{{ video.url }}{% endif %}',
   					id: 'video{{ video.id }}',
   					color: '',
   					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/static/files/default_preview.png{% endif %}',

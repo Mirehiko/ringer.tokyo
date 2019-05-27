@@ -268,14 +268,13 @@ $(document).on("keyup", function(e) {
 $("body").delegate(".fullView__close", "click", closeVideo);
 $("body").delegate(".prevIcon", "click", function(e) {
   e.preventDefault();
-  console.log('test1')
+  // console.log('test1')
 
   if ($(this).attr("own") == "true") {
     drawOwnVideo(videoObj[$(this).attr("vid")]);
-    console.log('test2-1')
+    // console.log('test2-1')
   } else {
-    console.log('test2-2')
-
+    // console.log('test2-2')
     drawVideo($(this).attr("vid"));
   }
 
