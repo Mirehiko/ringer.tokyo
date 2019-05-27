@@ -1,5 +1,6 @@
 import datetime
-
+import os
+from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 from django.db import models
 from django.utils import timezone
@@ -12,6 +13,11 @@ def content_file_name(instance, filename):
 def content_file_name_related(instance, filename):
     parts = filename.rsplit('.', 1)
     new_filename = 'Work%sImage%s.%s' % (instance.work.id, instance.id, parts[1])
+    return 'works/work_{0}/{1}'.format(instance.work.id, new_filename)
+
+def content_file_name_related_video(instance, filename):
+    parts = filename.rsplit('.', 1)
+    new_filename = 'Work%sVideo%s.%s' % (instance.work.id, instance.id, parts[1])
     return 'works/work_{0}/{1}'.format(instance.work.id, new_filename)
 
 def default_poster(instance, filename):
@@ -84,17 +90,29 @@ class Work(models.Model):
     def save(self, *args, **kwargs):
         try:
             this = Work.objects.get(id=self.id)
-            if this.poster != self.poster:
-                this.poster.delete()
-        except: pass
-        try:
-            wi = WorkImages.objects.get(id=self.id)
-            if this.poster != self.poster:
-                this.poster.delete()
-        except: pass
+            try:
+                if this.poster != self.poster:
+                    this.poster.delete()
+            except Exception as err:
+                print('Poster save error')
+                print(err)
+        except Exception as err:
+            print('Object does\'t exist')
 
         super(Work, self).save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        try:
+            poster_file = Work.objects.get(pk=self.pk).poster
+            if poster_file:
+                if os.path.isfile(poster_file.path):
+                    os.remove(poster_file.path)
+        except ObjectDoesNotExist as err:
+            print('Poster file does\'t exist')
+            return False
+
+
+        super(Work, self).delete(*args,**kwargs)
 
 
 class WorkImages(models.Model):
@@ -117,16 +135,36 @@ class WorkImages(models.Model):
     def save(self, *args, **kwargs):
         try:
             this = WorkImages.objects.get(id=self.id)
-            this.url.delete()
-            # if this.url != self.url:
-        except: pass
+            try:
+                if this.url != self.url:
+                    this.url.delete()
+            except Exception as err:
+                print('Image save error')
+                print(err)
+        except Exception as err:
+            print('Object does\'t exist')
+
         super(WorkImages, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        try:
+            image_file = Work.objects.get(pk=self.pk).url
+            if image_file:
+                if os.path.isfile(image_file.path):
+                    os.remove(image_file.path)
+        except ObjectDoesNotExist as err:
+            print('Image file does\'t exist')
+            return False
+
+        super(WorkImages, self).delete(*args,**kwargs)
 
 
 class WorkVideo(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Название')
     url = models.TextField(max_length=1500, default='', verbose_name='Ссылка на видеофайл')
-    preview = models.ImageField(null=True, upload_to='works', verbose_name='Превью', max_length=255, blank=True)
+    preview = models.ImageField(null=True, upload_to=content_file_name_related, verbose_name='Превью', max_length=255, blank=True)
+    video = models.FileField(null=True, upload_to=content_file_name_related_video, verbose_name='Видеофайл', max_length=255, blank=True)
+
     work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
 
     is_html = models.BooleanField(verbose_name='HTML-код', default=False, blank=True)
@@ -135,6 +173,49 @@ class WorkVideo(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        try:
+            this = WorkVideo.objects.get(id=self.id)
+            try:
+                if this.preview != self.preview:
+                    this.preview.delete()
+            except Exception as err:
+                print('Image save error')
+                print(err)
+
+            try:
+                if this.video and this.video != self.video:
+                    this.video.delete()
+                    # self.url = self.video.url
+            except Exception as err:
+                print('Video save error')
+                print(err)
+        except Exception as err:
+            print('Object does\'t exist')
+
+        super(WorkVideo, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        try:
+            preview_file = WorkVideo.objects.get(pk=self.pk).preview
+            if preview_file:
+                if os.path.isfile(preview_file.path):
+                    os.remove(preview_file.path)
+        except ObjectDoesNotExist as err:
+            print('Preview file does\'t exist')
+            return False
+
+        try:
+            video_file = WorkVideo.objects.get(pk=self.pk).video
+            if video_file:
+                if os.path.isfile(video_file.path):
+                    os.remove(video_file.path)
+        except ObjectDoesNotExist:
+            print('Video file does\'t exist')
+            return False
+
+        super(WorkVideo, self).delete(*args,**kwargs)
 
 
 class NewsStatus(models.Model):

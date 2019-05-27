@@ -19,6 +19,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='workimages',
             name='url',
-            field=models.ImageField(blank=True, default='default.jpg', max_length=255, null=True, upload_to=works.models.content_file_name, verbose_name='Изображение'),
+            field=models.ImageField(blank=True, default='default.jpg', max_length=255, null=True, upload_to=works.models.content_file_name_related, verbose_name='Изображение'),
         ),
+
     ]
