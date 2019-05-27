@@ -4,6 +4,15 @@ from datetime import datetime
 from django.db import models
 from django.utils import timezone
 
+def content_file_name(instance, filename):
+    parts = filename.rsplit('.', 1)
+    new_filename = '%s.%s' % ('poster', parts[1])
+    return 'works/work_{0}/{1}'.format(instance.id, new_filename)
+
+def content_file_name_related(instance, filename):
+    parts = filename.rsplit('.', 1)
+    new_filename = 'Work%sImage%s.%s' % (instance.work.id, instance.id, parts[1])
+    return 'works/work_{0}/{1}'.format(instance.work.id, new_filename)
 
 def default_poster(instance, filename):
     print(filename,'============ file name =========')
@@ -46,7 +55,7 @@ class Work(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     # category = models.ForeignKey(Category, on_delete=models.CASCADE)
     launch_date = models.DateTimeField(verbose_name='Дата запуска')
-    poster = models.ImageField(null=True, upload_to='works', verbose_name='Постер', max_length=255, blank=True)
+    poster = models.ImageField(null=True, upload_to=content_file_name, verbose_name='Постер', max_length=255, blank=True)
 
     user = models.ManyToManyField(User, verbose_name='Компания', blank=True)
     category = models.ManyToManyField(Category, verbose_name='Категория', blank=True)
@@ -78,13 +87,19 @@ class Work(models.Model):
             if this.poster != self.poster:
                 this.poster.delete()
         except: pass
+        try:
+            wi = WorkImages.objects.get(id=self.id)
+            if this.poster != self.poster:
+                this.poster.delete()
+        except: pass
+
         super(Work, self).save(*args, **kwargs)
 
 
 
 class WorkImages(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Заголовок')
-    url = models.ImageField(null=True, upload_to='works', default='default.jpg', verbose_name='Изображение', max_length=255, blank=True)
+    url = models.ImageField(null=True, upload_to=content_file_name_related, default='default.jpg', verbose_name='Изображение', max_length=255, blank=True)
     link = models.CharField(max_length=500, default='', verbose_name='Внешняя ссылка', blank=True)
     work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
 
@@ -98,6 +113,14 @@ class WorkImages(models.Model):
             height=obj.headshot.height,
         )
     )
+
+    def save(self, *args, **kwargs):
+        try:
+            this = WorkImages.objects.get(id=self.id)
+            this.url.delete()
+            # if this.url != self.url:
+        except: pass
+        super(WorkImages, self).save(*args, **kwargs)
 
 
 class WorkVideo(models.Model):
