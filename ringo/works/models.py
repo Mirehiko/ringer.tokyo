@@ -117,7 +117,7 @@ class Work(models.Model):
 
 class WorkImages(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Заголовок')
-    url = models.ImageField(null=True, upload_to=content_file_name_related, default='default.jpg', verbose_name='Изображение', max_length=255, blank=True)
+    url = models.ImageField(null=True, upload_to=content_file_name_related, verbose_name='Изображение', max_length=255, blank=True)
     link = models.CharField(max_length=500, default='', verbose_name='Внешняя ссылка', blank=True)
     work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
 
@@ -148,7 +148,7 @@ class WorkImages(models.Model):
 
     def delete(self, *args, **kwargs):
         try:
-            image_file = Work.objects.get(pk=self.pk).url
+            image_file = WorkImages.objects.get(pk=self.pk).url
             if image_file:
                 if os.path.isfile(image_file.path):
                     os.remove(image_file.path)
@@ -168,8 +168,6 @@ class WorkVideo(models.Model):
     work = models.ForeignKey(Work, on_delete=models.CASCADE, blank=True, default='')
 
     is_html = models.BooleanField(verbose_name='HTML-код', default=False, blank=True)
-    # is_url = models.BooleanField(verbose_name='Ссылка', default=False, blank=True)
-    # is_upload =
 
     def __str__(self):
         return self.title
@@ -187,7 +185,6 @@ class WorkVideo(models.Model):
             try:
                 if this.video and this.video != self.video:
                     this.video.delete()
-                    # self.url = self.video.url
             except Exception as err:
                 print('Video save error')
                 print(err)

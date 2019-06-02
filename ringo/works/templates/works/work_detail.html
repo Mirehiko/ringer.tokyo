@@ -51,7 +51,7 @@
 
 	textData.push({
 		type: 'image',
-		src: '{% if work.poster %} {{ work.poster.url }} {% else %}/static/files/default_poster.jpg{% endif %}',
+		src: '{% if work.poster %}{{ work.poster.url }}{% else %}/static/files/default_poster.jpg{% endif %}',
 		alt: '{{ work.title }}',
 		link: '',
 	});
@@ -61,11 +61,12 @@
     	{% for image in images.all %}
 			textData.push({
 				type: 'image',
-				src: '/media/{{ image.url }}',
-				alt: '{{ image.title }}',
+				src: '{% if image.url %}/media/{{ image.url }}{% else %}/static/files/default_poster.jpg{% endif %}',
+				// src: '/media/{{ image.url }}',
 				link: '{% if image.link %}{{ image.link }}{% endif %}',
 			});
-			console.log('link: {{ image.link }}')
+			// console.log('link: {{ image.link }}')
+			// console.log('url: {{ image.url }}')
     	{% endfor %}
     {% endif %}
 
@@ -78,7 +79,7 @@
   					src: '{{video.url}}',
   					id: 'video{{ video.id }}',
   					color: '',
-  					previewImage: '{% if video.preview %} {{ video.preview.url }} {% else %}/static/files/default_preview.png{% endif %}',
+  					previewImage: '{% if video.preview %}{{ video.preview.url }}{% else %}/static/files/default_preview.png{% endif %}',
   				});
     		{% else %}
   				textData.push({
@@ -93,9 +94,9 @@
     		{% endif %}
     	{% endfor %}
     {% endif %}
-    console.log('textData:',textData)
-    console.log('next: {{next}}',)
-    console.log('prev: {{prev}}',)
+    // console.log('textData:',textData)
+    // console.log('next: {{next}}',)
+    // console.log('prev: {{prev}}',)
 
   </script>
 {% endblock %}
