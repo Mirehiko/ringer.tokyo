@@ -314,6 +314,6 @@ function drawOwnVideo(data) {
 }
 
 function drawVideo(id) {
-  let text_elem = $.parseHTML(videoObj[id].src)[0].data;
+  var text_elem = $.parseHTML(videoObj[id].src)[0].data;
   $("#videoContent")[0].innerHTML = text_elem;
 }

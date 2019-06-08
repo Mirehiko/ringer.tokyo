@@ -81,7 +81,7 @@ $('.toggleList__item').on('click', function (e) {
     dataType: 'json',
     success: function (data) {
       if (data.length) {
-        let db = data.slice()
+        var db = data.slice()
         console.log(db)
         // console.log(motionObj)
         if (windowObj.width() >= 768) {
