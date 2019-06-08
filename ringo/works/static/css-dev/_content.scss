@@ -1,0 +1,117 @@
+// @import 'common';
+// @import 'header';
+
+.videoBox {
+	margin: 0 -30px 30px;
+}
+.videoBox video {
+	width: 100%;
+}
+.intro {
+	margin: 0 0 30px;
+	font-size: 18px;
+}
+.examples {
+	font-size: 0;
+	margin: 0 -10px 30px;
+}
+.examples > * {
+	font-size: initial;
+	display: inline-block;
+}
+.expl {
+	padding: 0 10px;
+	width: 50%;
+	margin: 0 0 20px;
+}
+.explBox {
+	position: relative;
+	width: 100%;
+	padding-bottom: 50%;
+	background-color: #ccc;
+    background-position: center;
+    background-size: cover;
+}
+.expl:nth-child(1) .explBox {
+	background: url(../images/sao_kirito.jpg);
+    background-position: center;
+    background-size: cover;
+}
+.expl:nth-child(2) .explBox {
+	background: url(../images/ff15.jpg);
+    background-position: center;
+    background-size: cover;
+}
+.expl:nth-child(3) .explBox {
+	background: url(../images/ff7.jpg);
+    background-position: center;
+    background-size: cover;
+}
+.expl:nth-child(4) .explBox {
+	background: url(../images/kirito-asuna.png);
+    background-position: center;
+    background-size: cover;
+}
+.explContentBox {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	padding: 30px;
+	font-size: 18px;
+}
+.explContent {
+	overflow: hidden;
+	height: 100%;
+	position: relative;
+	mix-blend-mode: difference;
+}
+.explTitle {
+	margin: 0 0 15px;
+}
+.explText {
+	margin: 0;
+	position: absolute;
+	bottom: 0;
+}
+.company {
+	margin-bottom: 50px;
+}
+.company a {
+	text-decoration: underline;
+	display: block;
+}
+.company .globalCompany {
+	font-size: 24px;
+	margin: 0 0 30px;
+}
+.company .otherCompany {
+	font-size: 20px;
+	margin: 0 0 30px;
+}
+
+.adress p {
+	margin: 0 0 5px;
+	font-size: 18px;
+}
+.access .adress  {
+	margin-bottom: 30px;
+}
+.access .map {
+	margin: 0 -30px;
+}
+@media screen and (min-width: 0px) {
+	.expl {
+		width: 100%;
+	}
+	.videoBox {
+		margin: 0 -10px 30px;
+	}
+}
+@media screen and (min-width: 768px) {
+	.expl {
+		width: 50%;
+	}
+	.videoBox {
+	    margin: 0 -30px 30px;
+	}
+}
