@@ -56,6 +56,7 @@ class MotionGlob {
     this.itemSpeed = options.speed || 1; // скорость движения в пикселях
 
     this.original = options.original;
+    this.key_delta = 10;
 	}
 
 	init() {
@@ -113,6 +114,21 @@ class MotionGlob {
         self.onpause = false;
       }
 		});
+
+    $(window).on('keydown', (e) => {
+      this.onpause = true;
+      if (e.keyCode == 37 || e.keyCode == 38) {
+        self.itemPosition += this.key_delta;
+        self.replaceObjects('prev');
+      }
+      else if (e.keyCode == 39 || e.keyCode == 40) {
+        self.itemPosition -= this.key_delta;
+        self.replaceObjects('next');
+      }
+    });
+    $(window).on('keyup', (e) => {
+      this.onpause = false;
+    });
 
 		if ( this.onhover == 'pause' ) {
 
