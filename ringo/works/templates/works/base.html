@@ -1,5 +1,7 @@
 {% load static %}
-{% with site_name="Developer Version" %}
+{% with site_name="Developer Version" css_version='.min.css' version='2019_06_08_001' %}
+<!--Версия файлов (.min.css/.css) -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +39,7 @@
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous" defer></script>
-	<script type="text/javascript" src="{% static 'js/main.old.js' %}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'js/main.old.js' %}?v{{ version }}" charset="utf-8" defer></script>
 
 	{% block js_data %}{% endblock %}
 

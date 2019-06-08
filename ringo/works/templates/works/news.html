@@ -5,7 +5,7 @@
 {% block title %}Новости{% endblock %}
 
 {% block css %}
-	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/newspage.css' %}">
+	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/newspage' %}{{ css_version }}?v{{ version }}">
 {% endblock %}
 
 {% block breadcrumbs %}

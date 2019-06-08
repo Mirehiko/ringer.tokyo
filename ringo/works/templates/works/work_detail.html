@@ -7,7 +7,7 @@
 {% block css %}
   <!-- <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/content.css' %}"> -->
   <!-- <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'works/css/talent.css' %}"> -->
-  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/workpage.css' %}">
+  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/workpage' %}{{ css_version }}?v{{ version }}">
 {% endblock %}
 
 {% block header %}
@@ -115,8 +115,8 @@
 	  .vjs-default-skin .vjs-control-bar { font-size: 69% }
 	</style>
 
-	<script type="text/javascript" src="{% static 'js/jquery-mousewheel-3.1.12/jquery.mousewheel.js' %}" charset="utf-8" defer></script>
-	<script type="text/javascript" src="{% static 'js/scrollBehaviorGlob.js' %}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'js/jquery-mousewheel-3.1.12/jquery.mousewheel.js' %}?v{{ version }}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'js/scrollBehaviorGlob.js' %}?v{{ version }}" charset="utf-8" defer></script>
 	<!-- <script type="text/javascript" src="{% static 'js/scrollBehaviorGlob.old.js' %}" charset="utf-8" defer></script> -->
-	<script type="text/javascript" src="{% static 'js/works.old.js' %}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'js/works.old.js' %}?v{{ version }}" charset="utf-8" defer></script>
 {% endblock %}
