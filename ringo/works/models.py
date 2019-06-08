@@ -224,6 +224,7 @@ class NewsStatus(models.Model):
 
 class News(models.Model):
     title = models.CharField(max_length=200, default='', verbose_name='Заголовок')
+    link_on_news = models.CharField(max_length=255, default='', verbose_name='Ссылка на новость',blank=True)
     description = models.TextField(max_length=500, default='', verbose_name='Описание', blank=True)
     # status = models.ForeignKey(NewsStatus, on_delete=models.CASCADE, blank=True, default='')
     pub_date = models.DateTimeField(auto_now_add=True)
