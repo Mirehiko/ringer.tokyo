@@ -4,7 +4,6 @@
 {% block title %}Контакты{% endblock %}
 
 {% block css %}
-  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/content.css' %}">
   <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/contact.css' %}">
 {% endblock %}
 
@@ -24,12 +23,6 @@
         <input type="text" name="mail" class="contactForm__text" placeholder="Mail">
         <input type="text" name="website" class="contactForm__text" placeholder="Website">
         <div class="contactForm__subject">
-          <!-- <p class="text is-change">
-            <span class="default">Subject</span>
-            <span class="lang-en">CONSULT</span>
-            <span class="lang-ja">ご相談</span>
-          </p>
-          <img class="icon" src="/assets/img/cmn/icon_down.svg"> -->
           <select class="contactForm__select">
             <option value="ご相談" data-en="CONSULT" data-ja="ご相談" selected="">CONSULT</option>
             <option value="リール" data-en="REEL" data-ja="リール">REEL</option>
