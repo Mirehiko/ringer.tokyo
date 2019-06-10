@@ -1,0 +1,1 @@
+from ringo.settings.common import *

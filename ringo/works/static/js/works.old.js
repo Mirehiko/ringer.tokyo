@@ -148,16 +148,20 @@ function drawIntegratedVideoItem(data) {
 function drawInfoItem(data) {
   var item = document.createElement("div");
   $(item).addClass("workItem infoItem");
+
   var wraper = document.createElement("div");
   $(wraper).addClass("infoWrapper");
+
   var workTitle = document.createElement("div");
   $(workTitle).addClass("paramTitle main");
   $(workTitle).text("Title");
   var workTitle__value = document.createElement("h1");
   $(workTitle__value).addClass("paramValue main");
   $(workTitle__value).text(data.title);
+
   var itemEtc = document.createElement("div");
   $(itemEtc).addClass("itmEtc");
+
   var workLaunch = document.createElement("div");
   $(workLaunch).addClass("paramLine");
   var workLaunch__title = document.createElement("span");
@@ -168,6 +172,7 @@ function drawInfoItem(data) {
   $(workLaunch__value).text(data.launch);
   $(workLaunch).append(workLaunch__title);
   $(workLaunch).append(workLaunch__value);
+
   var workCategory = document.createElement("div");
   $(workCategory).addClass("paramLine");
   var workCategory__title = document.createElement("span");
@@ -178,6 +183,8 @@ function drawInfoItem(data) {
   $(workCategory__value).text(data.category);
   $(workCategory).append(workCategory__title);
   $(workCategory).append(workCategory__value);
+
+
   var workClient = document.createElement("div");
   $(workClient).addClass("paramLine");
   var workClient__title = document.createElement("span");
@@ -188,15 +195,19 @@ function drawInfoItem(data) {
   $(workClient__value).text(data.client);
   $(workClient).append(workClient__title);
   $(workClient).append(workClient__value);
+
   $(itemEtc).append(workLaunch);
   $(itemEtc).append(workCategory);
   $(itemEtc).append(workClient);
+
   var header = document.createElement("div");
   $(header).append(workTitle);
   $(header).append(workTitle__value);
+
   $(item).append(wraper);
   $(wraper).append(header);
   $(wraper).append(itemEtc);
+
   return item;
 }
 
@@ -228,6 +239,7 @@ function desktopView() {
       pauseOnScroll: false,
       original: $(".workInfo")
     });
+
     var contentWidth = $(".infoItem").width();
     $(".imgcfg")
       .one("load", function() {
@@ -296,7 +308,7 @@ function drawOwnVideo(data) {
   var video = '\n\t\t<video id="'
     .concat(
       data.id,
-      '" class="video-js vjs-default-skin" controls\n\t\t preload="auto" width="640" height="264" poster="'
+      '" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" poster="'
     )
     .concat(data.previewImage, '"\n\t\t data-setup="{}" title="')
     .concat(data.title, '">\n\t\t ')
@@ -311,9 +323,26 @@ function drawOwnVideo(data) {
       '\n\t\t <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>\n\t\t</video>'
     );
   $("#videoContent").append(video);
+
+  var player = videojs(data.id, {
+    controls: true,
+    liveui: false,
+  });
+  player.src([
+    {type: "video/mp4", src: data.srcMP4},
+    {type: "video/webm", src: data.srcwebm},
+  ]);
+  player.ready(function() {
+    player.play();
+    player.pause();
+  });
 }
 
 function drawVideo(id) {
   var text_elem = $.parseHTML(videoObj[id].src)[0].data;
   $("#videoContent")[0].innerHTML = text_elem;
 }
+/*
+Hello, Gary.
+I use you video.js framework and it's realy cool. But i meet some problems with it. I try to use framework for dynamic data and when i get instance of player, it show me my video file, but as live track, but not as restricted file. How can i fix it. Thanks you earlier
+*/

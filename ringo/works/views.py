@@ -25,23 +25,6 @@ def index(request):
     return render(request, 'works/home.html', context )
 
 
-# def category(request, category):
-#     category_name = request.GET.get('category', None)
-#     category_id = Category.objects.get(category_url=category).id
-#
-#     try:
-#         work_list = Work.objects.filter(category = category_id).order_by('-pub_date')
-#     except Work.DoesNotExist:
-#         raise Http404("Work does not exist")
-#
-#     category_list = Category.objects.all()
-#
-#     context = {
-#         'work_list': work_list,
-#         'category_list': category_list,
-#     }
-#
-#     return render(request, 'works/home.html', context )
 
 def category(request):
     category_name = request.GET.get('category', None)

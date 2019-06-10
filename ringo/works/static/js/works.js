@@ -47,8 +47,16 @@ function drawContent(data) {
 
 function drawImageItem(data) {
 	let item = '<div class="workItem">';
-	item += '<img class="workImage workContent imgcfg" src="' + data.src;
-	item += '" alt="' + data.alt + '"></div>';
+	if ( data.link ) {
+		item += '<a href="' + data.link + '" target="_blank">';
+		item += '<img class="workImage workContent imgcfg" src="' + data.src;
+		item += '" alt="' + data.alt + '"></a></div>';
+	}
+	else {
+		item += '<img class="workImage workContent imgcfg" src="' + data.src;
+		item += '" alt="' + data.alt + '"></div>';
+	}
+
 	return item;
 }
 
@@ -202,8 +210,6 @@ function desktopView() {
       }
     });
 
-
-
 		setTimeout(function() {motionObj.init();}, 1000);
 	} else {
 		motionObj.render();
@@ -255,8 +261,22 @@ function drawOwnVideo(data) {
 		 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 		</video>`;
 
+	// let video = `
+ //  <video id='${ data.id }' class='video-js' controls preload='auto' width='640' height='264'
+ //  poster='${ data.previewImage }' data-setup='{}' title="${ data.title }">
+	// 	${ data.srcMP4 ? '<source src="' + data.srcMP4 + '" type=app/video/mp4">' : '' }
+	// 	${ data.srcwebm ? '<source src="' + data.srcwebm + '" type=app/video/webm">' : '' }
+ //    <p class='vjs-no-js'>
+ //      To view this video please enable JavaScript, and consider upgrading to a web browser that
+ //      <a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
+ //    </p>
+ //  </video>
+	// `;
+
 	$('#videoContent').append(video);
 }
 function drawVideo(id) {
-	$('#videoContent').append(videoObj[id].src);
+	// $('#videoContent').append(videoObj[id].src);
+  var text_elem = $.parseHTML(videoObj[id].src)[0].data;
+  $("#videoContent")[0].innerHTML = text_elem;
 }
