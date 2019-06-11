@@ -13,7 +13,6 @@ from .models import WorkImages, WorkVideo
 
 
 def index(request):
-
     work_list = Work.objects.order_by('-pub_date')
     category_list = Category.objects.all()
 
@@ -79,30 +78,18 @@ def contacts(request):
 
 
 def detail(request, work_id):
-    images = []
     try:
         work = Work.objects.get(pk=work_id)
-        images = WorkImages.objects.filter(work=work_id)
-        videofiles = WorkVideo.objects.filter(work=work_id)
-
-        stores = Work.objects.all()
-        try:
-            next_obj = Work.objects.get(pk=work_id + 1)
-        except Work.DoesNotExist:
-            next_obj = stores.first()
-
-        try:
-            prev_obj = Work.objects.get(pk=work_id - 1)
-        except Work.DoesNotExist:
-            prev_obj = stores.last()
-
     except Work.DoesNotExist:
         raise Http404("Work does not exist")
 
+    next_obj = Work.objects.filter(pub_date__gt=work.pub_date).first() or Work.objects.first()
+    prev_obj = Work.objects.filter(pub_date__lt=work.pub_date).last() or Work.objects.last()
+
     return render(request, 'works/work_detail.html', {
-        'work': work, 
-        'images': images, 
-        'videofiles': videofiles,
+        'work': work,
+        'images': work.images.all(),
+        'videofiles': work.videos.all(),
         'prev': prev_obj.id,
         'next': next_obj.id,
     })
