@@ -78,3 +78,39 @@ function openIcon(icon) {
 function closeIcon(icon) {
   icon.css('display', 'none');
 }
+
+function sendEmail() {
+  let data = {};
+
+  data['name'] = $('#name').val();
+  data['company'] = $('#company').val();
+  data['email'] = $('#email').val();
+  data['website'] = $('#website').val();
+  data['reason'] = $('#reason option:selected').val();
+  data['message'] = $('#message').val();
+
+  // $('.contactForm__send').addClass('is-ok');
+  // if(is_all_exist) {
+    // $('.contactForm__send').addClass('is-ok');
+    //send email
+  // }
+  // else {
+  //   console.log('Заполните поля')
+  // }
+  $.ajax({
+    url: '/api/send_email_to_admin/12/',
+    type: "POST",
+    data: data,
+    dataType: "json",
+    success: function(response) {
+      if (response == 'success') {
+        $('.contactForm__send').addClass('is-complete');
+      }
+      else {
+        alert('Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.')
+      }
+      console.log('response:',response);
+    }
+  });
+
+}

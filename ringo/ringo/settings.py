@@ -30,7 +30,8 @@ DEBUG = True
 # DEBUG = False
 
 # ALLOWED_HOSTS = ['mirehiko.pythonanywhere.com']
-ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -38,7 +39,7 @@ INSTALLED_APPS = [
     'works.apps.WorksConfig',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -137,17 +138,17 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     'POST',
 #     'PUT',
 # ]
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
+# CORS_ALLOW_HEADERS = [
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# ]
 
 
 # Static files (CSS, JavaScript, Images)
@@ -165,6 +166,7 @@ CORS_ALLOW_HEADERS = [
 # }
 
 
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 # STATIC_VERSION = '20181211001'
@@ -174,3 +176,13 @@ MEDIA_URL = '/media/'
 
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), '/var/www/static/')
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST_USER = 'example@yandex.ru'
+EMAIL_HOST_PASSWORD = 'password;'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

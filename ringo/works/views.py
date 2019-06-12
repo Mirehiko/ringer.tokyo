@@ -3,6 +3,8 @@ from django.template import loader
 from django.shortcuts import render
 
 from .models import Work, News, Category, WorkImages, WorkVideo
+from django.views.decorators.csrf import csrf_protect
+
 
 
 def index(request):
@@ -60,7 +62,7 @@ def about(request):
 
     return render(request, 'works/about.html', context )
 
-
+@csrf_protect
 def contacts(request):
     latest_work_list = Work.objects.order_by('-pub_date')
     context = {
@@ -97,70 +99,3 @@ def talent(request):
     return render(request, 'works/talent.html', context )
 
 
-# def getWorksByCategory(request, category_name):
-#     category_name = request.GET.get('category', None)
-#     if category_name = 'all':
-#         work_list = Work.objects.order_by('-pub_date').exists()
-#     else:
-#         work_list = Work.objects.filter(category = category_id).order_by('-pub_date').exists()
-#
-#     data = {
-#         # 'is_taken': User.objects.filter(username__iexact=username).exists()
-#         'work_list': work_list
-#     }
-#
-#     return JsonResponse(data)
-
-
-# def workAdmin(request):
-#     work_list = Work.objects.order_by('-pub_date')
-#     category_list = Category.objects.all()
-
-#     context = {
-#         'work_list': work_list,
-#         'category_list': category_list,
-#     }
-
-#     return render(request, 'admin/list.html', context )
-
-
-# def addWork(request):
-#     category_list = Category.objects.all()
-
-#     context = {
-#         'exist': False,
-#         'category_list': category_list,
-#     }
-
-#     return render(request, 'admin/work.html', context )
-
-
-# def editWork(request, work_id):
-#     try:
-#         work = Work.objects.get(pk=work_id)
-#     except Work.DoesNotExist:
-#         raise Http404("Work does not exist")
-
-#     category_list = Category.objects.all()
-
-#     context = {
-#         'exist': True,
-#         'work': work,
-#         'category_list': category_list,
-#     }
-
-#     return render(request, 'admin/work.html', context )
-
-
-# def updateWork(request, work_id):
-
-
-# def removeWork(request, id):
-#     work_list = Work.objects.order_by('-pub_date')
-
-#     context = {
-#         'work_list': work_list,
-#         'category_list': category_list,
-#     }
-
-#     return render(request, 'admin/list.html', context )

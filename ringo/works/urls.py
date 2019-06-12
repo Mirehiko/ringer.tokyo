@@ -1,11 +1,13 @@
+from django.conf.urls import url
 from django.urls import include, path
 from . import views
 from .api.views import WorkListAPIView
+import works.api.views
 
 from django.conf.urls import include
 from .models import Work, Category
 from rest_framework import routers, serializers, viewsets
-
+from django.views.decorators.csrf import csrf_exempt
 
 # Serializers define the API representation.
 class WorksSerializer(serializers.ModelSerializer):
@@ -48,7 +50,8 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('<int:work_id>/', views.detail, name='detail'),
     path('contacts/', views.contacts, name='contacts'),
-    # path('category/$', views.category, name='category'),
     path('talent/', views.talent, name='talent'),
     path('api/', include(router.urls)),
+    # url(r'^api/send_email_to_admin/$', csrf_exempt(works.api.views.send_email_to_admin), name='send_email_to_admin'),
+    path('api/send_email_to_admin/<int:some>/', csrf_exempt(works.api.views.send_email_to_admin), name='send_email_to_admin'),
 ]
