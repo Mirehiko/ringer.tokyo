@@ -304,6 +304,18 @@ function closeVideo() {
   motionObj.render();
 }
 
+
+var player = {};
+var is_fullscreen = false, is_auto = false;
+$(document).delegate('.vjs-fullscreen-control', 'click', function(e) {
+  if (is_fullscreen && !is_auto) {
+    is_fullscreen = false;
+  }
+  else {
+    is_fullscreen = true;
+  }
+});
+
 function drawOwnVideo(data) {
   var video = '\n\t\t<video id="'
     .concat(
@@ -324,9 +336,12 @@ function drawOwnVideo(data) {
     );
   $("#videoContent").append(video);
 
-  var player = videojs(data.id, {
+  player = videojs(data.id, {
     controls: true,
     liveui: false,
+    fullscreenchnge: function() {
+      console.log('adfasdf')
+    }
   });
   player.src([
     {type: "video/mp4", src: data.srcMP4},
@@ -338,11 +353,27 @@ function drawOwnVideo(data) {
   });
 }
 
+
+
 function drawVideo(id) {
   var text_elem = $.parseHTML(videoObj[id].src)[0].data;
   $("#videoContent")[0].innerHTML = text_elem;
 }
-/*
-Hello, Gary.
-I use you video.js framework and it's realy cool. But i meet some problems with it. I try to use framework for dynamic data and when i get instance of player, it show me my video file, but as live track, but not as restricted file. How can i fix it. Thanks you earlier
-*/
+
+
+// if (window.DeviceOrientationEvent) {
+  window.addEventListener("orientationchange", function() {
+    var orientation = screen.msOrientation || screen.mozOrientation || (screen.orientation || {}).type;
+    if (orientation == 'landscape-primary' || orientation == 'landscape-secondary') {
+      $('.vjs-fullscreen-control').click();
+    }
+    else {
+      // if (!is_fullscreen) {
+        player.exitFullscreen();
+      // }
+    }
+  }, false);
+// }
+// else {
+//   console.log('Cannot acquire orientation lock: NotSupportedError: screen.orientation.lock() is not available on this device..');
+// }
