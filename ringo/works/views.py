@@ -2,14 +2,7 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import render
 
-
-from .models import Work
-from .models import News
-from .models import Category
-from .models import WorkImages, WorkVideo
-
-
-
+from .models import Work, News, Category, WorkImages, WorkVideo
 
 
 def index(request):

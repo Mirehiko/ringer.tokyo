@@ -232,7 +232,7 @@ a:hover, .iconBtnBox:hover .iconBtn {
   color: #fff;
   padding-bottom: 4px;
   border-bottom: 2px solid #fff;
-  z-index: 1;
+  z-index: 5;
 }
 
 .page {
@@ -245,8 +245,17 @@ a:hover, .iconBtnBox:hover .iconBtn {
   color: #fff;
   background-color: transparent;
   border: none;
-  font-size: 14px;
   cursor: pointer;
+}
+@media screen and (min-width: 0) {
+  .toggleBtn {
+    font-size: 4.8vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .toggleBtn {
+    font-size: 24px;
+  }
 }
 
 .toggleBtn__text {
@@ -521,7 +530,7 @@ img.logo {
     width: auto;
   }
 }
-@media screen and (min-width: 0px) {
+@media screen and (min-width: 0) {
   #pageContent {
     width: 100%;
   }
@@ -866,21 +875,48 @@ img.logo {
 
 .publicationDate {
   margin-bottom: 15px;
-  font-size: 1.5em;
   font-weight: bold;
+}
+@media screen and (min-width: 0) {
+  .publicationDate {
+    font-size: 3.2vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .publicationDate {
+    font-size: 24px;
+  }
 }
 
 .newsDate {
   opacity: 0.4;
-  margin-right: 30px;
+}
+@media screen and (min-width: 0) {
+  .newsDate {
+    margin-right: 3.7333333333vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .newsDate {
+    margin-right: 28px;
+  }
 }
 
 .newsTitle {
   color: #fff;
-  font-size: 1.5em;
-  line-height: 1.2em;
   font-weight: bold;
   text-decoration: underline;
+  line-height: 1.333333333;
+}
+@media screen and (min-width: 0) {
+  .newsTitle {
+    font-size: 4.8vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .newsTitle {
+    font-size: 24px;
+  }
 }
 
 /*# sourceMappingURL=newspage.css.map */

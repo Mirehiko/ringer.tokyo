@@ -8,17 +8,35 @@
 }
 .publicationDate {
 	margin-bottom: 15px;
-	font-size: 1.5em;
 	font-weight: bold;
+
+	@media screen and (min-width: 0) {
+    font-size: 3.2vw;
+	}
+	@media screen and (min-width: 768px) {
+    font-size: 24px;
+	}
 }
 .newsDate {
 	opacity: 0.4;
-	margin-right: 30px;
+	
+	@media screen and (min-width: 0) {
+    margin-right: 3.733333333333333vw;
+	}
+	@media screen and (min-width: 768px) {
+    margin-right: 28px;
+	}
 }
 .newsTitle {
   color: #fff;
-  font-size: 1.5em;
-  line-height: 1.2em;
   font-weight: bold;
   text-decoration: underline;
+  line-height: 1.333333333;
+
+	@media screen and (min-width: 0) {
+	  font-size: 4.8vw;
+	}
+	@media screen and (min-width: 768px) {
+	  font-size: 24px;
+	}
 }

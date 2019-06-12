@@ -245,8 +245,17 @@ a:hover, .iconBtnBox:hover .iconBtn {
   color: #fff;
   background-color: transparent;
   border: none;
-  font-size: 14px;
   cursor: pointer;
+}
+@media screen and (min-width: 0) {
+  .toggleBtn {
+    font-size: 4.8vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .toggleBtn {
+    font-size: 24px;
+  }
 }
 
 .toggleBtn__text {
@@ -521,7 +530,7 @@ img.logo {
     width: auto;
   }
 }
-@media screen and (min-width: 0px) {
+@media screen and (min-width: 0) {
   #pageContent {
     width: 100%;
   }

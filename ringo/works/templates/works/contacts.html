@@ -23,22 +23,25 @@
         <input type="text" name="mail" class="contactForm__text" placeholder="Mail">
         <input type="text" name="website" class="contactForm__text" placeholder="Website">
         <div class="contactForm__subject">
+          <div class="select__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><title>icon_down</title><path d="M24,0A24,24,0,1,0,48,24,24,24,0,0,0,24,0Zm0,40A16,16,0,1,1,40,24,16,16,0,0,1,24,40Z" style="fill:#f5f5f5"/><g style="isolation:isolate"><polygon points="30 24.055 28.458 22.513 25.088 25.858 25.088 18 22.911 18 22.911 25.858 19.542 22.513 18 24.055 24 30 30 24.055"/></g></svg>
+          </div>
           <select class="contactForm__select">
-            <option value="ご相談" data-en="CONSULT" data-ja="ご相談" selected="">CONSULT</option>
-            <option value="リール" data-en="REEL" data-ja="リール">REEL</option>
-            <option value="その他" data-en="OTHER" data-ja="その他">OTHER</option>
+            <option value="consult" selected="">Консультация</option>
+            <option value="other">Другое</option>
           </select>
         </div>
+        
         <textarea name="message" class="contactForm__message" placeholder="Message"></textarea>
+
         <a class="contactForm__send">
           <p class="text">
-            <span class="lang-en">Send</span>
-            <!-- <span class="lang-ja">送信する</span> -->
+            <span class="lang-en">Отправить</span>
           </p>
-          <!-- <img class="arw" src="/assets/img/cmn/arw_2.svg"> -->
+          <img src="{% static '/system/right.svg' %}" alt="" class="send__icon">
         </a>
         <span>
-          <a class="p-contact_policy" href="http://www.taiyokikaku.com/policy/" target="_blank">Privacy Policy</a>
+          <a class="p-contact_policy" href="http://www.taiyokikaku.com/policy/" target="_blank">Политика конфиденциальности</a>
         </span>
       </form>
 

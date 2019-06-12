@@ -232,7 +232,7 @@ a:hover, .iconBtnBox:hover .iconBtn {
   color: #fff;
   padding-bottom: 4px;
   border-bottom: 2px solid #fff;
-  z-index: 1;
+  z-index: 5;
 }
 
 .page {
@@ -245,8 +245,17 @@ a:hover, .iconBtnBox:hover .iconBtn {
   color: #fff;
   background-color: transparent;
   border: none;
-  font-size: 14px;
   cursor: pointer;
+}
+@media screen and (min-width: 0) {
+  .toggleBtn {
+    font-size: 4.8vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .toggleBtn {
+    font-size: 24px;
+  }
 }
 
 .toggleBtn__text {
@@ -521,7 +530,7 @@ img.logo {
     width: auto;
   }
 }
-@media screen and (min-width: 0px) {
+@media screen and (min-width: 0) {
   #pageContent {
     width: 100%;
   }
@@ -1009,6 +1018,16 @@ img.logo {
 .accordListItem:first-child {
   border-top: 1px solid #292929;
 }
+@media screen and (min-width: 0) {
+  .accordListItem {
+    padding-left: 4vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .accordListItem {
+    padding-left: 28px;
+  }
+}
 
 .aliTitle {
   padding: 30px 0;
@@ -1016,7 +1035,21 @@ img.logo {
 }
 
 .aliContent {
-  padding: 15px 0 30px;
+  line-height: 1.35;
+}
+@media screen and (min-width: 0) {
+  .aliContent {
+    font-size: 4.8vw;
+    padding-top: 0.6666666667vw;
+    padding-bottom: 6.6666666667vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .aliContent {
+    padding-top: 30px;
+    padding-bottom: 50px;
+    font-size: 36px;
+  }
 }
 
 .aliContent__item {

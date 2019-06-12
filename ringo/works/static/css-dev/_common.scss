@@ -163,6 +163,15 @@ a:hover, .iconBtnBox:hover .iconBtn {
   -o-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+
+  // @media screen and (min-width: 0) {
+  //   width: 10.666666666666666vw;
+  //   height: 10.666666666666666vw;
+  // }
+  // @media screen and (min-width: 768px) {
+  //   width: 48px;
+  //   height: 48px;
+  // }
 }
 
 .toggleContent {
@@ -232,8 +241,14 @@ a:hover, .iconBtnBox:hover .iconBtn {
   color: #fff;
   background-color: transparent;
   border: none;
-  font-size: 14px;
   cursor: pointer;
+
+  @media screen and (min-width: 0) {
+    font-size: 4.8vw;
+  }
+  @media screen and (min-width: 768px) {
+    font-size: 24px;
+  }
 }
 .toggleBtn__text {
   vertical-align: middle;
@@ -259,7 +274,7 @@ a:hover, .iconBtnBox:hover .iconBtn {
 
 @import 'header';
 
-@media screen and (min-width: 0px) {
+@media screen and (min-width: 0) {
   #pageContent {
     width: 100%;
   }
