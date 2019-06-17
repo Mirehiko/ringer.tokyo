@@ -299,6 +299,9 @@ function showVideo() {
 }
 
 function closeVideo() {
+  player.pause();
+  delete videojs.players[player.id_];
+  player = {};
   $(".fullView").addClass("-hidden-");
   $("#videoContent").empty();
   motionObj.render();
@@ -306,15 +309,6 @@ function closeVideo() {
 
 
 var player = {};
-var is_fullscreen = false, is_auto = false;
-$(document).delegate('.vjs-fullscreen-control', 'click', function(e) {
-  if (is_fullscreen && !is_auto) {
-    is_fullscreen = false;
-  }
-  else {
-    is_fullscreen = true;
-  }
-});
 
 function drawOwnVideo(data) {
   var video = '\n\t\t<video id="'
@@ -339,9 +333,6 @@ function drawOwnVideo(data) {
   player = videojs(data.id, {
     controls: true,
     liveui: false,
-    fullscreenchnge: function() {
-      console.log('adfasdf')
-    }
   });
   player.src([
     {type: "video/mp4", src: data.srcMP4},
@@ -351,8 +342,10 @@ function drawOwnVideo(data) {
     player.play();
     player.pause();
   });
+
 }
 
+videojs.TOUCH_ENABLED = true;
 
 
 function drawVideo(id) {
@@ -365,12 +358,15 @@ function drawVideo(id) {
   window.addEventListener("orientationchange", function() {
     var orientation = screen.msOrientation || screen.mozOrientation || (screen.orientation || {}).type;
     if (orientation == 'landscape-primary' || orientation == 'landscape-secondary') {
+      $(window).scrollTop();
+      player.focus();
       $('.vjs-fullscreen-control').click();
+      player.enterFullScreen();
+      player.enterFullWindow();
     }
     else {
-      // if (!is_fullscreen) {
-        player.exitFullscreen();
-      // }
+      player.exitFullscreen();
+      player.exitFullWindow();
     }
   }, false);
 // }
