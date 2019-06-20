@@ -299,9 +299,17 @@ function showVideo() {
 }
 
 function closeVideo() {
-  player.pause();
-  delete videojs.players[player.id_];
-  player = {};
+  try {
+    if (!$.isEmptyObject(player)) {
+      player.pause();
+      delete videojs.players[player.id_];
+      player = {};
+    }
+  }
+  catch(e) {
+    console.log('Player does\'t exist');
+  }
+  
   $(".fullView").addClass("-hidden-");
   $("#videoContent").empty();
   motionObj.render();
@@ -373,3 +381,12 @@ function drawVideo(id) {
 // else {
 //   console.log('Cannot acquire orientation lock: NotSupportedError: screen.orientation.lock() is not available on this device..');
 // }
+
+$(document).delegate('.vjs-play-control, .vjs-tech, .vjs-big-play-button', 'click', function(e) {
+  if ( player.paused() ) {
+    $('.vjs-big-play-button').show();
+  }
+  else {
+    $('.vjs-big-play-button').hide();
+  }
+});
