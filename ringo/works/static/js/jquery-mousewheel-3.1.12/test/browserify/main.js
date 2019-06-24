@@ -1,2 +1,1 @@
-var $ = require('jquery-browserify');
-require('../../jquery.mousewheel.js')($);
+"use strict";var $=require("jquery-browserify");require("../../jquery.mousewheel.js")($);
