@@ -45,6 +45,7 @@ $('.toggleBtn').on('click', function (e) {
     elemItem.find('.toggleBtn__icon').append('<i class="fas fa-caret-up"></i>');
   }
 });
+
 $('.iconBtnBox').on('click', function (e) {
   e.stopPropagation();
   $(this).toggleClass('open');
@@ -55,6 +56,7 @@ $('.iconBtnBox').on('click', function (e) {
     openIcon($(this).find('.line.is-b'));
   }
 });
+
 WINDOW.on('resize', function (e) {
   reDrawImages($('.infiniteItem'));
 });
@@ -80,7 +82,7 @@ function closeIcon(icon) {
 }
 
 function sendEmail() {
-  let data = {};
+  var data = {};
 
   data['name'] = $('#name').val();
   data['company'] = $('#company').val();

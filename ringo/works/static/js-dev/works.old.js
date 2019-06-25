@@ -319,41 +319,77 @@ function closeVideo() {
 var player = {};
 
 function drawOwnVideo(data) {
-  var video = '\n\t\t<video id="'
-    .concat(
-      data.id,
-      '" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" poster="'
-    )
-    .concat(data.previewImage, '"\n\t\t data-setup="{}" title="')
-    .concat(data.title, '">\n\t\t ')
-    .concat(
-      data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : "",
-      "\n\t\t "
-    )
-    .concat(
-      data.srcwebm
-        ? '<source src="' + data.srcwebm + '" type="video/webm">'
-        : "",
-      '\n\t\t <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>\n\t\t</video>'
-    );
-  $("#videoContent").append(video);
 
-  player = videojs(data.id, {
-    controls: true,
-    liveui: false,
-  });
-  player.src([
-    {type: "video/mp4", src: data.srcMP4},
-    {type: "video/webm", src: data.srcwebm},
-  ]);
-  player.ready(function() {
-    player.play();
-    player.pause();
-  });
+  // var video = '\n\t\t<video id="'
+  //   .concat(
+  //     data.id,
+  //     '" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" poster="'
+  //   )
+  //   .concat(data.previewImage, '"\n\t\t data-setup="{}" title="')
+  //   .concat(data.title, '">\n\t\t ')
+  //   .concat(
+  //     data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : "",
+  //     "\n\t\t "
+  //   )
+  //   .concat(
+  //     data.srcwebm
+  //       ? '<source src="' + data.srcwebm + '" type="video/webm">'
+  //       : "",
+  //     '\n\t\t <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>\n\t\t</video>'
+  //   );
+  // $("#videoContent").append(video);
 
+  // player = videojs(data.id, {
+  //   controls: true,
+  //   liveui: false,
+  // });
+  // player.src([
+  //   {type: "video/mp4", src: data.srcMP4},
+  //   {type: "video/webm", src: data.srcwebm},
+  // ]);
+  // player.ready(function() {
+  //   player.play();
+  //   player.pause();
+  // });
+  console.log(data)
+
+  // var is_external = data.srcMP4.indexOf('https') != -1 || data.srcMP4.indexOf('http') != -1;
+  var videoplayer = ('<video poster="'+data.previewImage+'" id="videoplayer" playsinline controls title="'+data.title+'">'+
+    '<source src="' + data.srcMP4 + ' type="video/mp4" />'+
+    '<source src="' + data.srcwebm + '" type="video/webm" />'+
+'</video>');
+  // console.log(is_external)
+  // if (is_external) {
+
+  // }
+  $("#videoContent").append(videoplayer);
+  player = new Plyr('#videoplayer', {
+    clickToPlay: true,
+    touch: true,
+  });
+  window.addEventListener("orientationchange", function() {
+    var orientation = screen.msOrientation || screen.mozOrientation || (screen.orientation || {}).type;
+    if (orientation == 'landscape-primary' || orientation == 'landscape-secondary') {
+      // $(window).scrollTop();
+      // player.focus();
+      // $('.vjs-fullscreen-control').click();
+      // player.enterFullScreen();
+      // player.enterFullWindow();
+      player.fullscreen.enter();
+      let f = player.fullscreen.active || 'asdasd';
+      alert('fulscreen enter', f)
+    }
+    else {
+      player.fullscreen.exit();
+      // player.exitFullscreen();
+      // player.exitFullWindow();
+      let f = player.fullscreen.active || 'asdasd';
+      alert('fulscreen outer', f)
+    }
+  }, false);
 }
 
-videojs.TOUCH_ENABLED = true;
+// videojs.TOUCH_ENABLED = true;
 
 
 function drawVideo(id) {
@@ -363,30 +399,34 @@ function drawVideo(id) {
 
 
 // if (window.DeviceOrientationEvent) {
-  window.addEventListener("orientationchange", function() {
-    var orientation = screen.msOrientation || screen.mozOrientation || (screen.orientation || {}).type;
-    if (orientation == 'landscape-primary' || orientation == 'landscape-secondary') {
-      $(window).scrollTop();
-      player.focus();
-      $('.vjs-fullscreen-control').click();
-      player.enterFullScreen();
-      player.enterFullWindow();
-    }
-    else {
-      player.exitFullscreen();
-      player.exitFullWindow();
-    }
-  }, false);
+
 // }
 // else {
 //   console.log('Cannot acquire orientation lock: NotSupportedError: screen.orientation.lock() is not available on this device..');
 // }
 
-$(document).delegate('.vjs-play-control, .vjs-tech, .vjs-big-play-button', 'click', function(e) {
-  if ( player.paused() ) {
-    $('.vjs-big-play-button').show();
+// $(document).delegate('.vjs-play-control, .vjs-tech, .vjs-big-play-button', 'click', function(e) {
+//   if ( player.paused() ) {
+//     $('.vjs-big-play-button').show();
+//   }
+//   else {
+//     $('.vjs-big-play-button').hide();
+//   }
+// });
+$(document).delegate('.plyr, .plyr__video-wrapper, #videoplayer, .plyr__poster', 'click', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+
+  console.log(player.paused);
+  if ( player.paused ) {
+    console.log('was played - to pause')
+    player.pause();
+     // alert('was played - to pause')
   }
   else {
-    $('.vjs-big-play-button').hide();
+    console.log('was paused - to play')
+    player.play();
+     // alert('was paused - to play')
   }
 });

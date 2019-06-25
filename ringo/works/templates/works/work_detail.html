@@ -5,6 +5,7 @@
 {% block title %}{{ work.title }}{% endblock %}
 
 {% block css %}
+	<link rel="stylesheet" href="https://cdn.plyr.io/3.5.6/plyr.css" />
   <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/workpage' %}{{ css_version }}?v{{ version }}">
 
 
@@ -107,7 +108,7 @@
 	  .vjs-default-skin .vjs-slider { background: rgba(25,128,104,0.2733333333333333) }
 	  .vjs-default-skin .vjs-control-bar { font-size: 69% }
 	</style> -->
-	<link href="https://vjs.zencdn.net/7.5.4/video-js.css" rel="stylesheet">
+<!-- 	<link href="https://vjs.zencdn.net/7.5.4/video-js.css" rel="stylesheet">
 	<style type="text/css">
 	  .vjs-default-skin { color: #ffffff; }
 	  .vjs-default-skin .vjs-pworks/css/ogress,
@@ -126,7 +127,11 @@
 
 	</style>
 	<script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
-	<script src='https://vjs.zencdn.net/7.5.4/video.js'></script>
+	<script src='https://vjs.zencdn.net/7.5.4/video.js'></script> -->
+
+	
+	<script src="https://cdn.plyr.io/3.5.6/plyr.polyfilled.js"></script>
+
 
 	<script type="text/javascript" src="{% static 'js/jquery-mousewheel-3.1.12/jquery.mousewheel.js' %}?v{{ version }}" charset="utf-8" defer></script>
 	<!-- <script type="text/javascript" src="{% static 'js/scrollBehaviorGlob.js' %}?v{{ version }}" charset="utf-8" defer></script> -->

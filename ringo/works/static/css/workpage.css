@@ -1070,4 +1070,10 @@ img.logo {
     #nav_foot > .nav__item.all {
       margin-top: 0; } }
 
+.plyr__video-wrapper {
+  height: 100%; }
+
+.plyr video {
+  height: 100%; }
+
 /*# sourceMappingURL=workpage.css.map */
