@@ -349,21 +349,15 @@ function drawOwnVideo(data) {
   player.ready(function() {
     player.play();
     player.pause();
-    setTimeout(function() {
-      $('.vjs-big-play-button').show();
-    }, 500);
-    player.enableTouchActivity();
-    console.log('asdasdasd');
+    player.enableTouchActivity();//возможно выпилить
   });
 
   player.on('touchstart', function (e) {
     if (e.target.nodeName === 'VIDEO') {
       if (player.paused()) {
         this.play();
-        // $('.vjs-big-play-button').hide();
       } else {
         this.pause();
-        // $('.vjs-big-play-button').show();
       }
     }
   });
@@ -385,19 +379,20 @@ function drawVideo(id) {
     if (orientation == 'landscape-primary' || orientation == 'landscape-secondary') {
       $(window).scrollTop();
       $(document).scrollTop();
+      // $('.video-js video').focus();
+
       setTimeout(function() {
-        $('.video-js').focus();
-        // player.enterFullWindow();
-        // player.enterFullScreen();
+        // player.focus();
+        // $('.video-js video')[0].requestFullscreen();
         player.requestFullscreen();
-      }, 500)
+        // alert('asdasd');
+      }, 500);
     }
     else {
       setTimeout(function() {
+        // $('.video-js video')[0].exitFullscreen();
         player.exitFullscreen();
-        player.exitFullWindow();
-        $('.video-js').focus();
-      }, 500)
+      }, 500);
     }
   }, false);
 // }
@@ -409,33 +404,18 @@ $(document).delegate('.vjs-big-play-button', 'touchstart', function(e) {
   if (e.target.nodeName === 'VIDEO') {
     if (player.paused()) {
       this.play();
-      // $('.vjs-big-play-button').hide();
     } else {
       this.pause();
-      // $('.vjs-big-play-button').show();
     }
   }
 });
 
 $(document).delegate('.vjs-play-control, .vjs-tech, .vjs-big-play-button', 'click', function(e) {
-  // e.preventDefault();
-  // e.stopPropagation();
-  // if ( player.paused() ) {
-  //   $('.vjs-big-play-button').show();
-  // }
-  // else {
-  //   $('.vjs-big-play-button').hide();
-  // }
-  // alert(e.target)
   if ( player.paused() ) {
     player.pause();
-    // $('.vjs-big-play-button').show();
-    // player.bigPlayButton.toggleClass('hidden');
   }
   else {
     player.play();
-    // $('.vjs-big-play-button').hide();
-    // player.bigPlayButton.toggleClass('hidden');
   }
 });
 
