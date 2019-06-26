@@ -1070,4 +1070,7 @@ img.logo {
     #nav_foot > .nav__item.all {
       margin-top: 0; } }
 
+.vjs-paused .vjs-big-play-button {
+  display: inline-block !important; }
+
 /*# sourceMappingURL=workpage.css.map */
