@@ -1,0 +1,28 @@
+version: '3.2'
+
+services:
+  # mysql_db:
+  #   image: mysql
+  #   ports:
+  #     - "3306:3306"
+  #   restart: always
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   environment: 
+  #     - MYSQL_DATABASE=RINGER
+  #     - MYSQL_PASSWORD=mirehiko
+  #     - MYSQL_ROOT_PASSWORD=sorellina
+
+  web:
+    build: 
+      context: ./build/
+    # restart: always
+    environment:
+      - PROJECT_DOMAIN=${DEV_PROJECT_DOMAIN}
+    # command: python manage.py runserver 0.0.0.0:8080
+    volumes:
+      # - ".:/ringo"
+      - "./build/ringo:/ringo"
+    ports:
+      - "8080:8080"
+    # depends_on:
+    #   - mysql_db
