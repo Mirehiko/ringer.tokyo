@@ -1,28 +1,64 @@
 version: '3.2'
 
+networks:
+  main:
+    driver: bridge
+    attachable: true
+
+
 services:
-  # mysql_db:
-  #   image: mysql
-  #   ports:
-  #     - "3306:3306"
-  #   restart: always
-  #   command: --default-authentication-plugin=mysql_native_password
-  #   environment: 
-  #     - MYSQL_DATABASE=RINGER
-  #     - MYSQL_PASSWORD=mirehiko
-  #     - MYSQL_ROOT_PASSWORD=sorellina
+  db: 
+    image: mysql:latest
+    restart: always
+    container_name: cartube_mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment: 
+      - MYSQL_DATABASE=ringerdb
+      - MYSQL_USER=mirehiko
+      - MYSQL_PASSWORD=sorellina
+      - MYSQL_ROOT_PASSWORD=sorellina
+    networks:
+      - main
 
   web:
     build: 
       context: ./build/
-    # restart: always
+    container_name: cartube_web
+    restart: always
     environment:
-      - PROJECT_DOMAIN=${DEV_PROJECT_DOMAIN}
-    # command: python manage.py runserver 0.0.0.0:8080
+      - VIRTUAL_HOST=car-tube.ru
     volumes:
-      # - ".:/ringo"
-      - "./build/ringo:/ringo"
+      # - "./volumes/media:/media"
+      # - "./build/ringo:/ringo"
+      - "./volumes/mysql/restore_from:/media"
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - main
+
+  nginx:
+    image: nginx:latest
+    container_name: cartube_nginx
+    restart: always
+    volumes:
+      - "./volumes/nginx/conf.d:/etc/nginx/conf.d"
+      # - "./volumes/media:/media"
+      - "./volumes/static:/static"
+    depends_on:
+      - web
     ports:
-      - "8080:8080"
-    # depends_on:
-    #   - mysql_db
+      - 80:80
+    networks:
+      - main
+
+  # node:
+  #   build:
+  #     context: ./build/node
+  #   container_name: cartube_node
+  #   networks:
+  #     - main
+  #   volumes:
+  #     - "./build/finances/budget/static:/static"
+  #     - "./build/node:/app"

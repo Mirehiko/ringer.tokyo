@@ -1,12 +1,13 @@
 #!/bin/bash
 
-# until python manage.py inspectdb >/dev/null 2>&1
-# do
-#   echo ">> waiting for database..."
-#   sleep 5
-# done
+until python manage.py inspectdb >/dev/null 2>&1
+do
+  echo ">> waiting for database..."
+  sleep 5
+done
 
-# echo ">> database is up."
+echo ">> database is up."
+
 
 apt update -y
 apt install nano -y
@@ -19,11 +20,8 @@ apt install nano -y
 # gunicorn ringo.wsgi:application
 
 
-# apply database migrations
 python manage.py migrate --noinput
-
-# collect static files
 python manage.py collectstatic --noinput
 
 
-python manage.py runserver 0.0.0.0:8080
+gunicorn --workers=2 ringo.wsgi -b 0.0.0.0:8000

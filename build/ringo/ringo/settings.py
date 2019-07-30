@@ -99,28 +99,14 @@ WSGI_APPLICATION = 'ringo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ringerdb',
+        'USER': 'mirehiko',
+        'PASSWORD': 'sorellina',
+        'HOST': 'db',
+        'PORT': '3306',
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'HOST': 'mysql_db',
-#         'PORT': '3306',
-#         'NAME': 'RINGER',
-#         # 'USER': 'root',
-#         'PASSWORD': 'sorellina',
-#         'USER': 'root@localhost',
-#         # 'PASSWORD': '',
-#         'OPTIONS': {
-#             'charset': 'utf8mb4',
-#             # 'init_command': 'SET default_storage_engine=INNODB',
-#             # 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-#         },
-
-#     }
-# }
 
 
 # Password validation
@@ -175,11 +161,13 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = '/static'
 STATIC_URL = '/static/'
 # STATIC_VERSION = '20181211001'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/media'
 MEDIA_URL = '/media/'
 
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), '/var/www/static/')
