@@ -6,6 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "browserslist": [
+    ">0.1%",
+    "ie >= 8"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mirehiko/collector.git"
@@ -29,13 +33,18 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "browser-sync": "^2.26.7",
-    "del": "^4.1.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^6.1.0",
     "gulp-babel": "^8.0.0",
+    "gulp-cached": "^1.1.1",
+    "gulp-clean": "^0.4.0",
     "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
+    "gulp-debug": "^4.0.0",
+    "gulp-dependents": "^1.2.3",
+    "gulp-filter": "^6.0.0",
     "gulp-imagemin": "^6.0.0",
+    "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.2"

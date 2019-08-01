@@ -2,12 +2,14 @@
 *~
 *.zip
 __pycache__
-ringovenve
-env
 npm-debug.log
-ringo/media
-/node_modules
-/dist
-db.sqlite3
-# /static
 .DS_Store
+db.sqlite3
+
+/build/node/node_modules
+/build/ringo/media
+
+volumes/media
+volumes/static
+volumes/mysql/db
+volumes/mysql/restore_from

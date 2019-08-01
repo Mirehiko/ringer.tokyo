@@ -165,7 +165,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 # STATIC_VERSION = '20181211001'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/media'
 MEDIA_URL = '/media/'
 
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), '/var/www/static/')
