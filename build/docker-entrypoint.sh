@@ -12,13 +12,6 @@ echo ">> database is up."
 apt update -y
 apt install nano -y
 
-# nano /usr/local/lib/python3.6/site-packages/multiupload/admin.py
-# from django.urls import reverse
-
-#prod
-# pip install gunicorn
-# gunicorn ringo.wsgi:application
-
 
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput

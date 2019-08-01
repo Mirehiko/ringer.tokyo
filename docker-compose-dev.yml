@@ -54,4 +54,13 @@ services:
       - 80:80
     networks:
       - main
-      
+
+  node:
+    build:
+      context: ./build/node
+    container_name: cartube_node
+    networks:
+      - main
+    volumes:
+      - "./build/ringo/works/static:/static"
+      - "./build/node:/app"
