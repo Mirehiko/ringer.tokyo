@@ -17,4 +17,7 @@ python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 
 
-gunicorn --workers=2 ringo.wsgi -b 0.0.0.0:8000
+
+# для запуска проекта через uwsgi, а не gunicorn
+# exec uwsgi --ini /finances/uwsgi_conf/finances.ini
+exec uwsgi --emperor /uwsgi_conf/

@@ -32,7 +32,6 @@ services:
     volumes:
       - "./build/ringo:/ringo"
       - "./volumes/static:/ringo/static"
-      # - "./volumes/media:/ringo/media"
       - "./volumes/media:/media"
     depends_on:
       - db
@@ -47,7 +46,6 @@ services:
     restart: always
     volumes:
       - "./volumes/nginx/conf.d:/etc/nginx/conf.d"
-      # - "./volumes/media:/ringo/media:ro"
       - "./volumes/media:/media:ro"
       - "./volumes/static:/ringo/static:ro"
     depends_on:

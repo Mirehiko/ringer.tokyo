@@ -10,6 +10,9 @@ pytz==2018.9
 PyYAML==5.1
 virtualenv==15.1.0
 
-gunicorn==19.6.0
+#uwsgi
+uWSGI==2.0.15
+
+#mysql
 mysqlclient==1.3.12
 django-mysql==2.2.0

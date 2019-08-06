@@ -37,16 +37,12 @@
         poster: '{% if work.poster %} {{ work.poster.url }} {% else %}/static/files/default_poster.jpg{% endif %}',
         id: '{{ work.id }}',
       });
-			// console.log('ctid:{% for category in work.category.all %} {{ category.id }}{% endfor %}')
-      console.log('title:','{{work.title}}','poster:','{{work.poster}}')
     {% endfor %}
-    // console.log('textData:',textData)
   </script>
 {% endblock %}
 
 {% block tail %}
 	<script type="text/javascript" src="{% static 'js/jquery-mousewheel-3.1.12/jquery.mousewheel.js' %}?v{{ version }}" charset="utf-8" defer></script>
-  <!-- <script type="text/javascript" src="{% static 'js/scrollBehaviorGlob.js' %}?v{{ version }}" charset="utf-8" defer></script> -->
 	<script type="text/javascript" src="{% static 'js/scrollBehaviorGlob.old.js' %}" charset="utf-8" defer></script>
 	<script type="text/javascript" src="{% static 'js/index.old.js' %}?v{{ version }}" charset="utf-8" defer></script>
 {% endblock %}
