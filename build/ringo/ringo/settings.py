@@ -160,6 +160,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 # }
 
 
+FILE_UPLOAD_PERMISSIONS = 0o644
+
+
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
