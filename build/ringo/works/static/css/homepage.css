@@ -1,4 +1,5 @@
 * {
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   font-family: aktiv-grotesk, sans-serif; }
 
@@ -91,6 +92,7 @@ a:hover, .iconBtnBox:hover .iconBtn {
     height: 100%;
     background-color: #fff;
     -webkit-transition: all .3s;
+    -o-transition: all .3s;
     transition: all .3s; }
 
 .iconBtnBox {
@@ -133,26 +135,23 @@ a:hover, .iconBtnBox:hover .iconBtn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -o-box-orient: vertical;
   -ms-flex-direction: column;
-  -webkit-flex-direction: column;
   flex-direction: column;
   -webkit-box-pack: center;
   -o-box-pack: center;
   -ms-flex-pack: center;
-  -webkit-justify-content: center;
   justify-content: center;
   -webkit-box-align: center;
   -o-box-align: center;
   -ms-flex-align: center;
-  -webkit-align-items: center;
   align-items: center; }
 
 .toggleContent {
   -webkit-transition: all .5s;
+  -o-transition: all .5s;
   transition: all .5s;
   overflow: hidden; }
 
@@ -168,17 +167,14 @@ a:hover, .iconBtnBox:hover .iconBtn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: horizontal;
   -o-box-orient: horizontal;
   -ms-flex-direction: row;
-  -webkit-flex-direction: row;
   flex-direction: row;
   -webkit-box-align: center;
   -o-box-align: center;
   -ms-flex-align: center;
-  -webkit-align-items: center;
   align-items: center; }
   .breadcrumbs a {
     opacity: .4; }
@@ -254,6 +250,7 @@ a:hover, .iconBtnBox:hover .iconBtn {
   bottom: auto;
   background-color: transparent;
   -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
   transition: all 0.3s;
   z-index: 6; }
   .side-header * {
@@ -347,11 +344,9 @@ a:hover, .iconBtnBox:hover .iconBtn {
 .side-menu-list {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
-  display: -webkit-inline-flex;
   display: inline-flex;
   -webkit-box-align: center;
   -ms-flex-align: center;
-  -webkit-align-items: center;
   align-items: center; }
 
 /**/
@@ -386,6 +381,7 @@ a:hover, .iconBtnBox:hover .iconBtn {
   display: block;
   z-index: 5; }
   #mobileLogo .logo {
+    -webkit-box-shadow: 0px 1px 5px 0px #efefef;
     box-shadow: 0px 1px 5px 0px #efefef; }
 
 span.logo {
@@ -516,6 +512,7 @@ img.logo {
   bottom: auto;
   background-color: transparent;
   -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
   transition: all 0.3s;
   z-index: 6; }
   .side-header * {
@@ -609,11 +606,9 @@ img.logo {
 .side-menu-list {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
-  display: -webkit-inline-flex;
   display: inline-flex;
   -webkit-box-align: center;
   -ms-flex-align: center;
-  -webkit-align-items: center;
   align-items: center; }
 
 /**/
@@ -648,6 +643,7 @@ img.logo {
   display: block;
   z-index: 5; }
   #mobileLogo .logo {
+    -webkit-box-shadow: 0px 1px 5px 0px #efefef;
     box-shadow: 0px 1px 5px 0px #efefef; }
 
 span.logo {
@@ -709,17 +705,14 @@ img.logo {
 .infirow {
   display: -webkit-box;
   display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex; }
   .infirow .-multy- {
     display: -webkit-box;
     display: -ms-flexbox;
-    display: -webkit-flex;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
-    -webkit-flex-direction: column;
     flex-direction: column; }
   .infirow .boxItem {
     display: block;
@@ -742,17 +735,16 @@ img.logo {
   top: 0;
   margin-top: 100%;
   -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
   transition: all 0.3s;
   height: 100%;
   width: 100%;
-  background-color: #222222b8;
+  background-color: rgba(34, 34, 34, 0.721569);
   padding: 20px;
   cursor: pointer; }
 
 .boxItem.-hover- .itemContent {
-  margin-top: 0;
-  -webkit-transition: none;
-  transition: none; }
+  margin-top: 0; }
 
 .itemBack {
   height: 100%; }
@@ -807,5 +799,3 @@ img.logo {
     margin-top: 0; }
   #mobileCategory .toggleBtn {
     top: 29.333333333333332vw; } }
-
-/*# sourceMappingURL=homepage.css.map */

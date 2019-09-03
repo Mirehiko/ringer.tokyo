@@ -46,16 +46,16 @@
 		transition: all 0.3s;
 		height: 100%;
 		width: 100%;
-		background-color: #222222b8;
+		background-color: rgba(34, 34, 34, 0.7215686274509804);
 		padding: 20px;
 		cursor: pointer;
 	}	
 
 	&.-hover- .itemContent {
 		margin-top: 0;
-		-webkit-transition: none;
-		-o-transition: none;
-		transition: none;
+		// -webkit-transition: none;
+		// -o-transition: none;
+		// transition: none;
 	}
 }
 .itemBack {
