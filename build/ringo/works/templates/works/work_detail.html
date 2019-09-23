@@ -88,7 +88,6 @@
     		{% endif %}
     	{% endfor %}
     {% endif %}
-
   </script>
 {% endblock %}
 
@@ -98,18 +97,6 @@
 	<script type="text/javascript" src="{% static 'jslibs/video-js-ie8.min.js' %}" defer></script>
 	<script type="text/javascript" src="{% static 'jslibs/video-js.js' %}" defer></script>
 
-
-	<!-- <script type="text/javascript" src="http://vjs.zencdn.net/4.12/video.js" defer></script> -->
-	<!-- <style type="text/css">
-	  .vjs-default-skin { color: #ffffff; }
-	  .vjs-default-skin .vjs-pworks/css/ogress,
-	  .vjs-default-skin .vjs-volume-level { background-color: #00fff2 }
-	  .vjs-default-skin .vjs-control-bar,
-	  .vjs-default-skin .vjs-big-play-button { background: rgba(25,128,104,0.82) }
-	  .vjs-default-skin .vjs-slider { background: rgba(25,128,104,0.2733333333333333) }
-	  .vjs-default-skin .vjs-control-bar { font-size: 69% }
-	</style>  -->
-	<!-- <link href="https://vjs.zencdn.net/7.5.4/video-js.css" rel="stylesheet"> -->
 	<style type="text/css">
 	  .vjs-default-skin { color: #ffffff; }
 	  .vjs-default-skin .vjs-pworks/css/ogress,
@@ -125,14 +112,10 @@
 	    margin: auto;
 	    bottom: 0;
 	  }
-
 	</style>
-	<!-- <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script> -->
-	<!-- <script src='https://vjs.zencdn.net/7.5.4/video.js'></script> -->
-
-
 
 	<script type="text/javascript" src="{% static 'js/jquery-mousewheel-3.1.12/jquery.mousewheel.js' %}?v{{ version }}" charset="utf-8" defer></script>
-	<script type="text/javascript" src="{% static 'js/scrollBehaviorGlob.old.js' %}" charset="utf-8" defer></script>
-	<script type="text/javascript" src="{% static 'js/works.old.js' %}?v{{ version }}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'js-dev/scroll_script.js' %}" charset="utf-8" defer></script>
+	<!-- <script type="text/javascript" src="{% static 'js/scrollBehaviorGlob.old.js' %}" charset="utf-8" defer></script> -->
+	<!-- <script type="text/javascript" src="{% static 'js/works.old.js' %}?v{{ version }}" charset="utf-8" defer></script> -->
 {% endblock %}
