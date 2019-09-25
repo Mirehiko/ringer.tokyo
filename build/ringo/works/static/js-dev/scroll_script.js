@@ -32,13 +32,16 @@ class Motion {
 		this.key_delta           = 10;
 		this.xPos 		           = 0;
 		this.yPos 		           = 0;
+		this.pos                 = 0;
+		this.pos_normal          = 0;
+		this.pos_reverse         = 0;
 		this.axis                = 'horizontal';
-		this.onHover             = false;
-		this.has_pause_on_scroll = false;
+		this.on_hover            = false;
+		this.is_paused           = false;
 		this.requestID           = undefined;
 		this.content_length      = 0;
 		this.elem                = null;
-
+		this.current_way         = 'normal';
 		return this;
 	}
 
@@ -49,51 +52,110 @@ class Motion {
 	}
 
 	initAnimation() {
-		if ( this.isNeedToAnimate(this.elem) ) {
+		if ( Motion.isNeedToAnimate(this.elem) ) {
 			this.prepareToAnimate();
 			this.startMovement();
+			this.mouseActions();
+			this.keyboardActions();
 		}
 		else {
 			this.stopMovement();
 		}
-
 		return this;
 	}
 
 	mouseActions() {
 		console.log('[LOG] Starting attach mouse events');
+		let inst = this;
+		$(window).on('mousewheel', function(evt) {
+			// console.log('mousewheel', evt.deltaY, evt.deltaFactor)
+			evt.preventDefault();
+			this.is_paused = true;
+
+			if (evt.deltaY > 0) {
+				inst.pos += evt.deltaFactor;
+				inst.pos = inst.calcScroll(inst.pos, 'reverse');
+			} else {
+				inst.pos -= evt.deltaFactor;
+				inst.pos = inst.calcScroll(inst.pos, 'normal');
+			}
+
+			inst.setPosition({elem: inst.elem, xPos: inst.xPos, yPos: inst.yPos});
+
+			// if ( inst.pauseOnScroll ) {
+	 //      clearTimeout(inst.delay);
+			// 	inst.delay = setTimeout(function() {
+	 //        inst.is_paused = false;
+			// 	}, inst.delayAfterHover); // выждав паузу запускаем движение
+			// } else {
+	 //      inst.is_paused = false;
+	 //    }
+			setTimeout(() => {
+				inst.is_paused = false;
+			}, 500);
+		});
+		console.log('[LOG] Mouse events attached');
 	}
 
 	keyboardActions() {
 		console.log('[LOG] Starting attach keyboard events');
+    $(window).on('keydown', (e) => {
+      
+      this.is_paused = true;
+
+      let way = '';
+      if (e.keyCode == 37 || e.keyCode == 38) {
+				this.pos += this.key_delta;
+				this.pos = this.calcScroll(this.pos, 'reverse');
+      }
+      else if (e.keyCode == 39 || e.keyCode == 40) {
+				this.pos -= this.key_delta;
+				this.pos = this.calcScroll(this.pos, 'normal');
+      }
+
+			this.setPosition({elem: this.elem, xPos: this.xPos, yPos: this.yPos});
+
+			setTimeout(() => {
+				this.is_paused = false;
+			}, 500);
+    });
+    console.log('[LOG] Keyboard events attached');
 	}
 
-
-
-	scroll(inst) {
-		let params = {};
-		if (inst.xPos <= -inst.content_length) {
-			inst.xPos = 0;
+	calcScroll(pos, way) {
+		if (way == 'normal') {
+			if (this.current_way == way) {
+				if (pos <= -this.content_length) {
+					pos = 0;
+				}
+			}
+		} 
+		if (way == 'reverse') {
+		// else {
+			if (this.current_way == way) {
+				if (pos >= -100) {
+					pos = -(this.content_length);
+				}
+			}
 		}
-		inst.xPos -= inst.speed;
-
-		params.xPos = inst.xPos;
-		params.yPos = inst.yPos;
-		params.elem = inst.elem;
-
-		console.log(inst.xPos)
-
-		inst.setPosition(params);
+		this.current_way = way;
+		return pos;
 	}
 
-	setPosition(params) {
-		params.elem[0].style.transform = `translate3d(${params.xPos}px, ${params.yPos}px, 0)`;
-		// params.elem.attr('transform', `translate3d(${params.xPos}px, ${params.yPos}px, 0)`);
+	setPosition() {
+		if (this.axis == 'horizontal') {
+			this.xPos = this.pos;
+		}
+		else {
+			this.yPos = this.pos;
+		}
+
+		this.elem[0].style.transform = `translate3d(${this.xPos}px, ${this.yPos}px, 0)`;
 	}
 
 	render() {
 		const refreshRate = 1000 / 60;
-		let self = this;
+		let inst = this;
 
 		function renderStep() {
 			// if (self.hoveringItem != null) {
@@ -112,10 +174,20 @@ class Motion {
 			// if ( !self.onpause && self.isCanReplace ) {
 			//   self.replaceObjects('next');
 			// }
-			self.scroll(self);
+			// self.scroll(self);
 
-			if ( self.requestID ) {
-				self.requestID = window.requestAnimationFrame(renderStep);
+			if (!inst.is_paused) {
+				inst.pos--;
+				inst.pos = inst.calcScroll(inst.pos, 'normal');
+			}
+
+			inst.setPosition();
+
+
+			// inst.setPosition({elem: inst.elem, xPos: inst.xPos, yPos: inst.yPos});
+
+			if ( inst.requestID ) {
+				inst.requestID = window.requestAnimationFrame(renderStep);
 			}
 		}
 
@@ -138,7 +210,7 @@ class Motion {
 	prepareToAnimate() {
 		console.log('[LOG] Starting prepare data to animate');
 		this.content_length = this.elem.outerWidth();
-		this.elem.append( this.copyContent(this.elem) );
+		this.elem.append( Motion.copyContent(this.elem) );
 		console.log('[LOG] Data to animate prepared');
 	}
 
@@ -167,58 +239,33 @@ $("#wrapper2").empty();
 $("#wrapper2").append(drawContent(textData));
 
 
-setSizesToImages();
-
-// var container = $('.workInfo');
-
-var motion = new Motion();
-motion.init({
-	elem: '.workInfo', 
+setSizes().then(() => {
+	var motion = new Motion();
+	motion.init({
+		elem: '.workInfo', 
+	});
+	motion.initAnimation();
 });
 
-// setTimeout(function() {
-// 	// if ( isNeedToAnimate(container) ) {
-// 	if ( motion.isNeedToAnimate() ) {
-// 		let items_length = container.outerWidth();
-// 		container.append( copyContent(container) );
-
-// 		var motion = new Motion();
-// 		setTimeout(function() {
-// 			motion.init({
-// 				elem: '.workInfo', 
-// 				content_length: items_length,
-// 			});
-// 		}, 1000);
-// 	}
-// }, 1000);
-
-
-
-// function copyContent(elem) {
-// 	return elem.contents('.workItem').clone();
-// }
-
-// function isNeedToAnimate(elem) {
-// 	console.log(elem.outerWidth(), elem.parent().outerWidth())
-// 	if (elem.outerWidth() < elem.parent().outerWidth()) {
-// 		console.log('Do not need to animate')
-// 		return false;
-// 	}
-// 	console.log('Need to animate')
-// 	return true;
-// }
-
-function setSizesToImages() {
+async function setSizes() {
 	let contentWidth = $('.infoItem').width();
-	$(".imgcfg").one("load", function() {
-		let [w, h] = getSize($(this));
-		$(this).parent().width(w);
-		contentWidth += w;
-		$('.workInfo').width(contentWidth);
-	}).each(function() {
-		if(this.complete) {
-			$(this).trigger('load'); // For jQuery >= 3.0
-		}
+	await setSizesToImages(contentWidth);
+}
+function setSizesToImages(contentWidth) {
+	return new Promise(resolve => {
+		$(".imgcfg").one("load", function() {
+			let [w, h] = getSize($(this));
+			$(this).parent().width(w);
+			contentWidth += w;
+			$('.workInfo').width(contentWidth);
+		}).each(function() {
+			if(this.complete) {
+				$(this).trigger('load'); // For jQuery >= 3.0
+			}
+		});
+		setTimeout(() => {
+			resolve();
+		}, 1000);
 	});
 }
 
