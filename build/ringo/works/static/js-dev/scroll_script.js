@@ -27,26 +27,32 @@
 
 class Motion {
 	constructor() {
-		this.scroll_timer        = null;
-		this.speed               = 1;
-		this.key_delta           = 10;
-		this.xPos 		           = 0;
-		this.yPos 		           = 0;
-		this.pos                 = 0;
-		this.pos_normal          = 0;
-		this.pos_reverse         = 0;
-		this.axis                = 'horizontal';
-		this.on_hover            = false;
-		this.is_paused           = false;
-		this.requestID           = undefined;
-		this.content_length      = 0;
-		this.elem                = null;
-		this.current_way         = 'normal';
+		this.delay_timer     = null;
+		this.elem            = null;
+		this.xPos 		       = 0;
+		this.yPos 		       = 0;
+		this.pos             = 0;
+		this.is_paused       = false;
+		this.requestID       = undefined;
+		this.content_length  = 0;
+
+		this.current_way     = 'normal';
+		this.axis            = 'horizontal';
+		this.speed           = 1;
+		this.key_delta       = 10;
+		this.on_hover        = false;
+		this.has_pause_evt   = false;
+		this.delayAfterHover = 1000;
 		return this;
 	}
 
-	init(data) {
-		this.elem = $(data.elem);
+	init(options) {
+		this.elem            = $(options.elem);
+		this.axis            = options.axis || 'horizontal';
+		this.speed           = options.speed || 1;
+		this.key_delta       = options.key_delta || 10;
+		this.has_pause_evt   = options.has_pause_evt || false;
+		this.delayAfterHover = options.delayAfterHover*1000 || 1000; // задержка после скрола
 		console.log('[LOG] Data initialized');
 		return this;
 	}
@@ -68,7 +74,6 @@ class Motion {
 		console.log('[LOG] Starting attach mouse events');
 		let inst = this;
 		$(window).on('mousewheel', function(evt) {
-			// console.log('mousewheel', evt.deltaY, evt.deltaFactor)
 			evt.preventDefault();
 			this.is_paused = true;
 
@@ -82,9 +87,9 @@ class Motion {
 
 			inst.setPosition({elem: inst.elem, xPos: inst.xPos, yPos: inst.yPos});
 
-			// if ( inst.pauseOnScroll ) {
-	 //      clearTimeout(inst.delay);
-			// 	inst.delay = setTimeout(function() {
+			// if ( inst.has_pause_evt ) {
+	 //      clearTimeout(inst.delay_timer);
+			// 	inst.delay_timer = setTimeout(function() {
 	 //        inst.is_paused = false;
 			// 	}, inst.delayAfterHover); // выждав паузу запускаем движение
 			// } else {
@@ -99,6 +104,7 @@ class Motion {
 
 	keyboardActions() {
 		console.log('[LOG] Starting attach keyboard events');
+    
     $(window).on('keydown', (e) => {
       
       this.is_paused = true;
@@ -115,10 +121,15 @@ class Motion {
 
 			this.setPosition({elem: this.elem, xPos: this.xPos, yPos: this.yPos});
 
-			setTimeout(() => {
-				this.is_paused = false;
-			}, 500);
+			// setTimeout(() => {
+			// 	this.is_paused = false;
+			// }, 500);
     });
+    
+    $(window).on('keyup', (e) => {
+      this.is_paused = false;
+    });
+
     console.log('[LOG] Keyboard events attached');
 	}
 
