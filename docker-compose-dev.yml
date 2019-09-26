@@ -2,14 +2,13 @@ version: '3.2'
 
 networks:
   main:
-    driver: bridge
+    driver: overlay
     attachable: true
 
 
 services:
   db: 
     image: mysql:latest
-    restart: always
     container_name: cartube_mysql
     command: --default-authentication-plugin=mysql_native_password
     environment: 
@@ -26,7 +25,6 @@ services:
     build: 
       context: ./build/
     container_name: cartube_web
-    restart: always
     environment:
       - VIRTUAL_HOST=car-tube.ru
     volumes:
@@ -43,7 +41,6 @@ services:
   nginx:
     image: nginx:latest
     container_name: cartube_nginx
-    restart: always
     volumes:
       - "./volumes/nginx/conf.d:/etc/nginx/conf.d"
       - "./volumes/media:/media:ro"
@@ -59,8 +56,6 @@ services:
     build:
       context: ./build/node
     container_name: cartube_node
-    networks:
-      - main
     volumes:
       - "./build/ringo/works/static:/static"
       - "./build/node:/app"

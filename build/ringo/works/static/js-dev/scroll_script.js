@@ -72,9 +72,10 @@ class Motion {
 
 	mouseActions() {
 		console.log('[LOG] Starting attach mouse events');
+
 		let inst = this;
-		$(window).on('mousewheel', function(evt) {
-			evt.preventDefault();
+		$(window).on('mousewheel', (evt) => {
+			// evt.preventDefault();
 			this.is_paused = true;
 
 			if (evt.deltaY > 0) {
@@ -85,7 +86,7 @@ class Motion {
 				inst.pos = inst.calcScroll(inst.pos, 'normal');
 			}
 
-			inst.setPosition({elem: inst.elem, xPos: inst.xPos, yPos: inst.yPos});
+			inst.setPosition();
 
 			// if ( inst.has_pause_evt ) {
 	 //      clearTimeout(inst.delay_timer);
@@ -95,10 +96,9 @@ class Motion {
 			// } else {
 	 //      inst.is_paused = false;
 	 //    }
-			setTimeout(() => {
-				inst.is_paused = false;
-			}, 500);
+			inst.is_paused = false;
 		});
+
 		console.log('[LOG] Mouse events attached');
 	}
 
@@ -109,7 +109,6 @@ class Motion {
       
       this.is_paused = true;
 
-      let way = '';
       if (e.keyCode == 37 || e.keyCode == 38) {
 				this.pos += this.key_delta;
 				this.pos = this.calcScroll(this.pos, 'reverse');
@@ -119,11 +118,7 @@ class Motion {
 				this.pos = this.calcScroll(this.pos, 'normal');
       }
 
-			this.setPosition({elem: this.elem, xPos: this.xPos, yPos: this.yPos});
-
-			// setTimeout(() => {
-			// 	this.is_paused = false;
-			// }, 500);
+			this.setPosition();
     });
     
     $(window).on('keyup', (e) => {
@@ -142,10 +137,14 @@ class Motion {
 			}
 		} 
 		if (way == 'reverse') {
-		// else {
 			if (this.current_way == way) {
-				if (pos >= -100) {
-					pos = -(this.content_length);
+				if (pos >= 0) {
+					pos = pos -(this.content_length);
+				}
+			}
+			else {
+				if (pos >= 0) {
+					pos = pos -(this.content_length);
 				}
 			}
 		}
@@ -178,24 +177,11 @@ class Motion {
 			//   }
 			// }
 
-			// if ( !self.onpause ) {
-			//   self.itemPosition -= self.itemSpeed;
-			// }
-			// self.setPropsToFirst(self.firstItem);
-			// if ( !self.onpause && self.isCanReplace ) {
-			//   self.replaceObjects('next');
-			// }
-			// self.scroll(self);
-
 			if (!inst.is_paused) {
 				inst.pos--;
 				inst.pos = inst.calcScroll(inst.pos, 'normal');
+				inst.setPosition();
 			}
-
-			inst.setPosition();
-
-
-			// inst.setPosition({elem: inst.elem, xPos: inst.xPos, yPos: inst.yPos});
 
 			if ( inst.requestID ) {
 				inst.requestID = window.requestAnimationFrame(renderStep);
