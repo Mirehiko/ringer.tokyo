@@ -27,14 +27,16 @@
 
 class Motion {
 	constructor() {
-		this.delay_timer     = null;
-		this.elem            = null;
-		this.xPos 		       = 0;
-		this.yPos 		       = 0;
-		this.pos             = 0;
-		this.is_paused       = false;
-		this.requestID       = undefined;
-		this.content_length  = 0;
+		this.delay_timer        = null;
+		this.elem               = null;
+		this.xPos 		          = 0;
+		this.yPos 		          = 0;
+		this.pos                = 0;
+		this.is_paused          = false;
+		this.requestID          = undefined;
+		this.content_length     = 0;
+		this.is_animated        = false;
+		this.is_events_attached = false;
 
 		this.current_way     = 'normal';
 		this.axis            = 'horizontal';
@@ -54,78 +56,97 @@ class Motion {
 		this.has_pause_evt   = options.has_pause_evt || false;
 		this.delayAfterHover = options.delayAfterHover*1000 || 1000; // задержка после скрола
 		console.log('[LOG] Data initialized');
+
+		$(window).on('resize', () => {
+			setSizes().then(() => {
+				this.initAnimation();
+			});
+		});
+
 		return this;
 	}
 
 	initAnimation() {
-		if ( Motion.isNeedToAnimate(this.elem) ) {
+		if ( this.isNeedToAnimate(this.elem) ) {
 			this.prepareToAnimate();
-			this.startMovement();
-			this.mouseActions();
-			this.keyboardActions();
+
+			if (!this.is_animated) {
+				this.startMovement();
+			}
+			if (!this.is_events_attached) {
+				console.log('[LOG] Starting attach mouse events');
+				this.mouseActions();
+				console.log('[LOG] Mouse events attached');
+
+				console.log('[LOG] Starting attach keyboard events');
+				this.keyboardActions();
+				console.log('[LOG] Keyboard events attached');
+
+				this.is_events_attached = true;
+			}
 		}
 		else {
 			this.stopMovement();
+			// this.resetToDefault();
+			this.elem.find('.fake').remove();
+			this.setPosition(true);
 		}
 		return this;
 	}
 
 	mouseActions() {
-		console.log('[LOG] Starting attach mouse events');
-
 		let inst = this;
 		$(window).on('mousewheel', (evt) => {
 			// evt.preventDefault();
-			this.is_paused = true;
+			if (this.is_animated) {
+				this.is_paused = true;
 
-			if (evt.deltaY > 0) {
-				inst.pos += evt.deltaFactor;
-				inst.pos = inst.calcScroll(inst.pos, 'reverse');
-			} else {
-				inst.pos -= evt.deltaFactor;
-				inst.pos = inst.calcScroll(inst.pos, 'normal');
+				if (evt.deltaY > 0) {
+					inst.pos += evt.deltaFactor;
+					inst.pos = inst.calcScroll(inst.pos, 'reverse');
+				} else {
+					inst.pos -= evt.deltaFactor;
+					inst.pos = inst.calcScroll(inst.pos, 'normal');
+				}
+
+				inst.setPosition();
+
+				// if ( inst.has_pause_evt ) {
+		 //      clearTimeout(inst.delay_timer);
+				// 	inst.delay_timer = setTimeout(function() {
+		 //        inst.is_paused = false;
+				// 	}, inst.delayAfterHover); // выждав паузу запускаем движение
+				// } else {
+		 //      inst.is_paused = false;
+		 //    }
+				inst.is_paused = false;
 			}
-
-			inst.setPosition();
-
-			// if ( inst.has_pause_evt ) {
-	 //      clearTimeout(inst.delay_timer);
-			// 	inst.delay_timer = setTimeout(function() {
-	 //        inst.is_paused = false;
-			// 	}, inst.delayAfterHover); // выждав паузу запускаем движение
-			// } else {
-	 //      inst.is_paused = false;
-	 //    }
-			inst.is_paused = false;
 		});
-
-		console.log('[LOG] Mouse events attached');
 	}
 
 	keyboardActions() {
-		console.log('[LOG] Starting attach keyboard events');
-    
     $(window).on('keydown', (e) => {
-      
-      this.is_paused = true;
+			if (this.is_animated) {
+	      this.is_paused = true;
 
-      if (e.keyCode == 37 || e.keyCode == 38) {
-				this.pos += this.key_delta;
-				this.pos = this.calcScroll(this.pos, 'reverse');
-      }
-      else if (e.keyCode == 39 || e.keyCode == 40) {
-				this.pos -= this.key_delta;
-				this.pos = this.calcScroll(this.pos, 'normal');
-      }
+	      if (e.keyCode == 37 || e.keyCode == 38) {
+					this.pos += this.key_delta;
+					this.pos = this.calcScroll(this.pos, 'reverse');
+	      }
+	      else if (e.keyCode == 39 || e.keyCode == 40) {
+					this.pos -= this.key_delta;
+					this.pos = this.calcScroll(this.pos, 'normal');
+	      }
 
-			this.setPosition();
+				this.setPosition();
+			}
     });
     
     $(window).on('keyup', (e) => {
-      this.is_paused = false;
+			if (this.is_animated) {
+      	this.is_paused = false;
+			}
     });
-
-    console.log('[LOG] Keyboard events attached');
 	}
 
 	calcScroll(pos, way) {
@@ -152,15 +173,20 @@ class Motion {
 		return pos;
 	}
 
-	setPosition() {
-		if (this.axis == 'horizontal') {
-			this.xPos = this.pos;
+	setPosition(is_reset) {
+		if (is_reset) {
+			this.elem[0].style.transform = `translate3d(0px, 0px, 0)`;
 		}
 		else {
-			this.yPos = this.pos;
-		}
+			if (this.axis == 'horizontal') {
+				this.xPos = this.pos;
+			}
+			else {
+				this.yPos = this.pos;
+			}
 
-		this.elem[0].style.transform = `translate3d(${this.xPos}px, ${this.yPos}px, 0)`;
+			this.elem[0].style.transform = `translate3d(${this.xPos}px, ${this.yPos}px, 0)`;
+		}
 	}
 
 	render() {
@@ -193,27 +219,45 @@ class Motion {
 
 	startMovement() {
 		this.render();
-		console.log('[LOG] Animation started');
+		this.is_animated = true;
+		console.log('[EVENT] Animation started');
 	}
 
 	stopMovement() {
 		if (this.requestID) {
 			window.cancelAnimationFrame(this.requestID);
 			this.requestID = undefined;
+			this.is_animated = false;
+			this.resetToDefault();
 		}
-		console.log('[LOG] Animation stopped');
+		console.log('[EVENT] Animation stopped');
+	}
+
+	resetToDefault() {
+			this.pos = 0;
+			this.xPos = 0;
+			this.yPos = 0;
+			this.current_way = 'normal';
+	}
+
+	setContentLength(elem) {
+		return elem.find('.fake').length ? elem.outerWidth() / 2 : elem.outerWidth();
 	}
 
 	prepareToAnimate() {
 		console.log('[LOG] Starting prepare data to animate');
-		this.content_length = this.elem.outerWidth();
-		this.elem.append( Motion.copyContent(this.elem) );
+		this.content_length = this.setContentLength(this.elem);
+
+		if (!this.is_animated) {
+			this.elem.append( this.copyContent(this.elem) );
+		}
 		console.log('[LOG] Data to animate prepared');
 	}
 
-	static isNeedToAnimate(elem) {
+	isNeedToAnimate(elem) {
 		let compare_elem = elem || this.elem;
-		if (compare_elem.outerWidth() < compare_elem.parent().outerWidth()) {
+		let content_size = this.setContentLength(compare_elem);
+		if (content_size < compare_elem.parent().outerWidth()) {
 			console.log('[CHECK] Do not need to animate');
 			return false;
 		}
@@ -221,8 +265,8 @@ class Motion {
 		return true;
 	}
 
-	static copyContent(elem) {
-		return elem.contents('.workItem').clone();
+	copyContent(elem) {
+		return elem.contents('.workItem').clone().addClass('fake');
 	}
 }
 
@@ -231,13 +275,14 @@ class Motion {
 
 var videoObj = {};
 var edge = 768;
+var motion = null;
 
 $("#wrapper2").empty();
 $("#wrapper2").append(drawContent(textData));
 
 
 setSizes().then(() => {
-	var motion = new Motion();
+	motion = new Motion();
 	motion.init({
 		elem: '.workInfo', 
 	});
@@ -248,6 +293,7 @@ async function setSizes() {
 	let contentWidth = $('.infoItem').width();
 	await setSizesToImages(contentWidth);
 }
+
 function setSizesToImages(contentWidth) {
 	return new Promise(resolve => {
 		$(".imgcfg").one("load", function() {
