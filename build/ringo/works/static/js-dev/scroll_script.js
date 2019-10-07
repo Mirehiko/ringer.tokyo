@@ -68,7 +68,7 @@ class Motion {
 
 	initAnimation() {
 		if ( this.isNeedToAnimate(this.elem) ) {
-			this.prepareToAnimate();
+			this._prepareToAnimate();
 
 			if (!this.is_animated) {
 				this.startMovement();
@@ -89,7 +89,7 @@ class Motion {
 			this.stopMovement();
 			// this.resetToDefault();
 			this.elem.find('.fake').remove();
-			this.setPosition(true);
+			this._setPosition(true);
 		}
 		return this;
 	}
@@ -103,13 +103,13 @@ class Motion {
 
 				if (evt.deltaY > 0) {
 					inst.pos += evt.deltaFactor;
-					inst.pos = inst.calcScroll(inst.pos, 'reverse');
+					inst.pos = inst._calcScroll(inst.pos, 'reverse');
 				} else {
 					inst.pos -= evt.deltaFactor;
-					inst.pos = inst.calcScroll(inst.pos, 'normal');
+					inst.pos = inst._calcScroll(inst.pos, 'normal');
 				}
 
-				inst.setPosition();
+				inst._setPosition();
 
 				// if ( inst.has_pause_evt ) {
 		 //      clearTimeout(inst.delay_timer);
@@ -131,14 +131,14 @@ class Motion {
 
 	      if (e.keyCode == 37 || e.keyCode == 38) {
 					this.pos += this.key_delta;
-					this.pos = this.calcScroll(this.pos, 'reverse');
+					this.pos = this._calcScroll(this.pos, 'reverse');
 	      }
 	      else if (e.keyCode == 39 || e.keyCode == 40) {
 					this.pos -= this.key_delta;
-					this.pos = this.calcScroll(this.pos, 'normal');
+					this.pos = this._calcScroll(this.pos, 'normal');
 	      }
 
-				this.setPosition();
+				this._setPosition();
 			}
     });
     
@@ -149,7 +149,7 @@ class Motion {
     });
 	}
 
-	calcScroll(pos, way) {
+	_calcScroll(pos, way) {
 		if (way == 'normal') {
 			if (this.current_way == way) {
 				if (pos <= -this.content_length) {
@@ -173,7 +173,7 @@ class Motion {
 		return pos;
 	}
 
-	setPosition(is_reset) {
+	_setPosition(is_reset) {
 		if (is_reset) {
 			this.elem[0].style.transform = `translate3d(0px, 0px, 0)`;
 		}
@@ -205,8 +205,8 @@ class Motion {
 
 			if (!inst.is_paused) {
 				inst.pos--;
-				inst.pos = inst.calcScroll(inst.pos, 'normal');
-				inst.setPosition();
+				inst.pos = inst._calcScroll(inst.pos, 'normal');
+				inst._setPosition();
 			}
 
 			if ( inst.requestID ) {
@@ -240,23 +240,23 @@ class Motion {
 			this.current_way = 'normal';
 	}
 
-	setContentLength(elem) {
+	_setContentLength(elem) {
 		return elem.find('.fake').length ? elem.outerWidth() / 2 : elem.outerWidth();
 	}
 
-	prepareToAnimate() {
+	_prepareToAnimate() {
 		console.log('[LOG] Starting prepare data to animate');
-		this.content_length = this.setContentLength(this.elem);
+		this.content_length = this._setContentLength(this.elem);
 
 		if (!this.is_animated) {
-			this.elem.append( this.copyContent(this.elem) );
+			this.elem.append( this._copyContent(this.elem) );
 		}
 		console.log('[LOG] Data to animate prepared');
 	}
 
 	isNeedToAnimate(elem) {
 		let compare_elem = elem || this.elem;
-		let content_size = this.setContentLength(compare_elem);
+		let content_size = this._setContentLength(compare_elem);
 		if (content_size < compare_elem.parent().outerWidth()) {
 			console.log('[CHECK] Do not need to animate');
 			return false;
@@ -265,213 +265,7 @@ class Motion {
 		return true;
 	}
 
-	copyContent(elem) {
+	_copyContent(elem) {
 		return elem.contents('.workItem').clone().addClass('fake');
 	}
-}
-
-
-
-
-var videoObj = {};
-var edge = 768;
-var motion = null;
-
-$("#wrapper2").empty();
-$("#wrapper2").append(drawContent(textData));
-
-
-setSizes().then(() => {
-	motion = new Motion();
-	motion.init({
-		elem: '.workInfo', 
-	});
-	motion.initAnimation();
-});
-
-async function setSizes() {
-	let contentWidth = $('.infoItem').width();
-	await setSizesToImages(contentWidth);
-}
-
-function setSizesToImages(contentWidth) {
-	return new Promise(resolve => {
-		$(".imgcfg").one("load", function() {
-			let [w, h] = getSize($(this));
-			$(this).parent().width(w);
-			contentWidth += w;
-			$('.workInfo').width(contentWidth);
-		}).each(function() {
-			if(this.complete) {
-				$(this).trigger('load'); // For jQuery >= 3.0
-			}
-		});
-		setTimeout(() => {
-			resolve();
-		}, 1000);
-	});
-}
-
-function getSize(elem) {
-	return [elem.width(), elem.height()];
-}
-
-function drawContent(data) {
-	var results = document.createElement("div");
-	$(results).addClass("workInfo"); // for (let item of data) {
-
-	for (var i = 0; i < data.length; i++) {
-		$(results).append(selectDrawModeAndDraw(data[i]));
-	}
-
-	return results;
-}
-
-function selectDrawModeAndDraw(elem) {
-	var item = null;
-
-	if (elem.type == "info") {
-		item = drawInfoItem(elem);
-	} else if (elem.type == "video") {
-		item = drawVideoItem(elem);
-		videoObj[elem.id] = elem;
-	} else if (elem.type == "integrated_video") {
-		item = drawIntegratedVideoItem(elem);
-		videoObj[elem.id] = {
-			src: elem.src,
-			title: elem.title
-		};
-	} else {
-		item = drawImageItem(elem);
-	}
-
-	return item;
-}
-
-function drawImageItem(data) {
-	var item = '<div class="workItem">';
-	if ( data.link ) {
-		item += '<a href="' + data.link + '" target="_blank">';
-		item += '<img class="workImage workContent imgcfg" src="' + data.src;
-		item += '" alt="' + data.alt + '"></a></div>';
-	}
-	else {
-		item += '<img class="workImage workContent imgcfg" src="' + data.src;
-		item += '" alt="' + data.alt + '"></div>';
-	}
-
-	return item;
-}
-
-function drawVideoItem(data) {
-	var item = '<div class="workItem videoItem">';
-	item += '<img class="imgcfg" ';
-
-	if (data.previewImage) {
-		item += 'src="' + data.previewImage + '"';
-	} else if (data.color) {
-		item += 'style="background-color:' + data.color + '"';
-	} else {
-		item += 'style="background-color: #333"';
-	}
-
-	item += ' alt="' + data.title + '">';
-	item +=
-		'<a href="#" class="prevIcon" title="' +
-		data.title +
-		'" vid="' +
-		data.id +
-		'" own="'.concat(
-			data.type == "video" ? "true" : "false",
-			'">\n\t\t<img class="playIcon" src="/static/system/play.svg" alt="play icon">\n\t</a><div class="previewcover"></div></div>'
-		);
-	return item;
-}
-
-function drawIntegratedVideoItem(data) {
-	var item = '<div class="workItem videoItem">';
-	item += '<img class="imgcfg" ';
-
-	if (data.previewImage) {
-		item += 'src="' + data.previewImage + '"';
-	} else if (data.color) {
-		item += 'style="background-color:' + data.color + '"';
-	} else {
-		item += 'style="background-color: #333"';
-	}
-
-	item += ' alt="' + data.title + '">';
-	item +=
-		'<a href="#" class="prevIcon" title="' +
-		data.title +
-		'" vid="' +
-		data.id +
-		'">\n\t\t<img class="playIcon" src="/static/system/play.svg" alt="play icon">\n\t</a><div class="previewcover"></div></div>';
-	return item;
-}
-
-function drawInfoItem(data) {
-	var item = document.createElement("div");
-	$(item).addClass("workItem infoItem");
-
-	var wraper = document.createElement("div");
-	$(wraper).addClass("infoWrapper");
-
-	var workTitle = document.createElement("div");
-	$(workTitle).addClass("paramTitle main");
-	$(workTitle).text("Title");
-	var workTitle__value = document.createElement("h1");
-	$(workTitle__value).addClass("paramValue main");
-	$(workTitle__value).text(data.title);
-
-	var itemEtc = document.createElement("div");
-	$(itemEtc).addClass("itmEtc");
-
-	var workLaunch = document.createElement("div");
-	$(workLaunch).addClass("paramLine");
-	var workLaunch__title = document.createElement("span");
-	$(workLaunch__title).addClass("paramTitle");
-	$(workLaunch__title).text("Launch");
-	var workLaunch__value = document.createElement("span");
-	$(workLaunch__value).addClass("paramValue");
-	$(workLaunch__value).text(data.launch);
-	$(workLaunch).append(workLaunch__title);
-	$(workLaunch).append(workLaunch__value);
-
-	var workCategory = document.createElement("div");
-	$(workCategory).addClass("paramLine");
-	var workCategory__title = document.createElement("span");
-	$(workCategory__title).addClass("paramTitle");
-	$(workCategory__title).text("Category");
-	var workCategory__value = document.createElement("span");
-	$(workCategory__value).addClass("paramValue");
-	$(workCategory__value).text(data.category);
-	$(workCategory).append(workCategory__title);
-	$(workCategory).append(workCategory__value);
-
-
-	var workClient = document.createElement("div");
-	$(workClient).addClass("paramLine");
-	var workClient__title = document.createElement("span");
-	$(workClient__title).addClass("paramTitle");
-	$(workClient__title).text("Client");
-	var workClient__value = document.createElement("span");
-	$(workClient__value).addClass("paramValue");
-	$(workClient__value).text(data.client);
-	$(workClient).append(workClient__title);
-	$(workClient).append(workClient__value);
-
-	$(itemEtc).append(workLaunch);
-	$(itemEtc).append(workCategory);
-	$(itemEtc).append(workClient);
-
-	var header = document.createElement("div");
-	$(header).append(workTitle);
-	$(header).append(workTitle__value);
-
-	$(item).append(wraper);
-	$(wraper).append(header);
-	$(wraper).append(itemEtc);
-
-	return item;
 }
