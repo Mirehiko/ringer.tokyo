@@ -1,19 +1,3 @@
-var videoObj = {};
-var edge = 768;
-var motion = null;
-
-$("#wrapper2").empty();
-$("#wrapper2").append(drawContent(textData));
-
-
-setSizes().then(() => {
-	motion = new Motion();
-	motion.init({
-		elem: '.workInfo', 
-	});
-	motion.initAnimation();
-});
-
 async function setSizes() {
 	let contentWidth = $('.infoItem').width();
 	await setSizesToImages(contentWidth);
@@ -200,3 +184,125 @@ function drawInfoItem(data) {
 
 	return item;
 }
+
+function showVideo() {
+  $(".fullView").removeClass("-hidden-");
+  motion.pauseMovement();
+}
+
+function closeVideo() {
+  try {
+    if (!$.isEmptyObject(player)) {
+      player.pause();
+      delete videojs.players[player.id_];
+      player = {};
+    }
+  }
+  catch(e) {
+    console.log('Player does\'t exist');
+  }
+
+  $(".fullView").addClass("-hidden-");
+  $("#videoContent").empty();
+	motion.resumeMovement();
+}
+
+function drawVideo(id) {
+  var text_elem = $.parseHTML(videoObj[id].src)[0].data;
+  $("#videoContent")[0].innerHTML = text_elem;
+}
+
+function drawOwnVideo(data) {
+  var video = '\n\t\t<video id="'
+    .concat(
+      data.id,
+      '" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" poster="'
+    )
+    .concat(data.previewImage, '"\n\t\t data-setup="{}" title="')
+    .concat(data.title, '">\n\t\t ')
+    .concat(
+      data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : "",
+      "\n\t\t "
+    )
+    .concat(
+      data.srcwebm
+        ? '<source src="' + data.srcwebm + '" type="video/webm">'
+        : "",
+      '\n\t\t <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>\n\t\t</video>'
+    );
+  $("#videoContent").append(video);
+
+  player = videojs(data.id, {
+    controls: true,
+    liveui: false,
+  });
+  player.src([
+    {type: "video/mp4", src: data.srcMP4},
+    {type: "video/webm", src: data.srcwebm},
+  ]);
+  player.ready(function() {
+    player.play();
+    player.pause();
+  });
+
+}
+
+var videoObj = {};
+var edge = 768;
+var motion = null;
+
+$("#wrapper2").empty();
+$("#wrapper2").append(drawContent(textData));
+
+
+setSizes().then(() => {
+	motion = new Motion();
+	motion.init({
+		elem: '.workInfo',
+	});
+	motion.initAnimation();
+});
+
+$(document).on("keyup", function(e) {
+  if (e.keyCode == 27) {
+    closeVideo();
+  }
+});
+
+$("body").delegate(".fullView__close", "click", closeVideo);
+$("body").delegate(".prevIcon", "click", function(e) {
+  e.preventDefault();
+  if ($(this).attr("own") == "true") {
+    drawOwnVideo(videoObj[$(this).attr("vid")]);
+  } else {
+    drawVideo($(this).attr("vid"));
+  }
+  showVideo();
+});
+
+var player = {};
+videojs.TOUCH_ENABLED = true;
+
+window.addEventListener("orientationchange", function() {
+  var orientation = screen.msOrientation || screen.mozOrientation || (screen.orientation || {}).type;
+  if (orientation == 'landscape-primary' || orientation == 'landscape-secondary') {
+    $(window).scrollTop();
+    player.focus();
+    $('.vjs-fullscreen-control').click();
+    player.enterFullScreen();
+    player.enterFullWindow();
+  }
+  else {
+    player.exitFullscreen();
+    player.exitFullWindow();
+  }
+}, false);
+
+$(document).delegate('.vjs-play-control, .vjs-tech, .vjs-big-play-button', 'click', function(e) {
+  if ( player.paused() ) {
+    $('.vjs-big-play-button').show();
+  }
+  else {
+    $('.vjs-big-play-button').hide();
+  }
+});

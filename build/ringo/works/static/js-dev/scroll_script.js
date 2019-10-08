@@ -141,7 +141,7 @@ class Motion {
 				this._setPosition();
 			}
     });
-    
+
     $(window).on('keyup', (e) => {
 			if (this.is_animated) {
       	this.is_paused = false;
@@ -156,7 +156,7 @@ class Motion {
 					pos = 0;
 				}
 			}
-		} 
+		}
 		if (way == 'reverse') {
 			if (this.current_way == way) {
 				if (pos >= 0) {
@@ -203,7 +203,7 @@ class Motion {
 			//   }
 			// }
 
-			if (!inst.is_paused) {
+			if (!inst.is_paused && inst.is_animated) {
 				inst.pos--;
 				inst.pos = inst._calcScroll(inst.pos, 'normal');
 				inst._setPosition();
@@ -221,6 +221,16 @@ class Motion {
 		this.render();
 		this.is_animated = true;
 		console.log('[EVENT] Animation started');
+	}
+
+	resumeMovement() {
+		this.is_animated = true;
+		console.log('[EVENT] Animation resumes');
+	}
+
+	pauseMovement() {
+		this.is_animated = false;
+		console.log('[EVENT] Animation paused');
 	}
 
 	stopMovement() {
