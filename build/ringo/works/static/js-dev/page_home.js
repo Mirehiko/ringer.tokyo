@@ -1,52 +1,66 @@
 class WorkItem {
-	constructor(data, type) {
+	constructor(data) {
 		this.html;
-
-		if (type == 'mobile') {
-			this._createMobile(data);
-		}
-		else {
-			this._create(data);
-		}
+		this.id       = data.id;
+		this.title    = data.title;
+		this.poster   = data.poster;
+		this.lauch    = data.lauch;
+		this.category = data.category;
 
 		return this;
 	}
 
-	_create(data) {
+	getItem(type) {
+		if (type == 'mobile') {
+			this._createMobile();
+		}
+		else {
+			this._createDesktop();
+		}
+		return this.html;
+	}
+
+	_createDesktop() {
+		let preview = false;
+		let preview_html = '';
+		if (preview) {
+			preview_html = `
+				<div class="itemPreview">
+					<div class="itemPreview__box"></div>
+					<div class="itemPreview__btn"></div>
+				</div>`;
+		}
 		this.html = `
-			<a href="33" class="boxItem" style="height: 358.119px;">
+			<a href="${ this.id }" class="boxItem" title="Перейти к ${ this.title }">
 				<div class="itemWrapper">
-					<div class="itemBack" style="background-image: url(&quot;/media/works/work_None/poster_gr7MYod.jpg&quot;); background-size: cover; background-repeat: no-repeat;"></div>
+					<div class="itemBack" style="background-image: url(${ this.poster }); background-size: cover; background-repeat: no-repeat;"></div>
 					<div class="itemContent">
-						<div class="itemTitle withValue">Title<span>Парад олдтаймеров</span></div>
-						<div class="itemLauchDate withValue">Launch<span>02 Окт, 2019</span></div>
-						<div class="itemCategory withValue">Category<span> Олдтаймеры</span></div>
-						<div class="itemPreview">
-							<div class="itemPreview__box"></div>
-							<div class="itemPreview__btn"></div>
-						</div>
+						<div class="itemTitle withValue">Title<span>${ this.title }</span></div>
+						<div class="itemLauchDate withValue">Launch<span>${ this.lauch }</span></div>
+						<div class="itemCategory withValue">Category<span>${ this.category }</span></div>
+						${ preview_html }
 					</div>
 				</div>
 			</a>
 		`;
 	}
 
-	_createMobile(data) {
+	_createMobile() {
 		this.html = `
-			<a href="${ data.link }" class="mobItem" title="Перейти к ${ data.title }">
-				<img class="mobileItem__image" src="${ data.src }" alt="">
+			<a href="${ this.id }" class="mobItem" title="Перейти к ${ this.title }">
+				<img class="mobileItem__image" src="${ this.poster }" alt="">
 				<div class="mobItem__info">
 					<h2 class="paramLine">
 						<span class="paramTitle">Title</span>
-						<span class="paramValue">${ data.title }</span>
+						<span class="paramValue">${ this.title }</span>
 					</h2>
 					<div class="paramLine">
 						<span class="paramTitle">Launch</span>
-						<span class="paramValue">${ data.lauch }</span>
+						<span class="paramValue">${ this.lauch }</span>
 					</div>
 					<div class="paramLine">
 						<span class="paramTitle">Category</span>
-						<span class="paramValue">${ data.category }</span>
+						<span class="paramValue">${ this.category }</span>
 					</div>
 				</div>
 			</a>`;
@@ -54,90 +68,187 @@ class WorkItem {
 }
 
 class WorkList {
-	constructor(data, type) {
-		this.works         = data;
+	constructor(data) {
+		this.works         = [];
 		this.html          = null;
-		this.mobile_html   = null;
-		this.desktop_html  = null;
-		this.mobile_works  = [];
-		this.desktop_works = [];
 		this.fragment      = null;
 
-		this._init(type);
+		this._init(data);
 		return this;
 	}
 
-	_init(type) {
+	_init(data) {
 		this.fragment = document.createDocumentFragment();
+		for (var i = 0; i < data.length; i++) {
+			this.addWork(new WorkItem(data[i]));
+	  }
+	}
+
+	addWork(work) {
+		this.works.push(work);
+	}
+
+	getWorks(type) {
 		if (type == 'mobile') {
-			this._createMobile(this.works);
+			let mobile_html = document.createElement('div');
+			$(mobile_html).addClass('infiniteBox');
+
+			for (var i = 0; i < this.works.length; i++) {
+				$(this.fragment).append(this.works[i].getItem(type));
+			}
+
+			$(mobile_html).append(this.fragment);
+			this.html = mobile_html;
+			this.fragment = mobile_html = null;
 		}
 		else {
-			this._createDesktop(this.works);
+
 		}
-	}
-
-	_createDesktop(data) {
-		this.desktop_html = document.createElement('div');
-	  $(this.desktop_html).addClass('infiniteBox');
-
-	  for (var i = 0; i < data.length; i++) {
-	    // $(fragment).append(new WorkItem(data[i], 'mobile').html);
-			this.addWork('desktop', new WorkItem(data[i], 'desktop'));
-	  }
-
-	  $(this.desktop_html).append(this.fragment);
-	  this.html = this.desktop_html;
-		this.fragment = null;
-	}
-
-	_createMobile(data) {
-	  this.mobile_html = document.createElement('div');
-	  $(this.mobile_html).addClass('infiniteBox');
-
-	  for (var i = 0; i < data.length; i++) {
-	    // $(fragment).append(new WorkItem(data[i], 'mobile').html);
-			this.addWork('mobile', new WorkItem(data[i], 'mobile'));
-	  }
-
-	  $(this.mobile_html).append(this.fragment);
-	  this.html = this.mobile_html;
-		this.fragment = null;
-	}
-
-	addWork(type, work) {
-		if (type == 'mobile') {
-			this.mobile_works.push(work);
-		}
-		else {
-			this.desktop_works.push(work);
-		}
-		$(this.fragment).append(work.html);
+		
+		return this.html;
 	}
 }
 
-function selectLineType() {
-	/* Выбираем рандомную комбинацию из трех элементов */
-  var typeID = randomInteger(1, 3);
-  var type = null;
+class Lines {
+	constructor() {
 
-  switch (typeID) {
-    case 1: {
-      return tripleLine; // 3 в ряд
-      break;
-    }
-    case 2: {
-      return tsobLine; // 2 маленьких 1 большой
-      break;
-    }
-    case 3: {
-      return obtsLine; // 1 большой 2 маленьких
-      break;
-    }
-    default:
-			return "Error";
-      break;
-  }
+	}
+
+	_selectLineType() {
+		/* Выбираем рандомную комбинацию из трех элементов */
+	  var typeID = randomInteger(1, 3);
+
+	  switch (typeID) {
+	    case 1: {
+	      return 'tripleLine'; // 3 в ряд
+	      break;
+	    }
+	    case 2: {
+	      return 'twoSmallOneBig'; // 2 маленьких 1 большой
+	      break;
+	    }
+	    case 3: {
+	      return 'oneBigTwoSmall'; // 1 большой 2 маленьких
+	      break;
+	    }
+	    default:
+				return "Error";
+	      break;
+	  }
+	}
+
+	_oneBigTwoSmall(data) {
+		var dt = data.slice();
+	  var line = document.createElement('div');
+	  $(line).addClass('infirow');
+	  var big = document.createElement('div');
+	  $(big).addClass('col-8');
+	  $(big).append(drawItem(dt[0]));
+	  dt.splice(0, 1);
+	  var small = document.createElement('div');
+	  $(small).addClass('col-4');
+
+	  do {
+	    $(small).append(drawItem(dt[0]));
+	    dt.splice(0, 1);
+	  } while (dt.length);
+
+	  $(line).append(big);
+	  $(line).append(small);
+	  return line;
+	}
+
+	_twoSmallOneBig() {
+		var dt = data.slice();
+	  var line = document.createElement('div');
+	  $(line).addClass('infirow');
+	  var big = document.createElement('div');
+	  $(big).addClass('col-8');
+	  $(big).append(drawItem(dt[0]));
+	  dt.splice(0, 1);
+	  var small = document.createElement('div');
+	  $(small).addClass('col-4');
+
+	  do {
+	    $(small).append(drawItem(dt[0]));
+	    dt.splice(0, 1);
+	  } while (dt.length);
+
+	  $(line).append(small);
+	  $(line).append(big);
+	  return line;
+	}
+
+	_tripleLine() {
+		var dt = data.slice();
+	  var line = document.createElement('div');
+	  $(line).addClass('infirow');
+
+	  do {
+	    var item = document.createElement('div');
+	    $(item).addClass('col-4');
+	    $(item).append(drawItem(dt[0]));
+	    $(line).append(item);
+	    dt.splice(0, 1);
+	  } while (dt.length);
+
+	  return line;
+	}
+
+	_doubleLine() {
+		var dt = data.slice();
+	  var line = document.createElement('div');
+	  $(line).addClass('infirow');
+
+	  do {
+	    var item = document.createElement('div');
+	    $(item).addClass('col-6');
+	    $(item).append(drawItem(dt[0]));
+	    $(line).append(item);
+	    dt.splice(0, 1);
+	  } while (dt.length);
+
+	  return line;
+	}
+}
+
+class Controller {
+	constructor(data) {
+		this.work_list = null;
+		this.edge = 768;
+		this.current_view = '';
+		this.windowObj = $(window);
+
+		this.init(data);
+		return this;
+	}
+
+	init(data) {
+		this.work_list = new WorkList(data);
+
+		this._setView();
+
+		$(window).on('resize', (e) => {
+			this._setView();
+		});
+	}
+
+	_setView() {
+		if (this.windowObj.width() < this.edge && this.current_view != 'mobile') {
+			this.current_view = 'mobile';
+			this._changeView();
+		}
+
+		if (this.windowObj.width() >= this.edge && this.current_view != 'desktop') {
+			this.current_view = 'desktop';
+			this._changeView();
+		}
+	}
+
+	_changeView() {
+		$('#homePage').empty();
+		$('#homePage').append(this.work_list.getWorks(this.current_view));
+	}
 }
 
 function randomInteger(min, max) {
@@ -155,24 +266,46 @@ function redrawBackgrounds() {
 
 
 
-var windowObj = $(window);
-var work_list = null;
+var controller = new Controller(textData);
+console.log(controller)
 
-setView();
 redrawBackgrounds();
 
-function setView() {
-	if (windowObj.width() < 768) {
-		work_list = new WorkList(textData, 'mobile');
-		$('#homePage').append(work_list.html);
-	}
-	else {
-		work_list = new WorkList(textData, 'desktop');
-		$('#homePage').append(work_list.html);
-	}
-}
+// remake it!
+$('.toggleList__item').on('click', function (e) {
+  e.preventDefault();
+  var cat = $(this).attr('globcat');
 
+  $.ajax({
+    url: '/api/',
+    type: "GET",
+    data: {
+      category: cat,
+    },
+    dataType: 'json',
+    success: function (data) {
+      if (data.length) {
+        var db = data.slice()
+        console.log(db)
+        // console.log(motionObj)
+        // if (windowObj.width() >= 768) {
+        //   motionObj.stop();
+        //   motionObj.offSroll();
+        // }
+        // reset();
+        // renderer(data);
+        $('.toggleList__item.-active-').removeClass('-active-');
+        $(".toggleList__item[globcat=\"".concat(cat, "\"]")).addClass('-active-');
+      }
+      else {
+        console.log('Нет данных')
+      }
+    }
+  });
 
+  var text = $(this).text(); // console.log(text);
+  $(".toggleBtn__text[globcat]").text(text);
+});
 
 $('#mobileCategory>.toggleBtn').on('click', function (e) {
   var elem = $(this);
