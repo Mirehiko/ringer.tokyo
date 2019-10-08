@@ -104,14 +104,89 @@ class WorkList {
 		else {
 
 		}
-		
+
 		return this.html;
 	}
 }
 
 class Lines {
-	constructor() {
+	constructor(data_length) {
+		this.data_length  = data_length;
+		this.clear_part   = 0;
+		this.divided_part = 0;
+		this.data_lines   = [];
+		this.line_types   = [];
+		this._init();
+	}
 
+	_init() {
+		this.clear_part   = Math.trunc(this.data_length / 5); // [2, 3] or [3, 2]
+		this.divided_part = this.data_length % 5;
+
+		if (this.divided_part == 4) {
+			this.data_lines = this.data_lines.concat([2, 2]);
+		}
+		else if (this.divided_part == 3) {
+			this.data_lines = this.data_lines.concat([3]);
+		}
+		else if (this.divided_part == 2) {
+			this.data_lines = this.data_lines.concat([2]);
+		}
+		else if (this.divided_part == 1) {
+			if (this.clear_part == 0) {
+				this.data_lines = this.data_lines.concat([2]);
+			}
+			else {
+				this.clear_part--;
+				this.data_lines = this.data_lines.concat([3, 3]);
+			}
+		}
+
+		if (this.clear_part > 0) {
+			for (var i = 0; i < this.clear_part; i++) {
+				this.data_lines = this.data_lines.concat(this._selectCombination());
+			}
+		}
+		console.log(this.data_lines);
+		this._setLineTypes();
+		console.log(this.line_types);
+
+	}
+
+	_setLineTypes() {
+		// for (var i = 0; i < this.data_lines.length; i++) {
+		// 	if (this.data_lines[i] == 2) {
+		// 		this.line_types.push('pairLine');
+		// 	}
+		// 	else {
+		// 		this.line_types.push(this._selectLineType());
+		// 	}
+		// }
+		this.line_types = new Array(this.data_lines.length);
+		let pair_lines = [], trio_lines = [];
+		for (var i = 0; i < this.data_lines.length; i++) {
+			if (this.data_lines[i] == 2) {
+				pair_lines.push(this.data_lines[i]);
+			}
+			else {
+				trio_lines.push(this.data_lines[i]);
+			}
+		}
+
+		for (var i = 0; i < trio_lines.length; i += 2) {
+			this.line_types[i] = this._selectLineType();
+		}
+
+		for (var i = 1; i < pair_lines.length; i += 2) {
+			this.line_types[i] = 'pairLine';
+		}
+	}
+
+	_selectCombination() {
+		if ( randomInteger(1, 2) == 1) {
+			return [2, 3];
+		}
+		return [3, 2];
 	}
 
 	_selectLineType() {
@@ -120,7 +195,7 @@ class Lines {
 
 	  switch (typeID) {
 	    case 1: {
-	      return 'tripleLine'; // 3 в ряд
+	      return 'trioLine'; // 3 в ряд
 	      break;
 	    }
 	    case 2: {
@@ -225,6 +300,7 @@ class Controller {
 
 	init(data) {
 		this.work_list = new WorkList(data);
+		this.lines = new Lines(this.work_list.works.length);
 
 		this._setView();
 
