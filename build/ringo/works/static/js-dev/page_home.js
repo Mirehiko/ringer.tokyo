@@ -89,30 +89,35 @@ class WorkList {
 	}
 
 	getWorks(type, lines) {
+		let html = document.createElement('div');
 		if (type == 'mobile') {
-			let mobile_html = document.createElement('div');
-			$(mobile_html).addClass('infiniteBox');
+			$(html).addClass('infiniteBox');
 
 			for (var i = 0; i < this.works.length; i++) {
 				$(this.fragment).append(this.works[i].getItem(type));
 			}
-			console.log('mobile',mobile_html)
-			$(mobile_html).append(this.fragment);
-			this.html = mobile_html;
-			mobile_html = null;
-			this.fragment = document.createDocumentFragment();
+
+			// $(html).append(this.fragment);
+			// this.html = html;
+			// html = null;
+			// this.fragment = document.createDocumentFragment();
 		}
 		else {
+			// let html = document.createElement('div');
+			$(html).addClass('infiniteBox hoverAction');
+
 			let works_copy = this.works.slice(0);
 			for (var i = 0; i < lines.data_lines.length; i++) {
 				let row = works_copy.splice(0, lines.data_lines[i]); // cколько срезаем для линии
 				let func = `_${ lines.line_types[i] }`;
 				$(this.fragment).append(this[func](row, type));
 			}
-			console.log('desktop', this.fragment)
-			this.html = this.fragment;
-			this.fragment = document.createDocumentFragment();
 		}
+
+		$(html).append(this.fragment);
+		this.html = html;
+		html = null;
+		this.fragment = document.createDocumentFragment();
 
 		return this.html;
 	}
@@ -418,7 +423,11 @@ function randomInteger(min, max) {
 var controller = new Controller(textData);
 console.log(controller)
 
-redrawBackgrounds();
+motion = new Motion();
+motion.init({
+	elem: '.infiniteBox',
+	axis: 'vertical',
+});
 
 // remake it!
 $('.toggleList__item').on('click', function (e) {

@@ -57,10 +57,9 @@ class Motion {
 		this.delayAfterHover = options.delayAfterHover*1000 || 1000; // задержка после скрола
 		console.log('[LOG] Data initialized');
 
+		this.initAnimation();
 		$(window).on('resize', () => {
-			setSizes().then(() => {
-				this.initAnimation();
-			});
+			this.initAnimation();
 		});
 
 		return this;
@@ -251,7 +250,10 @@ class Motion {
 	}
 
 	_setContentLength(elem) {
-		return elem.find('.fake').length ? elem.outerWidth() / 2 : elem.outerWidth();
+		if (this.axis == 'horizontal') {
+			return elem.find('.fake').length ? elem.outerWidth() / 2 : elem.outerWidth();
+		}
+		return elem.find('.fake').length ? elem.outerHeight() / 2 : elem.outerHeight();
 	}
 
 	_prepareToAnimate() {
@@ -267,7 +269,15 @@ class Motion {
 	isNeedToAnimate(elem) {
 		let compare_elem = elem || this.elem;
 		let content_size = this._setContentLength(compare_elem);
-		if (content_size < compare_elem.parent().outerWidth()) {
+		let parent_size = 0;
+		if (this.axis == 'horizontal') {
+			parent_size = compare_elem.parent().outerWidth();
+		}
+		else {
+			parent_size = compare_elem.parent().outerHeight();
+		}
+
+		if (content_size < parent_size) {
 			console.log('[CHECK] Do not need to animate');
 			return false;
 		}
@@ -276,6 +286,6 @@ class Motion {
 	}
 
 	_copyContent(elem) {
-		return elem.contents('.workItem').clone().addClass('fake');
+		return elem.children().clone().addClass('fake');
 	}
 }

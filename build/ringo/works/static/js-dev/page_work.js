@@ -260,7 +260,13 @@ setSizes().then(() => {
 	motion.init({
 		elem: '.workInfo',
 	});
-	motion.initAnimation();
+
+});
+
+$(window).on('resize', () => {
+	setSizes().then(() => {
+		motion.initAnimation();
+	});
 });
 
 $(document).on("keyup", function(e) {
