@@ -88,7 +88,7 @@ class WorkList {
 		this.works.push(work);
 	}
 
-	getWorks(type) {
+	getWorks(type, lines) {
 		if (type == 'mobile') {
 			let mobile_html = document.createElement('div');
 			$(mobile_html).addClass('infiniteBox');
@@ -96,16 +96,105 @@ class WorkList {
 			for (var i = 0; i < this.works.length; i++) {
 				$(this.fragment).append(this.works[i].getItem(type));
 			}
-
+			console.log('mobile',mobile_html)
 			$(mobile_html).append(this.fragment);
 			this.html = mobile_html;
-			this.fragment = mobile_html = null;
+			mobile_html = null;
+			this.fragment = document.createDocumentFragment();
 		}
 		else {
-
+			let works_copy = this.works.slice(0);
+			for (var i = 0; i < lines.data_lines.length; i++) {
+				let row = works_copy.splice(0, lines.data_lines[i]); // cколько срезаем для линии
+				let func = `_${ lines.line_types[i] }`;
+				$(this.fragment).append(this[func](row, type));
+			}
+			console.log('desktop', this.fragment)
+			this.html = this.fragment;
+			this.fragment = document.createDocumentFragment();
 		}
 
 		return this.html;
+	}
+
+	_oneBigTwoSmall(data, type) {
+		var dt = data.slice();
+	  var line = document.createElement('div');
+	  $(line).addClass('infirow');
+	  var big = document.createElement('div');
+	  $(big).addClass('col-8');
+		$(big).append(dt[0].getItem(type));
+	  // $(big).append(drawItem(dt[0]));
+	  dt.splice(0, 1);
+	  var small = document.createElement('div');
+	  $(small).addClass('col-4');
+
+	  do {
+			// $(small).append(drawItem(dt[0]));
+			$(small).append(dt[0].getItem(type));
+	    dt.splice(0, 1);
+	  } while (dt.length);
+
+	  $(line).append(big);
+	  $(line).append(small);
+	  return line;
+	}
+
+	_twoSmallOneBig(data, type) {
+		var dt = data.slice();
+	  var line = document.createElement('div');
+	  $(line).addClass('infirow');
+	  var big = document.createElement('div');
+	  $(big).addClass('col-8');
+		$(big).append(dt[0].getItem(type));
+	  // $(big).append(drawItem(dt[0]));
+	  dt.splice(0, 1);
+	  var small = document.createElement('div');
+	  $(small).addClass('col-4');
+
+	  do {
+			// $(small).append(drawItem(dt[0]));
+			$(small).append(dt[0].getItem(type));
+	    dt.splice(0, 1);
+	  } while (dt.length);
+
+	  $(line).append(small);
+	  $(line).append(big);
+	  return line;
+	}
+
+	_trioLine(data, type) {
+		var dt = data.slice();
+	  var line = document.createElement('div');
+	  $(line).addClass('infirow');
+
+	  do {
+	    var item = document.createElement('div');
+	    $(item).addClass('col-4');
+	    // $(item).append(drawItem(dt[0]));
+			$(item).append(dt[0].getItem(type));
+	    $(line).append(item);
+	    dt.splice(0, 1);
+	  } while (dt.length);
+
+	  return line;
+	}
+
+	_pairLine(data, type) {
+		var dt = data.slice();
+	  var line = document.createElement('div');
+	  $(line).addClass('infirow');
+
+	  do {
+	    var item = document.createElement('div');
+	    $(item).addClass('col-6');
+	    // $(item).append(drawItem(dt[0]));
+			$(item).append(dt[0].getItem(type));
+	    $(line).append(item);
+	    dt.splice(0, 1);
+	  } while (dt.length);
+
+	  return line;
 	}
 }
 
@@ -266,80 +355,6 @@ class Lines {
 	      break;
 	  }
 	}
-
-	_oneBigTwoSmall(data) {
-		var dt = data.slice();
-	  var line = document.createElement('div');
-	  $(line).addClass('infirow');
-	  var big = document.createElement('div');
-	  $(big).addClass('col-8');
-	  $(big).append(drawItem(dt[0]));
-	  dt.splice(0, 1);
-	  var small = document.createElement('div');
-	  $(small).addClass('col-4');
-
-	  do {
-	    $(small).append(drawItem(dt[0]));
-	    dt.splice(0, 1);
-	  } while (dt.length);
-
-	  $(line).append(big);
-	  $(line).append(small);
-	  return line;
-	}
-
-	_twoSmallOneBig() {
-		var dt = data.slice();
-	  var line = document.createElement('div');
-	  $(line).addClass('infirow');
-	  var big = document.createElement('div');
-	  $(big).addClass('col-8');
-	  $(big).append(drawItem(dt[0]));
-	  dt.splice(0, 1);
-	  var small = document.createElement('div');
-	  $(small).addClass('col-4');
-
-	  do {
-	    $(small).append(drawItem(dt[0]));
-	    dt.splice(0, 1);
-	  } while (dt.length);
-
-	  $(line).append(small);
-	  $(line).append(big);
-	  return line;
-	}
-
-	_tripleLine() {
-		var dt = data.slice();
-	  var line = document.createElement('div');
-	  $(line).addClass('infirow');
-
-	  do {
-	    var item = document.createElement('div');
-	    $(item).addClass('col-4');
-	    $(item).append(drawItem(dt[0]));
-	    $(line).append(item);
-	    dt.splice(0, 1);
-	  } while (dt.length);
-
-	  return line;
-	}
-
-	_doubleLine() {
-		var dt = data.slice();
-	  var line = document.createElement('div');
-	  $(line).addClass('infirow');
-
-	  do {
-	    var item = document.createElement('div');
-	    $(item).addClass('col-6');
-	    $(item).append(drawItem(dt[0]));
-	    $(line).append(item);
-	    dt.splice(0, 1);
-	  } while (dt.length);
-
-	  return line;
-	}
 }
 
 class Controller {
@@ -355,7 +370,7 @@ class Controller {
 
 	init(data) {
 		this.work_list = new WorkList(data);
-		this.lines = new Lines(this.work_list.works.length);
+		this.lines     = new Lines(this.work_list.works.length);
 
 		this._setView();
 
@@ -372,13 +387,24 @@ class Controller {
 
 		if (this.windowObj.width() >= this.edge && this.current_view != 'desktop') {
 			this.current_view = 'desktop';
-			this._changeView();
+			this._changeView(this.lines);
+		}
+
+		if (this.current_view == 'desktop') {
+			this._redrawBackgrounds();
 		}
 	}
 
-	_changeView() {
+	_redrawBackgrounds() {
+	  var items = $('.boxItem');
+	  $.each(items, function (key, val) {
+	    $(this).outerHeight($(this).outerWidth() / SCREEN_RATIO);
+	  });
+	}
+
+	_changeView(lines) {
 		$('#homePage').empty();
-		$('#homePage').append(this.work_list.getWorks(this.current_view));
+		$('#homePage').append(this.work_list.getWorks(this.current_view, lines));
 	}
 }
 
@@ -387,14 +413,6 @@ function randomInteger(min, max) {
   rand = Math.round(rand);
   return rand;
 }
-
-function redrawBackgrounds() {
-  var items = $('.boxItem');
-  $.each(items, function (key, val) {
-    $(this).outerHeight($(this).outerWidth() / SCREEN_RATIO);
-  });
-}
-
 
 
 var controller = new Controller(textData);
