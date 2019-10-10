@@ -92,21 +92,14 @@ class WorkList {
 		let html = document.createElement('div');
 		if (type == 'mobile') {
 			$(html).addClass('infiniteBox');
-
 			for (var i = 0; i < this.works.length; i++) {
 				$(this.fragment).append(this.works[i].getItem(type));
 			}
-
-			// $(html).append(this.fragment);
-			// this.html = html;
-			// html = null;
-			// this.fragment = document.createDocumentFragment();
 		}
 		else {
-			// let html = document.createElement('div');
 			$(html).addClass('infiniteBox hoverAction');
-
 			let works_copy = this.works.slice(0);
+
 			for (var i = 0; i < lines.data_lines.length; i++) {
 				let row = works_copy.splice(0, lines.data_lines[i]); // cколько срезаем для линии
 				let func = `_${ lines.line_types[i] }`;
@@ -364,27 +357,41 @@ class Lines {
 
 class Controller {
 	constructor(data) {
-		this.work_list = null;
-		this.edge = 768;
-		this.current_view = '';
-		this.windowObj = $(window);
+		this.windowObj     = $(window);
+		this.edge          = 768;
+		this.work_list     = null;
+		this.animation     = null;
+		this.original_data = null;
+		this.current_view  = '';
+		this.category      = '';
 
 		this.init(data);
 		return this;
 	}
 
 	init(data) {
-		this.work_list = new WorkList(data);
-		this.lines     = new Lines(this.work_list.works.length);
+		this._initData(data);
 
-		this._setView();
+		this.animation = new Motion();
+		this.animation.init({
+			elem: '.infiniteBox',
+			axis: 'vertical',
+		});
+
 
 		$(window).on('resize', (e) => {
 			this._setView();
 		});
 	}
 
-	_setView() {
+	_initData(data, is_update) {
+		this.original_data = data;
+		this.work_list = new WorkList(data);
+		this.lines     = new Lines(this.work_list.works.length);
+		this._setView(is_update);
+	}
+
+	_setView(is_update) {
 		if (this.windowObj.width() < this.edge && this.current_view != 'mobile') {
 			this.current_view = 'mobile';
 			this._changeView();
@@ -392,6 +399,10 @@ class Controller {
 
 		if (this.windowObj.width() >= this.edge && this.current_view != 'desktop') {
 			this.current_view = 'desktop';
+			this._changeView(this.lines);
+		}
+
+		if (is_update) {
 			this._changeView(this.lines);
 		}
 
@@ -411,6 +422,29 @@ class Controller {
 		$('#homePage').empty();
 		$('#homePage').append(this.work_list.getWorks(this.current_view, lines));
 	}
+
+	getData(category, callback) { // Заменить на фильтрацию уже имеющихся данных или же оставить?
+		let inst = this;
+		$.ajax({
+	    url: '/api/',
+	    type: "GET",
+	    data: {
+	      category: category,
+	    },
+	    dataType: 'json',
+	    success: function (data) {
+	      if (data.length) {
+					inst.animation.stopMovement();
+					inst._initData(data, true);
+					inst.animation.updateData('.infiniteBox').initAnimation();
+					callback();
+	      }
+	      else {
+	        console.log('Нет данных');
+	      }
+	    }
+	  });
+	}
 }
 
 function randomInteger(min, max) {
@@ -419,50 +453,21 @@ function randomInteger(min, max) {
   return rand;
 }
 
+function setCategory(category) {
+  $(".toggleBtn__text[globcat]").text(category);
+}
 
 var controller = new Controller(textData);
-console.log(controller)
+console.log(controller);
 
-motion = new Motion();
-motion.init({
-	elem: '.infiniteBox',
-	axis: 'vertical',
-});
-
-// remake it!
 $('.toggleList__item').on('click', function (e) {
   e.preventDefault();
-  var cat = $(this).attr('globcat');
-
-  $.ajax({
-    url: '/api/',
-    type: "GET",
-    data: {
-      category: cat,
-    },
-    dataType: 'json',
-    success: function (data) {
-      if (data.length) {
-        var db = data.slice()
-        console.log(db)
-        // console.log(motionObj)
-        // if (windowObj.width() >= 768) {
-        //   motionObj.stop();
-        //   motionObj.offSroll();
-        // }
-        // reset();
-        // renderer(data);
-        $('.toggleList__item.-active-').removeClass('-active-');
-        $(".toggleList__item[globcat=\"".concat(cat, "\"]")).addClass('-active-');
-      }
-      else {
-        console.log('Нет данных')
-      }
-    }
-  });
-
-  var text = $(this).text(); // console.log(text);
-  $(".toggleBtn__text[globcat]").text(text);
+	var cat = $(this).attr('globcat');
+	controller.getData(cat, () => {
+		$('.toggleList__item.-active-').removeClass('-active-');
+		$(`.toggleList__item[globcat="${ cat }"]`).addClass('-active-');
+		setCategory($(this).text());
+	});
 });
 
 $('#mobileCategory>.toggleBtn').on('click', function (e) {

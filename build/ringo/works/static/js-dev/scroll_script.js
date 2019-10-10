@@ -65,6 +65,11 @@ class Motion {
 		return this;
 	}
 
+	updateData(elem) {
+		this.elem = $(elem);
+		return this;
+	}
+
 	initAnimation() {
 		if ( this.isNeedToAnimate(this.elem) ) {
 			this._prepareToAnimate();
