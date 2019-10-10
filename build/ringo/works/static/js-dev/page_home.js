@@ -374,8 +374,13 @@ class Controller {
 
 		this.animation = new Motion();
 		this.animation.init({
+			// onhover: 'nothing',
+      // itemClass: '.boxItem',
+
 			elem: '.infiniteBox',
 			axis: 'vertical',
+			has_pause_evt: true,
+			delayAfterHover: 2,
 		});
 
 

@@ -71,7 +71,7 @@ class Motion {
 	}
 
 	initAnimation() {
-		if ( this.isNeedToAnimate(this.elem) ) {
+		if ( this._isNeedToAnimate(this.elem) ) {
 			this._prepareToAnimate();
 
 			if (!this.is_animated) {
@@ -79,11 +79,11 @@ class Motion {
 			}
 			if (!this.is_events_attached) {
 				console.log('[LOG] Starting attach mouse events');
-				this.mouseActions();
+				this._mouseActions();
 				console.log('[LOG] Mouse events attached');
 
 				console.log('[LOG] Starting attach keyboard events');
-				this.keyboardActions();
+				this._keyboardActions();
 				console.log('[LOG] Keyboard events attached');
 
 				this.is_events_attached = true;
@@ -91,44 +91,69 @@ class Motion {
 		}
 		else {
 			this.stopMovement();
-			// this.resetToDefault();
 			this.elem.find('.fake').remove();
 			this._setPosition(true);
 		}
 		return this;
 	}
 
-	mouseActions() {
-		let inst = this;
+	startMovement() {
+		this._render();
+		this.is_animated = true;
+		console.log('[EVENT] Animation started');
+	}
+
+	resumeMovement() {
+		this.is_animated = true;
+		console.log('[EVENT] Animation resumes');
+	}
+
+	pauseMovement() {
+		this.is_animated = false;
+		console.log('[EVENT] Animation paused');
+	}
+
+	stopMovement() {
+		if (this.requestID) {
+			window.cancelAnimationFrame(this.requestID);
+			this.requestID = undefined;
+			this.is_animated = false;
+			this._resetToDefault();
+		}
+		console.log('[EVENT] Animation stopped');
+	}
+
+	_mouseActions() {
 		$(window).on('mousewheel', (evt) => {
-			// evt.preventDefault();
 			if (this.is_animated) {
 				this.is_paused = true;
 
 				if (evt.deltaY > 0) {
-					inst.pos += evt.deltaFactor;
-					inst.pos = inst._calcScroll(inst.pos, 'reverse');
+					this.pos += evt.deltaFactor;
+					this.pos = this._calcScroll(this.pos, 'reverse');
 				} else {
-					inst.pos -= evt.deltaFactor;
-					inst.pos = inst._calcScroll(inst.pos, 'normal');
+					this.pos -= evt.deltaFactor;
+					this.pos = this._calcScroll(this.pos, 'normal');
 				}
 
-				inst._setPosition();
+				this._setPosition();
 
-				// if ( inst.has_pause_evt ) {
-		 //      clearTimeout(inst.delay_timer);
-				// 	inst.delay_timer = setTimeout(function() {
-		 //        inst.is_paused = false;
-				// 	}, inst.delayAfterHover); // выждав паузу запускаем движение
-				// } else {
-		 //      inst.is_paused = false;
-		 //    }
-				inst.is_paused = false;
+				console.log('this.has_pause_evt', this.has_pause_evt)
+				if ( this.has_pause_evt ) {
+				 this.is_paused = true;
+		      clearTimeout(this.delay_timer);
+					this.delay_timer = setTimeout(() => {
+		        this.is_paused = false;
+						console.log('resume?')
+					}, this.delayAfterHover); // выждав паузу запускаем движение
+				} else {
+		      this.is_paused = false;
+		    }
 			}
 		});
 	}
 
-	keyboardActions() {
+	_keyboardActions() {
     $(window).on('keydown', (e) => {
 			if (this.is_animated) {
 	      this.is_paused = true;
@@ -193,7 +218,7 @@ class Motion {
 		}
 	}
 
-	render() {
+	_render() {
 		const refreshRate = 1000 / 60;
 		let inst = this;
 
@@ -221,37 +246,11 @@ class Motion {
 		this.requestID = window.requestAnimationFrame(renderStep);
 	}
 
-	startMovement() {
-		this.render();
-		this.is_animated = true;
-		console.log('[EVENT] Animation started');
-	}
-
-	resumeMovement() {
-		this.is_animated = true;
-		console.log('[EVENT] Animation resumes');
-	}
-
-	pauseMovement() {
-		this.is_animated = false;
-		console.log('[EVENT] Animation paused');
-	}
-
-	stopMovement() {
-		if (this.requestID) {
-			window.cancelAnimationFrame(this.requestID);
-			this.requestID = undefined;
-			this.is_animated = false;
-			this.resetToDefault();
-		}
-		console.log('[EVENT] Animation stopped');
-	}
-
-	resetToDefault() {
-			this.pos = 0;
-			this.xPos = 0;
-			this.yPos = 0;
-			this.current_way = 'normal';
+	_resetToDefault() {
+		this.pos = 0;
+		this.xPos = 0;
+		this.yPos = 0;
+		this.current_way = 'normal';
 	}
 
 	_setContentLength(elem) {
@@ -271,7 +270,7 @@ class Motion {
 		console.log('[LOG] Data to animate prepared');
 	}
 
-	isNeedToAnimate(elem) {
+	_isNeedToAnimate(elem) {
 		let compare_elem = elem || this.elem;
 		let content_size = this._setContentLength(compare_elem);
 		let parent_size = 0;
