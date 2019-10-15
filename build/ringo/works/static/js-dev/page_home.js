@@ -122,13 +122,11 @@ class WorkList {
 	  var big = document.createElement('div');
 	  $(big).addClass('col-8');
 		$(big).append(dt[0].getItem(type));
-	  // $(big).append(drawItem(dt[0]));
 	  dt.splice(0, 1);
 	  var small = document.createElement('div');
 	  $(small).addClass('col-4');
 
 	  do {
-			// $(small).append(drawItem(dt[0]));
 			$(small).append(dt[0].getItem(type));
 	    dt.splice(0, 1);
 	  } while (dt.length);
@@ -145,13 +143,11 @@ class WorkList {
 	  var big = document.createElement('div');
 	  $(big).addClass('col-8');
 		$(big).append(dt[0].getItem(type));
-	  // $(big).append(drawItem(dt[0]));
 	  dt.splice(0, 1);
 	  var small = document.createElement('div');
 	  $(small).addClass('col-4');
 
 	  do {
-			// $(small).append(drawItem(dt[0]));
 			$(small).append(dt[0].getItem(type));
 	    dt.splice(0, 1);
 	  } while (dt.length);
@@ -169,7 +165,6 @@ class WorkList {
 	  do {
 	    var item = document.createElement('div');
 	    $(item).addClass('col-4');
-	    // $(item).append(drawItem(dt[0]));
 			$(item).append(dt[0].getItem(type));
 	    $(line).append(item);
 	    dt.splice(0, 1);
@@ -186,7 +181,6 @@ class WorkList {
 	  do {
 	    var item = document.createElement('div');
 	    $(item).addClass('col-6');
-	    // $(item).append(drawItem(dt[0]));
 			$(item).append(dt[0].getItem(type));
 	    $(line).append(item);
 	    dt.splice(0, 1);
@@ -209,17 +203,17 @@ class Lines {
 	_init() {
 		this.clear_part   = Math.trunc(this.data_length / 3);
 		this.divided_part = this.data_length % 3;
-		// this.clear_part   = Math.trunc(this.data_length / 5); // [2, 3] or [3, 2]
-		// this.divided_part = this.data_length % 5;
+		this.clear_part   = Math.trunc(this.data_length / 5); // [2, 3] or [3, 2]
+		this.divided_part = this.data_length % 5;
 
-		// if (this.divided_part == 4) {
-		// 	this.data_lines = this.data_lines.concat([2, 2]);
-		// }
-		// else if (this.divided_part == 3) {
-		// 	this.data_lines = this.data_lines.concat([3]);
-		// }
-		// else if (this.divided_part == 2) {
-		if (this.divided_part == 2) {
+		if (this.divided_part == 4) {
+			this.data_lines = this.data_lines.concat([2, 2]);
+		}
+		else if (this.divided_part == 3) {
+			this.data_lines = this.data_lines.concat([3]);
+		}
+		else if (this.divided_part == 2) {
+		// if (this.divided_part == 2) {
 			this.data_lines = this.data_lines.concat([2]);
 		}
 		else if (this.divided_part == 1) {
@@ -228,21 +222,22 @@ class Lines {
 			}
 			else {
 				this.clear_part--;
-				this.data_lines = this.data_lines.concat([2, 2]);
-				// this.data_lines = this.data_lines.concat([3, 3]);
+				// this.data_lines = this.data_lines.concat([2, 2]);
+				this.data_lines = this.data_lines.concat([3, 3]);
 			}
 		}
 
 		if (this.clear_part > 0) {
 			for (var i = 0; i < this.clear_part; i++) {
-				this.data_lines = this.data_lines.concat([3]);
-				// this.data_lines = this.data_lines.concat([2, 3]);
+				// this.data_lines = this.data_lines.concat([3]);
+				this.data_lines = this.data_lines.concat([2, 3]);
 			}
 		}
-		this._setLineTypes();
+    // this._setLineTypesDouble();
+    this._setLineTypesTrio();
 	}
 
-	_setLineTypes() {
+	_setLineTypesTrio() {
 
 		let pair_lines = [], trio_lines = [];
 		for (var i = 0; i < this.data_lines.length; i++) {
@@ -257,6 +252,7 @@ class Lines {
 		let lines_count = this.data_lines.length;
 		this.data_lines = [];
 		this.line_types = [];
+
 
 		let trio_variants = 3;
 		if (lines_count == 1) {
@@ -286,41 +282,56 @@ class Lines {
 			this.line_types.reverse();
 			this.data_lines.reverse();
 		}
-
-		// let trio_count = 1,
-		// 		pair_count = 0,
-		// 		step = 2,
-		// 		trio_variants = 3;
-    //
-		// if (this._selectCombination() == 2) {
-		// 	trio_count = 0;
-		// 	pair_count = 1;
-		// }
-    //
-		// if (this.clear_part == 0) {
-		// 	step          = 1;
-		// 	pair_count    = 0;
-		// 	trio_count    = 0;
-		// 	trio_variants = 2;
-		// }
-
-		// let lines_count = this.data_lines.length;
-		// this.data_lines = [];
-		// this.line_types = new Array(lines_count);
-		// this.data_lines = new Array(lines_count);
-    //
-		// for (var i = 0; i < trio_lines.length; i++) {
-		// 	this.data_lines[trio_count] = 3;
-		// 	this.line_types[trio_count] = this._selectLineType(trio_variants);
-		// 	trio_count += step;
-		// }
-    //
-		// for (var i = 0; i < pair_lines.length; i++) {
-		// 	this.data_lines[pair_count] = 2;
-		// 	this.line_types[pair_count] = 'pairLine';
-		// 	pair_count += step;
-		// }
 	}
+
+  _setLineTypesDouble() {
+    let pair_lines = [], trio_lines = [];
+		for (var i = 0; i < this.data_lines.length; i++) {
+			if (this.data_lines[i] == 2) {
+				pair_lines.push(this.data_lines[i]);
+			}
+			else {
+				trio_lines.push(this.data_lines[i]);
+			}
+		}
+
+    let trio_count = 1,
+				pair_count = 0,
+				step = 2,
+				trio_variants = 3;
+
+		if (this._selectCombination() == 2) {
+			trio_count = 0;
+			pair_count = 1;
+		}
+
+		if (this.clear_part == 0) {
+			step          = 1;
+			pair_count    = 0;
+			trio_count    = 0;
+			trio_variants = 2;
+		}
+
+		let lines_count = this.data_lines.length;
+		this.data_lines = [];
+		this.line_types = new Array(lines_count);
+		this.data_lines = new Array(lines_count);
+
+		for (var i = 0; i < trio_lines.length; i++) {
+			this.data_lines[trio_count] = 3;
+			this.line_types[trio_count] = this._selectLineType(trio_variants);
+			trio_count += step;
+		}
+
+		for (var i = 0; i < pair_lines.length; i++) {
+			this.data_lines[pair_count] = 2;
+			this.line_types[pair_count] = 'pairLine';
+			pair_count += step;
+		}
+
+    this.data_lines = this.data_lines.filter(Boolean);
+    this.line_types = this.line_types.filter(Boolean);
+  }
 
 	_selectCombination() {
 		if ( randomInteger(1, 2) == 1) {
