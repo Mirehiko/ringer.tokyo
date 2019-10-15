@@ -213,6 +213,29 @@ function () {
     value: function _init() {
       this.clear_part = Math.trunc(this.data_length / 3);
       this.divided_part = this.data_length % 3;
+
+      if (this.divided_part == 2) {
+        this.data_lines = this.data_lines.concat([2]);
+      } else if (this.divided_part == 1) {
+        if (this.clear_part == 0) {
+          this.data_lines = this.data_lines.concat([2]);
+        } else {
+          this.clear_part--;
+          this.data_lines = this.data_lines.concat([2, 2]);
+        }
+      }
+
+      if (this.clear_part > 0) {
+        for (var i = 0; i < this.clear_part; i++) {
+          this.data_lines = this.data_lines.concat([3]);
+        }
+      }
+
+      this._setLineTypesTrio();
+    }
+  }, {
+    key: "_initDouble",
+    value: function _initDouble() {
       this.clear_part = Math.trunc(this.data_length / 5); // [2, 3] or [3, 2]
 
       this.divided_part = this.data_length % 5;
@@ -222,27 +245,23 @@ function () {
       } else if (this.divided_part == 3) {
         this.data_lines = this.data_lines.concat([3]);
       } else if (this.divided_part == 2) {
-        // if (this.divided_part == 2) {
         this.data_lines = this.data_lines.concat([2]);
       } else if (this.divided_part == 1) {
         if (this.clear_part == 0) {
           this.data_lines = this.data_lines.concat([2]);
         } else {
-          this.clear_part--; // this.data_lines = this.data_lines.concat([2, 2]);
-
+          this.clear_part--;
           this.data_lines = this.data_lines.concat([3, 3]);
         }
       }
 
       if (this.clear_part > 0) {
         for (var i = 0; i < this.clear_part; i++) {
-          // this.data_lines = this.data_lines.concat([3]);
           this.data_lines = this.data_lines.concat([2, 3]);
         }
-      } // this._setLineTypesDouble();
+      }
 
-
-      this._setLineTypesTrio();
+      this._setLineTypesDouble();
     }
   }, {
     key: "_setLineTypesTrio",
@@ -259,6 +278,7 @@ function () {
       }
 
       var lines_count = this.data_lines.length;
+      this.trio_type_tmp = '';
       this.data_lines = [];
       this.line_types = [];
       var trio_variants = 3;
@@ -360,7 +380,14 @@ function () {
       var variants = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 3;
 
       /* Выбираем рандомную комбинацию из трех элементов */
-      var typeID = randomInteger(1, variants);
+      // var typeID = randomInteger(1, variants);
+      var typeID = 0;
+
+      do {
+        typeID = randomInteger(1, variants);
+      } while (this.trio_type_tmp == typeID);
+
+      this.trio_type_tmp = typeID;
 
       switch (typeID) {
         case 1:
