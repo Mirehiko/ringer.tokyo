@@ -239,9 +239,7 @@ class Lines {
 				// this.data_lines = this.data_lines.concat([2, 3]);
 			}
 		}
-		console.log(this.data_lines);
 		this._setLineTypes();
-		console.log(this.line_types);
 	}
 
 	_setLineTypes() {
@@ -364,7 +362,7 @@ class Controller {
 		this.original_data = null;
 		this.current_view  = '';
 		this.category      = '';
-
+		this.container     = $('#homePage');
 		this.init(data);
 		return this;
 	}
@@ -374,13 +372,13 @@ class Controller {
 
 		this.animation = new Motion();
 		this.animation.init({
-			// onhover: 'nothing',
-      // itemClass: '.boxItem',
-
 			elem: '.infiniteBox',
 			axis: 'vertical',
-			has_pause_evt: true,
+			has_pause_evt:   true,
 			delayAfterHover: 2,
+			container: this.container,
+			// on_hover:      'pause',
+			on_hover_objs: '.boxItem',
 		});
 
 
@@ -424,8 +422,8 @@ class Controller {
 	}
 
 	_changeView(lines) {
-		$('#homePage').empty();
-		$('#homePage').append(this.work_list.getWorks(this.current_view, lines));
+		this.container.empty();
+		this.container.append(this.work_list.getWorks(this.current_view, lines));
 	}
 
 	getData(category, callback) { // Заменить на фильтрацию уже имеющихся данных или же оставить?
@@ -463,7 +461,7 @@ function setCategory(category) {
 }
 
 var controller = new Controller(textData);
-console.log(controller);
+// console.log(controller);
 
 $('.toggleList__item').on('click', function (e) {
   e.preventDefault();

@@ -23,28 +23,36 @@
 		};
 }());
 
-
-
 class Motion {
 	constructor() {
-		this.delay_timer        = null;
-		this.elem               = null;
 		this.xPos 		          = 0;
 		this.yPos 		          = 0;
 		this.pos                = 0;
-		this.is_paused          = false;
-		this.requestID          = undefined;
 		this.content_length     = 0;
-		this.is_animated        = false;
+		this.elem               = null;
+		this.container          = null;
 		this.is_events_attached = false;
+		this.is_paused          = false;
+		this.is_animated        = false;
+		this.requestID          = undefined;
 
-		this.current_way     = 'normal';
-		this.axis            = 'horizontal';
-		this.speed           = 1;
-		this.key_delta       = 10;
-		this.on_hover        = false;
+		this.current_way = 'normal';
+		this.axis        = 'horizontal';
+		this.speed       = 1;
+		this.key_delta   = 10;
+
 		this.has_pause_evt   = false;
+		this.delay_timer     = null;
 		this.delayAfterHover = 1000;
+
+		this.on_hover      = 'nothing';
+		this.on_hover_objs = '';
+		this.hoveringItem  = null;
+		this.hoverBgn      = 0;
+		this.hoverEnd      = 0;
+		this.mouseX        = 0;
+		this.mouseY        = 0;
+
 		return this;
 	}
 
@@ -55,6 +63,10 @@ class Motion {
 		this.key_delta       = options.key_delta || 10;
 		this.has_pause_evt   = options.has_pause_evt || false;
 		this.delayAfterHover = options.delayAfterHover*1000 || 1000; // задержка после скрола
+		this.on_hover        = options.on_hover || 'nothing';
+		this.on_hover_objs   = options.on_hover_objs;
+		this.container       = options.container;
+
 		console.log('[LOG] Data initialized');
 
 		this.initAnimation();
@@ -77,6 +89,7 @@ class Motion {
 			if (!this.is_animated) {
 				this.startMovement();
 			}
+
 			if (!this.is_events_attached) {
 				console.log('[LOG] Starting attach mouse events');
 				this._mouseActions();
@@ -138,19 +151,45 @@ class Motion {
 
 				this._setPosition();
 
-				console.log('this.has_pause_evt', this.has_pause_evt)
 				if ( this.has_pause_evt ) {
 				 this.is_paused = true;
 		      clearTimeout(this.delay_timer);
 					this.delay_timer = setTimeout(() => {
 		        this.is_paused = false;
-						console.log('resume?')
 					}, this.delayAfterHover); // выждав паузу запускаем движение
 				} else {
 		      this.is_paused = false;
 		    }
 			}
 		});
+
+		if ( this.on_hover_objs ) {
+			this.container.delegate(this.on_hover_objs, 'mousemove', (evt) => {
+				this.mouseX = evt.pageX;
+				this.mouseY = evt.pageY;
+				this.hoveringItem = $(evt.target).closest(this.on_hover_objs);
+				this.hoveringItem.addClass('-hover-');
+			});
+
+			this.container.delegate(this.on_hover_objs, 'mouseleave', (evt) => {
+				if (this.hoveringItem != null) {
+					this.hoveringItem.removeClass('-hover-');
+					this.hoveringItem = null;
+				}
+			});
+		}
+
+
+		// Пауза при наведении мышкой
+		if ( this.on_hover == 'pause' ) {
+			this.container.delegate('.hoverAction', 'mousemove', (evt) => {
+        this.is_paused = true;
+				clearTimeout(this.delay_timer);
+				this.delay_timer = setTimeout(() => {
+          this.is_paused = false;
+				}, this.delayAfterHover); // выждав паузу запускаем движение
+			});
+		}
 	}
 
 	_keyboardActions() {
@@ -202,6 +241,29 @@ class Motion {
 		return pos;
 	}
 
+	_getEdgesOfHover() {
+    this.hoverBgn = this.hoveringItem.offset().top;
+    if ( this.axis == 'horizontal' ) {
+      this.hoverEnd = this.hoveringItem.offset().left + this.hoveringItem.outerWidth();
+    } else {
+      this.hoverEnd = this.hoveringItem.offset().top + this.hoveringItem.outerHeight();
+    }
+  }
+
+	_isInsiteOfItem() {
+		if ( this.axis == 'horizontal' ) {
+			if ( this.mouseX >= this.hoverBgn && this.mouseX <= this.hoverEnd ) {
+				return true;
+			}
+			return false;
+		} else {
+			if ( this.mouseY >= this.hoverBgn && this.mouseY <= this.hoverEnd ) {
+				return true;
+			}
+			return false;
+		}
+	}
+
 	_setPosition(is_reset) {
 		if (is_reset) {
 			this.elem[0].style.transform = `translate3d(0px, 0px, 0)`;
@@ -223,14 +285,15 @@ class Motion {
 		let inst = this;
 
 		function renderStep() {
-			// if (self.hoveringItem != null) {
-			//   self.getEdgesOfHover();
-			//   // console.log('Is hovering:', self.isInsiteOfItem())
-			//   if ( !self.isInsiteOfItem() ) {
-			//     self.hoveringItem.removeClass('-hover-');
-			//     self.hoveringItem = null;
-			//   }
-			// }
+
+			if (inst.hoveringItem != null) {
+			  inst._getEdgesOfHover();
+			  // console.log('Is hovering:', self.isInsiteOfItem())
+			  if ( !inst._isInsiteOfItem() ) {
+			    inst.hoveringItem.removeClass('-hover-');
+			    inst.hoveringItem = null;
+			  }
+			}
 
 			if (!inst.is_paused && inst.is_animated) {
 				inst.pos--;

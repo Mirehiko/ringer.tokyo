@@ -1,1 +1,418 @@
-"use strict";var computedLines=[],renderedData=[],isScrolling=!1;Array.prototype.shuffle=function(){for(var e=this.length-1;0<e;e--){var t=Math.floor(Math.random()*(e+1)),a=this[t];this[t]=this[e],this[e]=a}return this};var motionObj,firstID="",lastID="",windowObj=$(window),homePageObj=$("#homePage");function renderer(){windowObj.width()<768?(homePageObj.empty(),homePageObj.append(renderMobile(textData))):(homePageObj.empty(),homePageObj.append(renderPage(textData)),motionObj=new MotionGlob($("#homePage"),{onhover:"nothing",itemClass:".boxItem",delayAfterHover:2,original:$(".infiniteBox")}),setTimeout(function(){motionObj.init()},1e3))}function checkForAdditionData(){var e=$(".infiniteBox"),t=$(window);for($(".infirow:last-child");$(".infirow:last-child").offset().top-t.height()<0;)try{var a=computedLines.splice(0,1);2==a.length?e.append(doubleLine(a)):e.append(a[0].lineType(a[0].data)),computedLines=computedLines.concat(a),redrawBackgrounds()}catch(e){console.log(e)}}function renderMobile(e){var t=document.createElement("div");$(t).addClass("infiniteBox");for(var a=document.createDocumentFragment(),n=0;n<e.length;n++)$(a).append(mobileItem(e[n]));return $(t).append(a),t}function mobileItem(e){return'\n\t\t<a href="'.concat(e.link,'" class="mobItem" title="Перейти к ').concat(e.title,'">\n\t\t\t<img class="mobileItem__image" src="').concat(e.src,'" alt="">\n\t\t\t<div class="mobItem__info">\n\t\t\t\t<h2 class="paramLine">\n\t\t\t\t\t<span class="paramTitle">Title</span>\n\t\t\t\t\t<span class="paramValue">').concat(e.title,'</span>\n\t\t\t\t</h2>\n\t\t\t\t<div class="paramLine">\n\t\t\t\t\t<span class="paramTitle">Launch</span>\n\t\t\t\t\t<span class="paramValue">').concat(e.lauch,'</span>\n\t\t\t\t</div>\n\t\t\t\t<div class="paramLine">\n\t\t\t\t\t<span class="paramTitle">Category</span>\n\t\t\t\t\t<span class="paramValue">').concat(e.category,"</span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</a>")}function renderPage(e){var t=e,a=document.createElement("div");$(a).addClass("infiniteBox");var n=calcView(e.length),r=n.filter(function(e){return 3==e}),i=[],o=[];if(r.length){for(var d=0;d<r.length;d++)o.push(autoSelectType());for(var c=0;c<r.length;c++)i.push({lineType:o[c],data:[].concat(t.splice(0,r[c]))})}var l=n.filter(function(e){return 2==e}),s=[];if(l.length)for(var p=0;p<l.length;p++)s.push({lineType:"double",data:[].concat(t.splice(0,l[p]))});(computedLines=s.concat(i)).shuffle();for(var m=0;m<computedLines.length;m++){var u=computedLines[m];"double"==u.lineType?$(a).append(doubleLine(u.data)):$(a).append(u.lineType(u.data))}return a}function autoSelectType(){var e=null;switch(randomInteger(1,3)){case 1:e=tripleLine;break;case 2:e=tsobLine;break;case 3:e=obtsLine}return e}function calcView(e){var t=[],a=0,n=0,r=0,i=!0,o=3;if(e<5&&(o=2),0!=e)for(;i;)e<(a+=o)+r?(r=e-n,a=0,t=[]):(t.push(o),a+r==e&&(1==r?(r=e-n,t=[],a=0):i=!1)),n=a;if(3<=o)if(2==r)t.push(2);else if(0!=r)for(var d=0;d<r/2;d++)t.push(2);return t}function randomInteger(e,t){var a=e-.5+Math.random()*(t-e+1);return a=Math.round(a)}function tsobLine(e){var t=e.slice(),a=document.createElement("div");$(a).addClass("infirow");var n=document.createElement("div");$(n).addClass("col-8"),$(n).append(drawItem(t[0])),t.splice(0,1);var r=document.createElement("div");for($(r).addClass("col-4");$(r).append(drawItem(t[0])),t.splice(0,1),t.length;);return $(a).append(r),$(a).append(n),a}function obtsLine(e){var t=e.slice(),a=document.createElement("div");$(a).addClass("infirow");var n=document.createElement("div");$(n).addClass("col-8"),$(n).append(drawItem(t[0])),t.splice(0,1);var r=document.createElement("div");for($(r).addClass("col-4");$(r).append(drawItem(t[0])),t.splice(0,1),t.length;);return $(a).append(n),$(a).append(r),a}function tripleLine(e){var t=e.slice(),a=document.createElement("div");$(a).addClass("infirow");do{var n=document.createElement("div");$(n).addClass("col-4"),$(n).append(drawItem(t[0])),$(a).append(n),t.splice(0,1)}while(t.length);return a}function doubleLine(e){var t=e.slice(),a=document.createElement("div");$(a).addClass("infirow");do{var n=document.createElement("div");$(n).addClass("col-6"),$(n).append(drawItem(t[0])),$(a).append(n),t.splice(0,1)}while(t.length);return a}function redrawBackgrounds(){var e=$(".boxItem");$.each(e,function(e,t){$(this).outerHeight($(this).outerWidth()/SCREEN_RATIO)})}function drawItem(e){var t=document.createElement("a");t.href=e.link,$(t).addClass("boxItem");var a=document.createElement("div");$(a).addClass("itemWrapper"),$(t).append(a);var n=document.createElement("div");$(n).addClass("itemBack"),$(n).css("background-image","url("+e.src+")"),$(n).css("background-size","cover"),$(n).css("background-repeat","no-repeat"),$(a).append(n);var r=document.createElement("div");$(r).addClass("itemContent"),$(a).append(r);var i=document.createElement("div");$(i).addClass("itemTitle withValue"),$(i).text("Title"),$(r).append(i);var o=document.createElement("span");$(o).text(e.title),$(i).append(o);var d=document.createElement("div");$(d).addClass("itemLauchDate withValue"),$(d).text("Launch"),$(r).append(d);var c=document.createElement("span");$(c).text(e.lauch),$(d).append(c);var l=document.createElement("div");$(l).addClass("itemCategory withValue"),$(l).text("Category"),$(r).append(l);var s=document.createElement("span");$(s).text(e.category),$(l).append(s);var p=document.createElement("div");$(p).addClass("itemPreview"),$(r).append(p);var m=document.createElement("div");$(m).addClass("itemPreview__box"),$(p).append(m);var u=document.createElement("div");return $(u).addClass("itemPreview__btn"),$(p).append(u),t}renderer(),768<=WINDOW.width()&&(redrawBackgrounds(),checkForAdditionData()),$(window).on("resize",function(e){redrawBackgrounds()}),$("#mobileCategory>.toggleBtn").on("click",function(e){var t=$(this),a=$("#mobileNav");t.hasClass("collapse")?a.addClass("-open-"):a.removeClass("-open-")}),$(".toggleList__item").on("click",function(e){e.preventDefault();var t=$(this).attr("globcat");$(".toggleList__item.-active-").removeClass("-active-"),$('.toggleList__item[globcat="'.concat(t,'"]')).addClass("-active-");var a=$(this).text();$(".toggleBtn__text[globcat]").text(a)});
+var computedLines = [];
+var renderedData = [];
+var isScrolling = false;
+
+Array.prototype.shuffle = function () {
+  for (var i = this.length - 1; i > 0; i--) {
+    var num = Math.floor(Math.random() * (i + 1));
+    var d = this[num];
+    this[num] = this[i];
+    this[i] = d;
+  }
+
+  return this;
+};
+
+var firstID = '';
+var lastID = '';
+var windowObj = $(window);
+var homePageObj = $('#homePage');
+var motionObj;
+renderer();
+
+function renderer() {
+  if (windowObj.width() < 768) {
+    homePageObj.empty();
+    homePageObj.append(renderMobile(textData));
+  } else {
+    homePageObj.empty();
+    homePageObj.append(renderPage(textData));
+    motionObj = new MotionGlob($('#homePage'), {
+      onhover: 'nothing',
+      itemClass: '.boxItem',
+      delayAfterHover: 2,
+      original: $('.infiniteBox')
+    });
+    setTimeout(function () {
+      motionObj.init();
+    }, 1000);
+  }
+}
+
+if (WINDOW.width() >= 768) {
+  redrawBackgrounds();
+  checkForAdditionData();
+}
+
+$(window).on('resize', function (e) {
+  redrawBackgrounds();
+});
+$('#mobileCategory>.toggleBtn').on('click', function (e) {
+  var elem = $(this);
+  var mobileNav = $('#mobileNav');
+
+  if (elem.hasClass('collapse')) {
+    mobileNav.addClass('-open-');
+  } else {
+    mobileNav.removeClass('-open-');
+  }
+});
+$('.toggleList__item').on('click', function (e) {
+  e.preventDefault();
+  var cat = $(this).attr('globcat');
+  $('.toggleList__item.-active-').removeClass('-active-');
+  $(".toggleList__item[globcat=\"".concat(cat, "\"]")).addClass('-active-');
+  var text = $(this).text();
+  $(".toggleBtn__text[globcat]").text(text);
+});
+
+function checkForAdditionData() {
+  var box = $('.infiniteBox');
+  var w = $(window);
+  var lastLine = $('.infirow:last-child');
+
+  while ($('.infirow:last-child').offset().top - w.height() < 0) {
+    try {
+      // console.log('computedLines:before:', computedLines)
+      var forDraw = computedLines.splice(0, 1);
+
+      if (forDraw.length == 2) {
+        box.append(doubleLine(forDraw));
+      } else {
+        box.append(forDraw[0].lineType(forDraw[0].data));
+      }
+
+      computedLines = computedLines.concat(forDraw);
+      redrawBackgrounds(); // console.log('computedLines:after:', computedLines)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}
+
+function renderMobile(data) {
+  var tmpData = data;
+  var result = document.createElement('div');
+  $(result).addClass('infiniteBox');
+  var fragment = document.createDocumentFragment(); // for ( let item of data ) {
+  // 	$(fragment).append( mobileItem(item) );
+  // }
+
+  for (var i = 0; i < data.length; i++) {
+    $(fragment).append(mobileItem(data[i]));
+  }
+
+  $(result).append(fragment);
+  return result;
+}
+
+function mobileItem(data) {
+  return "\n\t\t<a href=\"".concat(data.link, "\" class=\"mobItem\" title=\"\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A ").concat(data.title, "\">\n\t\t\t<img class=\"mobileItem__image\" src=\"").concat(data.src, "\" alt=\"\">\n\t\t\t<div class=\"mobItem__info\">\n\t\t\t\t<h2 class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Title</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.title, "</span>\n\t\t\t\t</h2>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Launch</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.lauch, "</span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Category</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.category, "</span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</a>");
+}
+
+function renderPage(data) {
+  var tmpData = data;
+  var result = document.createElement('div');
+  $(result).addClass('infiniteBox');
+  var linesCount = data.length; // console.log('linesCount:',linesCount)
+  // Вычисляем какие плитки будут
+
+  var lines = calcView(linesCount); // console.log('lines:',lines)
+  // Отбираем данные для тройной плитки
+
+  var tripleLines = lines.filter(function (length) {
+    return length == 3;
+  });
+  var tripleData = [];
+  var lineTypes = [];
+
+  if (tripleLines.length) {
+    // Для линий с тремя объектами вычисляем тип плитки
+    // for (item of tripleLines) {
+    // 	lineTypes.push(autoSelectType());
+    // }
+    for (var i = 0; i < tripleLines.length; i++) {
+      lineTypes.push(autoSelectType());
+    } // console.log('lineTypes:',lineTypes)
+    // Отбираем данные для отображения
+
+
+    for (var _i = 0; _i < tripleLines.length; _i++) {
+      tripleData.push({
+        lineType: lineTypes[_i],
+        data: [].concat(tmpData.splice(0, tripleLines[_i]))
+      });
+    }
+  } // Отбираем данные для двойной плитки
+
+
+  var doubleLines = lines.filter(function (length) {
+    return length == 2;
+  });
+  var doubleData = [];
+
+  if (doubleLines.length) {
+    // Отбираем данные для отображения
+    for (var _i2 = 0; _i2 < doubleLines.length; _i2++) {
+      doubleData.push({
+        lineType: 'double',
+        data: [].concat(tmpData.splice(0, doubleLines[_i2]))
+      });
+    } // for (item of doubleLines) {
+    // 	doubleData.push({
+    //         lineType: 'double',
+    //         data: [].concat(tmpData.splice(0, item)),
+    //     		});
+    // }
+
+  } // Собираем все плитки воедино
+
+
+  computedLines = doubleData.concat(tripleData);
+  computedLines.shuffle(); // Задаем случайное положение
+  // Собираем данные для отрисовки
+
+  for (var _i3 = 0; _i3 < computedLines.length; _i3++) {
+    var item = computedLines[_i3];
+
+    if (item.lineType == 'double') {
+      $(result).append(doubleLine(item.data));
+    } else {
+      $(result).append(item.lineType(item.data));
+    }
+  } // for ( item of computedLines ) {
+  // 	if ( item.lineType == 'double' ) {
+  // 		$(result).append(doubleLine(item.data));
+  // 	} else {
+  // 		$(result).append(item.lineType(item.data));
+  // 	}
+  // }
+
+
+  return result;
+}
+
+function autoSelectType() {
+  var typeID = randomInteger(1, 3);
+  var type = null;
+
+  switch (typeID) {
+    case 1:
+      {
+        type = tripleLine;
+        break;
+      }
+
+    case 2:
+      {
+        type = tsobLine;
+        break;
+      }
+
+    case 3:
+      {
+        type = obtsLine;
+        break;
+      }
+
+    default:
+      break;
+  }
+
+  return type;
+}
+
+function calcView(num) {
+  var result = [];
+  var count = 0;
+  var lastState = 0;
+  var tmp = 0;
+  var c = true;
+  var step = 3;
+
+  if (num < 5) {
+    step = 2;
+  }
+
+  if (num != 0) {
+    while (c) {
+      count += step;
+
+      if (count + tmp > num) {
+        tmp = num - lastState;
+        count = 0;
+        result = [];
+      } else {
+        result.push(step);
+
+        if (count + tmp == num) {
+          if (tmp == 1) {
+            tmp = num - lastState;
+            result = [];
+            count = 0;
+          } else {
+            c = false;
+          }
+        }
+      }
+
+      lastState = count;
+    }
+  }
+
+  if (step >= 3) {
+    if (tmp == 2) {
+      result.push(2);
+    } else if (tmp != 0) {
+      for (var i = 0; i < tmp / 2; i++) {
+        result.push(2);
+      }
+    }
+  } // let isCan = num % 7;
+  // let cres = num / 7;
+  //
+  // if (isCan == 0 && cres > 3 ) {
+  // 	result = calcView(num-7);
+  // 	let arr = calcView(7);
+  // 	result.concat( arr.slice() );
+  // }
+
+
+  return result;
+}
+
+function randomInteger(min, max) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1);
+  rand = Math.round(rand);
+  return rand;
+}
+
+function tsobLine(data) {
+  var dt = data.slice();
+  var line = document.createElement('div');
+  $(line).addClass('infirow');
+  var big = document.createElement('div');
+  $(big).addClass('col-8');
+  $(big).append(drawItem(dt[0]));
+  dt.splice(0, 1);
+  var small = document.createElement('div');
+  $(small).addClass('col-4');
+
+  do {
+    $(small).append(drawItem(dt[0]));
+    dt.splice(0, 1);
+  } while (dt.length);
+
+  $(line).append(small);
+  $(line).append(big);
+  return line;
+}
+
+function obtsLine(data) {
+  var dt = data.slice();
+  var line = document.createElement('div');
+  $(line).addClass('infirow');
+  var big = document.createElement('div');
+  $(big).addClass('col-8');
+  $(big).append(drawItem(dt[0]));
+  dt.splice(0, 1);
+  var small = document.createElement('div');
+  $(small).addClass('col-4');
+
+  do {
+    $(small).append(drawItem(dt[0]));
+    dt.splice(0, 1);
+  } while (dt.length);
+
+  $(line).append(big);
+  $(line).append(small);
+  return line;
+}
+
+function tripleLine(data) {
+  var dt = data.slice();
+  var line = document.createElement('div');
+  $(line).addClass('infirow');
+
+  do {
+    var item = document.createElement('div');
+    $(item).addClass('col-4');
+    $(item).append(drawItem(dt[0]));
+    $(line).append(item);
+    dt.splice(0, 1);
+  } while (dt.length);
+
+  return line;
+}
+
+function doubleLine(data) {
+  var dt = data.slice();
+  var line = document.createElement('div');
+  $(line).addClass('infirow');
+
+  do {
+    var item = document.createElement('div');
+    $(item).addClass('col-6');
+    $(item).append(drawItem(dt[0]));
+    $(line).append(item);
+    dt.splice(0, 1);
+  } while (dt.length);
+
+  return line;
+}
+
+function redrawBackgrounds() {
+  var items = $('.boxItem');
+  $.each(items, function (key, val) {
+    $(this).outerHeight($(this).outerWidth() / SCREEN_RATIO);
+  });
+}
+
+function drawItem(data) {
+  var item = document.createElement('a');
+  item.href = data.link;
+  $(item).addClass('boxItem');
+  var wrapper = document.createElement('div');
+  $(wrapper).addClass('itemWrapper');
+  $(item).append(wrapper);
+  var back = document.createElement('div');
+  $(back).addClass('itemBack');
+  $(back).css('background-image', 'url(' + data.src + ')');
+  $(back).css('background-size', 'cover');
+  $(back).css('background-repeat', 'no-repeat');
+  $(wrapper).append(back);
+  var itemContent = document.createElement('div');
+  $(itemContent).addClass('itemContent');
+  $(wrapper).append(itemContent);
+  var itemTitle = document.createElement('div');
+  $(itemTitle).addClass('itemTitle withValue');
+  $(itemTitle).text('Title');
+  $(itemContent).append(itemTitle);
+  var itemTitle__value = document.createElement('span');
+  $(itemTitle__value).text(data.title);
+  $(itemTitle).append(itemTitle__value);
+  var itemLauchDate = document.createElement('div');
+  $(itemLauchDate).addClass('itemLauchDate withValue');
+  $(itemLauchDate).text('Launch');
+  $(itemContent).append(itemLauchDate);
+  var itemLauch__value = document.createElement('span');
+  $(itemLauch__value).text(data.lauch);
+  $(itemLauchDate).append(itemLauch__value);
+  var itemCategory = document.createElement('div');
+  $(itemCategory).addClass('itemCategory withValue');
+  $(itemCategory).text('Category');
+  $(itemContent).append(itemCategory);
+  var itemCategory__value = document.createElement('span');
+  $(itemCategory__value).text(data.category);
+  $(itemCategory).append(itemCategory__value);
+  var previewBlock = document.createElement('div');
+  $(previewBlock).addClass('itemPreview');
+  $(itemContent).append(previewBlock);
+  var previewContent = document.createElement('div');
+  $(previewContent).addClass('itemPreview__box');
+  $(previewBlock).append(previewContent);
+  var btn = document.createElement('div');
+  $(btn).addClass('itemPreview__btn');
+  $(previewBlock).append(btn);
+  return item;
+}

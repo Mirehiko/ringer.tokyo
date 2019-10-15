@@ -1,83 +1,98 @@
-function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function setSizes() {
+  return _setSizes.apply(this, arguments);
 }
 
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+function _setSizes() {
+  _setSizes = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee() {
+    var contentWidth;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            contentWidth = $('.infoItem').width();
+            _context.next = 3;
+            return setSizesToImages(contentWidth);
+
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _setSizes.apply(this, arguments);
 }
 
-function _iterableToArrayLimit(arr, i) {
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
+function setSizesToImages(contentWidth) {
+  return new Promise(function (resolve) {
+    $(".imgcfg").one("load", function () {
+      var _getSize = getSize($(this)),
+          _getSize2 = _slicedToArray(_getSize, 2),
+          w = _getSize2[0],
+          h = _getSize2[1];
 
-  try {
-    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-var videoObj = {};
-var edge = 768;
-var motionObj;
-
-function redrawBackgrounds() {
-  var items = $(".boxItem");
-  $.each(items, function (key, val) {
-    $(this).outerHeight($(this).outerWidth() / SCREEN_RATIO);
+      $(this).parent().width(w);
+      contentWidth += w;
+      $('.workInfo').width(contentWidth);
+    }).each(function () {
+      if (this.complete) {
+        $(this).trigger('load'); // For jQuery >= 3.0
+      }
+    });
+    setTimeout(function () {
+      resolve();
+    }, 1000);
   });
 }
 
-WINDOW.on("resize", function (e) {
-  checkDimentions();
-});
-checkDimentions();
-
-function checkDimentions() {
-  if (motionObj) {
-    motionObj.stop();
-    motionObj.offSroll();
-  }
-
-  $("#wrapper2").empty();
-  $("#wrapper2").append(drawContent(textData));
-
-  if (WINDOW.width() >= edge) {
-    desktopView(textData);
-    return;
-  }
+function getSize(elem) {
+  return [elem.width(), elem.height()];
 }
 
 function drawContent(data) {
   var results = document.createElement("div");
   $(results).addClass("workInfo"); // for (let item of data) {
-  // 	$(results).append(selectDrawModeAndDraw(item));
-  // }
 
   for (var i = 0; i < data.length; i++) {
     $(results).append(selectDrawModeAndDraw(data[i]));
   }
 
   return results;
+}
+
+function selectDrawModeAndDraw(elem) {
+  var item = null;
+
+  if (elem.type == "info") {
+    item = drawInfoItem(elem);
+  } else if (elem.type == "video") {
+    item = drawVideoItem(elem);
+    videoObj[elem.id] = elem;
+  } else if (elem.type == "integrated_video") {
+    item = drawIntegratedVideoItem(elem);
+    videoObj[elem.id] = {
+      src: elem.src,
+      title: elem.title
+    };
+  } else {
+    item = drawImageItem(elem);
+  }
+
+  return item;
 }
 
 function drawImageItem(data) {
@@ -184,84 +199,9 @@ function drawInfoItem(data) {
   return item;
 }
 
-function selectDrawModeAndDraw(elem) {
-  var item = null;
-
-  if (elem.type == "info") {
-    item = drawInfoItem(elem);
-  } else if (elem.type == "video") {
-    item = drawVideoItem(elem);
-    videoObj[elem.id] = elem;
-  } else if (elem.type == "integrated_video") {
-    item = drawIntegratedVideoItem(elem);
-    videoObj[elem.id] = {
-      src: elem.src,
-      title: elem.title
-    };
-  } else {
-    item = drawImageItem(elem);
-  }
-
-  return item;
-}
-
-function desktopView() {
-  if (motionObj === undefined) {
-    motionObj = new MotionGlob($("#wrapper2"), {
-      direction: "left",
-      pauseOnScroll: false,
-      original: $(".workInfo")
-    });
-    var contentWidth = $(".infoItem").width();
-    $(".imgcfg").one("load", function () {
-      var _getSize = getSize($(this)),
-          _getSize2 = _slicedToArray(_getSize, 2),
-          w = _getSize2[0],
-          h = _getSize2[1];
-
-      $(this).parent().width(w);
-      contentWidth += w;
-      $(".workInfo").width(contentWidth);
-    }).each(function () {
-      if (this.complete) {
-        // $(this).load(); // For jQuery < 3.0
-        $(this).trigger("load"); // For jQuery >= 3.0
-      }
-    });
-    setTimeout(function () {
-      motionObj.init();
-    }, 1000);
-  } else {
-    motionObj.render();
-  }
-}
-
-function getSize(elem) {
-  return [elem.width(), elem.height()];
-}
-
-$(document).on("keyup", function (e) {
-  if (e.keyCode == 27) {
-    closeVideo();
-  }
-});
-$("body").delegate(".fullView__close", "click", closeVideo);
-$("body").delegate(".prevIcon", "click", function (e) {
-  e.preventDefault(); // console.log('test1')
-
-  if ($(this).attr("own") == "true") {
-    drawOwnVideo(videoObj[$(this).attr("vid")]); // console.log('test2-1')
-  } else {
-    // console.log('test2-2')
-    drawVideo($(this).attr("vid"));
-  }
-
-  showVideo();
-});
-
 function showVideo() {
   $(".fullView").removeClass("-hidden-");
-  motionObj.stop();
+  motion.pauseMovement();
 }
 
 function closeVideo() {
@@ -277,10 +217,13 @@ function closeVideo() {
 
   $(".fullView").addClass("-hidden-");
   $("#videoContent").empty();
-  motionObj.render();
+  motion.resumeMovement();
 }
 
-var player = {};
+function drawVideo(id) {
+  var text_elem = $.parseHTML(videoObj[id].src)[0].data;
+  $("#videoContent")[0].innerHTML = text_elem;
+}
 
 function drawOwnVideo(data) {
   var video = '\n\t\t<video id="'.concat(data.id, '" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" poster="').concat(data.previewImage, '"\n\t\t data-setup="{}" title="').concat(data.title, '">\n\t\t ').concat(data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : "", "\n\t\t ").concat(data.srcwebm ? '<source src="' + data.srcwebm + '" type="video/webm">' : "", '\n\t\t <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>\n\t\t</video>');
@@ -302,14 +245,41 @@ function drawOwnVideo(data) {
   });
 }
 
+var videoObj = {};
+var edge = 768;
+var motion = null;
+$("#wrapper2").empty();
+$("#wrapper2").append(drawContent(textData));
+setSizes().then(function () {
+  motion = new Motion();
+  motion.init({
+    elem: '.workInfo'
+  });
+});
+$(window).on('resize', function () {
+  setSizes().then(function () {
+    motion.initAnimation();
+  });
+});
+$(document).on("keyup", function (e) {
+  if (e.keyCode == 27) {
+    closeVideo();
+  }
+});
+$("body").delegate(".fullView__close", "click", closeVideo);
+$("body").delegate(".prevIcon", "click", function (e) {
+  e.preventDefault();
+
+  if ($(this).attr("own") == "true") {
+    drawOwnVideo(videoObj[$(this).attr("vid")]);
+  } else {
+    drawVideo($(this).attr("vid"));
+  }
+
+  showVideo();
+});
+var player = {};
 videojs.TOUCH_ENABLED = true;
-
-function drawVideo(id) {
-  var text_elem = $.parseHTML(videoObj[id].src)[0].data;
-  $("#videoContent")[0].innerHTML = text_elem;
-} // if (window.DeviceOrientationEvent) {
-
-
 window.addEventListener("orientationchange", function () {
   var orientation = screen.msOrientation || screen.mozOrientation || (screen.orientation || {}).type;
 
@@ -323,11 +293,7 @@ window.addEventListener("orientationchange", function () {
     player.exitFullscreen();
     player.exitFullWindow();
   }
-}, false); // }
-// else {
-//   console.log('Cannot acquire orientation lock: NotSupportedError: screen.orientation.lock() is not available on this device..');
-// }
-
+}, false);
 $(document).delegate('.vjs-play-control, .vjs-tech, .vjs-big-play-button', 'click', function (e) {
   if (player.paused()) {
     $('.vjs-big-play-button').show();

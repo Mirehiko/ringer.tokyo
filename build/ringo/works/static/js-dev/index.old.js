@@ -56,7 +56,7 @@ $(window).on('resize', function (e) {
   redrawBackgrounds();
 });
 
-$('#mobileCategory>.toggleBtn').on('click', function (e) {
+$('#mobileCategory>.toggleBtn').on('click', function (e) { /* ok */
   var elem = $(this);
   var mobileNav = $('#mobileNav'); // console.log(mobileNav);
 
@@ -68,7 +68,7 @@ $('#mobileCategory>.toggleBtn').on('click', function (e) {
   }
 });
 
-$('.toggleList__item').on('click', function (e) {
+$('.toggleList__item').on('click', function (e) { /* ok */
   e.preventDefault();
   var cat = $(this).attr('globcat');
 
@@ -132,13 +132,11 @@ function checkForAdditionData() {
   }
 }
 
-function renderMobile(data) {
+function renderMobile(data) { /* ok */
   var tmpData = data;
   var result = document.createElement('div');
   $(result).addClass('infiniteBox');
   var fragment = document.createDocumentFragment(); // for ( let item of data ) {
-  // 	$(fragment).append( mobileItem(item) );
-  // }
 
   for (var i = 0; i < data.length; i++) {
     $(fragment).append(mobileItem(data[i]));
@@ -148,7 +146,7 @@ function renderMobile(data) {
   return result;
 }
 
-function mobileItem(data) {
+function mobileItem(data) { /* ok */
   return "\n\t\t<a href=\"".concat(data.id, "\" class=\"mobItem\" title=\"\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A ").concat(data.title, "\">\n\t\t\t<img class=\"mobileItem__image\" src=\"").concat(data.poster, "\" alt=\"\">\n\t\t\t<div class=\"mobItem__info\">\n\t\t\t\t<h2 class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Title</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.title, "</span>\n\t\t\t\t</h2>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Launch</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.launch, "</span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Category</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.category, "</span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</a>");
 }
 
@@ -225,7 +223,7 @@ function renderPage(data) {
   return result;
 }
 
-function autoSelectType() {
+function autoSelectType() { /* ok */
   var typeID = randomInteger(1, 3);
   var type = null;
 
@@ -323,13 +321,13 @@ function calcView(num) {
   return result;
 }
 
-function randomInteger(min, max) {
+function randomInteger(min, max) { /* ok */
   var rand = min - 0.5 + Math.random() * (max - min + 1);
   rand = Math.round(rand);
   return rand;
 }
 
-function tsobLine(data) {
+function tsobLine(data) { /* ok */
   var dt = data.slice();
   var line = document.createElement('div');
   $(line).addClass('infirow');
@@ -350,7 +348,7 @@ function tsobLine(data) {
   return line;
 }
 
-function obtsLine(data) {
+function obtsLine(data) { /* ok */
   var dt = data.slice();
   var line = document.createElement('div');
   $(line).addClass('infirow');
@@ -371,7 +369,7 @@ function obtsLine(data) {
   return line;
 }
 
-function tripleLine(data) {
+function tripleLine(data) { /* ok */
   var dt = data.slice();
   var line = document.createElement('div');
   $(line).addClass('infirow');
@@ -387,7 +385,7 @@ function tripleLine(data) {
   return line;
 }
 
-function doubleLine(data) {
+function doubleLine(data) { /* ok */
   var dt = data.slice();
   var line = document.createElement('div');
   $(line).addClass('infirow');
@@ -403,7 +401,7 @@ function doubleLine(data) {
   return line;
 }
 
-function redrawBackgrounds() {
+function redrawBackgrounds() { /* ok */
   var items = $('.boxItem');
   $.each(items, function (key, val) {
     $(this).outerHeight($(this).outerWidth() / SCREEN_RATIO);
