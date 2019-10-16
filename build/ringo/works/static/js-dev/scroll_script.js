@@ -35,6 +35,7 @@ class Motion {
 		this.is_paused          = false;
 		this.is_animated        = false;
 		this.requestID          = undefined;
+		this.on_animation       = true;
 
 		this.current_way = 'normal';
 		this.axis        = 'horizontal';
@@ -67,13 +68,28 @@ class Motion {
 		this.on_hover_objs   = options.on_hover_objs;
 		this.container       = options.container;
 
+
 		console.log('[LOG] Data initialized');
 
-		this.initAnimation();
+		// this.initAnimation();
 		$(window).on('resize', () => {
-			this.initAnimation();
+			if (this.on_animation) {
+				this.initAnimation();
+			}
 		});
 
+		return this;
+	}
+
+	animationOff() {
+		this.on_animation = false;
+		this.stopMovement();
+		return this;
+	}
+
+	animationOn() {
+		this.on_animation = true;
+		this.initAnimation();
 		return this;
 	}
 
@@ -86,10 +102,6 @@ class Motion {
 		if ( this._isNeedToAnimate(this.elem) ) {
 			this._prepareToAnimate();
 
-			if (!this.is_animated) {
-				this.startMovement();
-			}
-
 			if (!this.is_events_attached) {
 				console.log('[LOG] Starting attach mouse events');
 				this._mouseActions();
@@ -100,6 +112,10 @@ class Motion {
 				console.log('[LOG] Keyboard events attached');
 
 				this.is_events_attached = true;
+			}
+
+			if (!this.is_animated) {
+				this.startMovement();
 			}
 		}
 		else {
@@ -288,7 +304,6 @@ class Motion {
 
 			if (inst.hoveringItem != null) {
 			  inst._getEdgesOfHover();
-			  // console.log('Is hovering:', self.isInsiteOfItem())
 			  if ( !inst._isInsiteOfItem() ) {
 			    inst.hoveringItem.removeClass('-hover-');
 			    inst.hoveringItem = null;
@@ -326,7 +341,6 @@ class Motion {
 	_prepareToAnimate() {
 		console.log('[LOG] Starting prepare data to animate');
 		this.content_length = this._setContentLength(this.elem);
-
 		if (!this.is_animated) {
 			this.elem.append( this._copyContent(this.elem) );
 		}

@@ -195,7 +195,7 @@ function closeVideo() {
     if (!$.isEmptyObject(player)) {
       player.pause();
       delete videojs.players[player.id_];
-      player = {};
+      player = null;
     }
   }
   catch(e) {
@@ -247,26 +247,69 @@ function drawOwnVideo(data) {
 
 }
 
+function clearContent() {
+	$("#wrapper2").empty();
+}
+
+function setContent() {
+	clearContent();
+	$("#wrapper2").append(drawContent(textData));
+}
+
 var videoObj = {};
-var edge = 768;
 var motion = null;
+var type = '';
 
-$("#wrapper2").empty();
-$("#wrapper2").append(drawContent(textData));
+setView();
+
+// $("#wrapper2").empty();
+// $("#wrapper2").append(drawContent(textData));
 
 
-setSizes().then(() => {
-	motion = new Motion();
-	motion.init({
-		elem: '.workInfo',
-	});
+// setSizes().then(() => {
+// 	motion = new Motion();
+// 	motion.init({
+// 		elem: '.workInfo',
+// 	});
+// });
 
-});
 
-$(window).on('resize', () => {
-	setSizes().then(() => {
-		motion.initAnimation();
-	});
+function setView() {
+	if ($(window).width() >= 768) {
+		if (type != 'desktop') {
+			type = 'desktop';
+			setContent();
+		}
+
+		if (motion == null) {
+			motion = new Motion();
+			motion.init({
+				elem: '.workInfo',
+			});
+		}
+		else {
+			motion.updateData('.workInfo');
+		}
+
+		// if (motion != null) {
+			setSizes().then(() => {
+				motion.animationOn();
+			});
+		// }
+	}
+	else {
+		if (motion != null) {
+			motion.animationOff();
+		}
+		if (type != 'mobile') {
+			type = 'mobile';
+			setContent();
+		}
+	}
+}
+
+$(window).on('resize', (e) => {
+	setView();
 });
 
 $(document).on("keyup", function(e) {
@@ -286,22 +329,24 @@ $("body").delegate(".prevIcon", "click", function(e) {
   showVideo();
 });
 
-var player = {};
+var player = null;
 videojs.TOUCH_ENABLED = true;
 
 window.addEventListener("orientationchange", function() {
-  var orientation = screen.msOrientation || screen.mozOrientation || (screen.orientation || {}).type;
-  if (orientation == 'landscape-primary' || orientation == 'landscape-secondary') {
-    $(window).scrollTop();
-    player.focus();
-    $('.vjs-fullscreen-control').click();
-    player.enterFullScreen();
-    player.enterFullWindow();
-  }
-  else {
-    player.exitFullscreen();
-    player.exitFullWindow();
-  }
+	if ( player != null ) {
+		var orientation = screen.msOrientation || screen.mozOrientation || (screen.orientation || {}).type;
+		if (orientation == 'landscape-primary' || orientation == 'landscape-secondary') {
+			$(window).scrollTop();
+			player.focus();
+			$('.vjs-fullscreen-control').click();
+			player.enterFullScreen();
+			player.enterFullWindow();
+		}
+		else {
+			player.exitFullscreen();
+			player.exitFullWindow();
+		}
+	}
 }, false);
 
 $(document).delegate('.vjs-play-control, .vjs-tech, .vjs-big-play-button', 'click', function(e) {

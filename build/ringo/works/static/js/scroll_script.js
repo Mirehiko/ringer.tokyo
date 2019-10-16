@@ -43,6 +43,7 @@ function () {
     this.is_paused = false;
     this.is_animated = false;
     this.requestID = undefined;
+    this.on_animation = true;
     this.current_way = 'normal';
     this.axis = 'horizontal';
     this.speed = 1;
@@ -75,11 +76,27 @@ function () {
       this.on_hover = options.on_hover || 'nothing';
       this.on_hover_objs = options.on_hover_objs;
       this.container = options.container;
-      console.log('[LOG] Data initialized');
-      this.initAnimation();
+      console.log('[LOG] Data initialized'); // this.initAnimation();
+
       $(window).on('resize', function () {
-        _this.initAnimation();
+        if (_this.on_animation) {
+          _this.initAnimation();
+        }
       });
+      return this;
+    }
+  }, {
+    key: "animationOff",
+    value: function animationOff() {
+      this.on_animation = false;
+      this.stopMovement();
+      return this;
+    }
+  }, {
+    key: "animationOn",
+    value: function animationOn() {
+      this.on_animation = true;
+      this.initAnimation();
       return this;
     }
   }, {
@@ -94,10 +111,6 @@ function () {
       if (this._isNeedToAnimate(this.elem)) {
         this._prepareToAnimate();
 
-        if (!this.is_animated) {
-          this.startMovement();
-        }
-
         if (!this.is_events_attached) {
           console.log('[LOG] Starting attach mouse events');
 
@@ -110,6 +123,10 @@ function () {
 
           console.log('[LOG] Keyboard events attached');
           this.is_events_attached = true;
+        }
+
+        if (!this.is_animated) {
+          this.startMovement();
         }
       } else {
         this.stopMovement();
@@ -315,8 +332,7 @@ function () {
 
       function renderStep() {
         if (inst.hoveringItem != null) {
-          inst._getEdgesOfHover(); // console.log('Is hovering:', self.isInsiteOfItem())
-
+          inst._getEdgesOfHover();
 
           if (!inst._isInsiteOfItem()) {
             inst.hoveringItem.removeClass('-hover-');

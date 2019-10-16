@@ -369,7 +369,7 @@ class Lines {
 			typeID = randomInteger(1, variants);
 		}
 		while(this.trio_type_tmp == typeID)
-		
+
 		this.trio_type_tmp = typeID;
 
 	  switch (typeID) {
@@ -418,7 +418,8 @@ class Controller {
 			container: this.container,
 			// on_hover:      'pause',
 			on_hover_objs: '.boxItem',
-		});
+		})
+		.initAnimation();
 
 
 		$(window).on('resize', (e) => {
@@ -436,12 +437,18 @@ class Controller {
 	_setView(is_update) {
 		if (this.windowObj.width() < this.edge && this.current_view != 'mobile') {
 			this.current_view = 'mobile';
+			if (this.animation != null) {this.animation.animationOff();}
 			this._changeView();
 		}
 
 		if (this.windowObj.width() >= this.edge && this.current_view != 'desktop') {
 			this.current_view = 'desktop';
 			this._changeView(this.lines);
+
+			if (this.animation != null) {
+				this.animation.updateData('.infiniteBox');
+				this.animation.animationOn();
+			}
 		}
 
 		if (is_update) {

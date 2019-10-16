@@ -455,7 +455,7 @@ function () {
         container: this.container,
         // on_hover:      'pause',
         on_hover_objs: '.boxItem'
-      });
+      }).initAnimation();
       $(window).on('resize', function (e) {
         _this._setView();
       });
@@ -475,6 +475,10 @@ function () {
       if (this.windowObj.width() < this.edge && this.current_view != 'mobile') {
         this.current_view = 'mobile';
 
+        if (this.animation != null) {
+          this.animation.animationOff();
+        }
+
         this._changeView();
       }
 
@@ -482,6 +486,11 @@ function () {
         this.current_view = 'desktop';
 
         this._changeView(this.lines);
+
+        if (this.animation != null) {
+          this.animation.updateData('.infiniteBox');
+          this.animation.animationOn();
+        }
       }
 
       if (is_update) {
