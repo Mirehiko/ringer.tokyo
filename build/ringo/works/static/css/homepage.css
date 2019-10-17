@@ -380,20 +380,24 @@ a:hover, .iconBtnBox:hover .iconBtn {
   left: 10px;
   display: block;
   z-index: 5; }
-  #mobileLogo .logo {
-    -webkit-box-shadow: 0px 1px 5px 0px #efefef;
-    box-shadow: 0px 1px 5px 0px #efefef; }
 
-span.logo {
+.logo {
+  -webkit-box-shadow: 0px 1px 5px 0px #efefef;
+  box-shadow: 0px 1px 5px 0px #efefef; }
+
+div.logo {
   display: inline-block;
-  font-size: 24px;
+  font-size: 20px;
   color: #fff;
-  line-height: 50px;
   vertical-align: middle;
+  line-height: 44px;
   text-transform: uppercase;
-  font-weight: bold;
-  padding: 0 10px;
-  background-color: #222; }
+  font-weight: 700;
+  padding: 5px 10px;
+  background-color: #222;
+  text-align: center;
+  box-sizing: border-box;
+  height: 50px; }
 
 img.logo {
   display: block;
@@ -642,20 +646,24 @@ img.logo {
   left: 10px;
   display: block;
   z-index: 5; }
-  #mobileLogo .logo {
-    -webkit-box-shadow: 0px 1px 5px 0px #efefef;
-    box-shadow: 0px 1px 5px 0px #efefef; }
 
-span.logo {
+.logo {
+  -webkit-box-shadow: 0px 1px 5px 0px #efefef;
+  box-shadow: 0px 1px 5px 0px #efefef; }
+
+div.logo {
   display: inline-block;
-  font-size: 24px;
+  font-size: 20px;
   color: #fff;
-  line-height: 50px;
   vertical-align: middle;
+  line-height: 44px;
   text-transform: uppercase;
-  font-weight: bold;
-  padding: 0 10px;
-  background-color: #222; }
+  font-weight: 700;
+  padding: 5px 10px;
+  background-color: #222;
+  text-align: center;
+  box-sizing: border-box;
+  height: 50px; }
 
 img.logo {
   display: block;
