@@ -57,5 +57,8 @@
     "gulp-touch-cmd": "0.0.1",
     "gulp-uglify": "^3.0.2",
     "path": "^0.12.7"
+  },
+  "dependencies": {
+    "gulp-w3c-html-validator": "^1.4.4"
   }
 }

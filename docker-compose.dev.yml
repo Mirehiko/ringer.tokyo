@@ -57,5 +57,5 @@ services:
       context: ./build/node
     container_name: cartube_node
     volumes:
-      - "./build/ringo/works/static:/static"
+      - "./build/ringo/works:/sources"
       - "./build/node:/app"

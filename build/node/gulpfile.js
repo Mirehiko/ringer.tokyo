@@ -20,6 +20,10 @@ const path = require('path'); // получение пути файла
 const plumber = require('gulp-plumber');
 
 
+// HTML
+const htmlValidator = require('gulp-w3c-html-validator');
+
+
 // Для SCSS / CSS
 const sass = require('gulp-sass'); // компиляция scss -> css
 const autoprefixer = require('gulp-autoprefixer'); // добавление css-префиксов
@@ -38,41 +42,90 @@ const imagemin = require('gulp-imagemin');
 
 
 
+//==========================================================================
 
 
 
 // Переменные
-const entrypoint = '/static/';
-const build_dir = entrypoint + '';
-const src_dir = entrypoint + '';
+const entrypoint   = '/sources';
+const build_folder = `${ entrypoint }/static`;
+const src_folder   = `${ entrypoint }/static_dev`;
+const tmp_folder   = `${ entrypoint }/templates`;
+
 const routes = {
 	build: {
-		scripts: build_dir + 'js/',
-		scripts_tmp: src_dir + 'tmp/js/',
-		styles: build_dir + 'css/',
-		// images: build_dir + 'images/',
+		images: 	 `${ build_folder }/images/`,
+		styles: 	 `${ build_folder }/css/`,
+		scripts:     `${ build_folder }/js/`,
+		scripts_tmp: `${ build_folder }/tmp/js/`,
 	},
 	src: {
-		js: src_dir + '**/*.js',
-		scripts: src_dir + 'js-dev/**/*.js',
-		scripts_tmp: src_dir + 'tmp/js/**/*.js',
-		styles: [`${src_dir}scss/**/*.scss`, `${src_dir}scss/**/*.sass`],
-		// images: src_dir + 'images/**',
+		images: 	 `${ src_folder }/images/**`,
+		styles: 	 [
+			`${ src_folder }scss/**/*.scss`, 
+			`${ src_folder }scss/**/*.sass`,
+		],
+		scripts:     `${ src_folder }/js/**/*.js`,
+		scripts_tmp: `${ src_folder }/tmp/js/**/*.js`,
 	},
-
-	devImg: src_dir + 'images/**',
-	// buildImg: build_dir + 'images/',
 };
+
 const config = {
 	server: {
-		baseDir: entrypoint,
+		baseDir: `${ entrypoint }/`,
 	},
 	// tunnel: true,
 	// host: 'localhost',
 	// port: 9000,
 	// logPrefix: "Frontend",
-}
+};
+
 var watchInBrowser = false;
+
+//==========================================================================
+
+// const build_dir = entrypoint + '';
+// const src_dir = entrypoint + '';
+// const routes = {
+// 	build: {
+// 		scripts: build_dir + 'js/',
+// 		scripts_tmp: src_dir + 'tmp/js/',
+// 		styles: build_dir + 'css/',
+// 		// images: build_dir + 'images/',
+// 	},
+// 	src: {
+// 		js: src_dir + '**/*.js',
+// 		scripts: src_dir + 'js-dev/**/*.js',
+// 		scripts_tmp: src_dir + 'tmp/js/**/*.js',
+// 		styles: [`${src_dir}scss/**/*.scss`, `${src_dir}scss/**/*.sass`],
+// 		// images: src_dir + 'images/**',
+// 	},
+
+// 	devImg: src_dir + 'images/**',
+// 	// buildImg: build_dir + 'images/',
+// };
+// const config = {
+// 	server: {
+// 		baseDir: entrypoint,
+// 	},
+// 	// tunnel: true,
+// 	// host: 'localhost',
+// 	// port: 9000,
+// 	// logPrefix: "Frontend",
+// }
+// var watchInBrowser = false;
+
+
+
+
+// HTML
+const validator_routes = `${ tmp_folder }/**/*.html`;
+function validateHtml() {
+	return gulp.src(validator_routes, {allowEmpty: true, read:true})
+		.pipe( htmlValidator() )
+		.pipe( htmlValidator.reporter() );
+}
+ 
 
 
 
@@ -81,15 +134,15 @@ var watchInBrowser = false;
 
 
 function stylesDev() {
-	return gulp.src(routes.src.styles, {restore: true})
+	return gulp.src(routes.src.styles, { restore: true })
 		.pipe(cache('files_changes')) // Кэшируем для определения только измененных файлов
 		.pipe(dependents()) // если есть связанные файлы, то меняем и их
-		.pipe(logger({showChange: true})) // логируем изменяемые файлы
+		.pipe(logger({ showChange: true })) // логируем изменяемые файлы
 		// добавляем префиксы и sourcemap-ы для .css файлов
 		.pipe(sourcemaps.init())
 		.pipe(sass()) // переводим в css
 		.pipe(autoprefixer({
-			remove: false,
+			remove:  false,
 			cascade: false,
 		})) // добавляем префиксы
 		.pipe(sourcemaps.write('./'))
@@ -109,13 +162,13 @@ function stylesDev() {
 }
 
 function stylesProd() {
-	return gulp.src(routes.src.styles, {restore: true})
+	return gulp.src(routes.src.styles, { restore: true })
 		.pipe(cache('files_changes'))
 		.pipe(dependents())
-		.pipe(logger({showChange: true}))
+		.pipe(logger({ showChange: true }))
 		.pipe(sass())
 		.pipe(autoprefixer({
-			remove: false,
+			remove:  false,
 			cascade: false,
 		}))
 		.pipe(gulp.dest(routes.build.styles))
@@ -155,7 +208,7 @@ function clearCSS() {
 		.pipe(logger({
 			showChange: true,
 			before: 'Clearing destination folder...',
-			after: 'Destination folder cleared!',
+			after:  'Destination folder cleared!',
 		}))
     	.pipe(clean({force: true}));
 }
@@ -167,10 +220,10 @@ function clearDeletedCSS(watcher) {
 	    let [file_name, file_ext] = file.split('.');
 	    file_ext = 'css';
 
-	    let delfile = path.resolve(routes.build.styles, `${file_name}.${file_ext}`);
-	    let delfilemap = path.resolve(routes.build.styles, `${file_name}.${file_ext}.map`);
-	    let delfilemin = path.resolve(routes.build.styles, `${file_name}.min.${file_ext}`);
-	    let delfileminmap = path.resolve(routes.build.styles, `${file_name}.min.${file_ext}.map`);
+	    let delfile       = path.resolve(routes.build.styles, `${ file_name }.${ file_ext }`);
+	    let delfilemap    = path.resolve(routes.build.styles, `${ file_name }.${ file_ext }.map`);
+	    let delfilemin    = path.resolve(routes.build.styles, `${ file_name }.min.${ file_ext }`);
+	    let delfileminmap = path.resolve(routes.build.styles, `${ file_name }.min.${ file_ext }.map`);
 
 	    del.sync(delfile);
 	    console.log('[File deleted] ', delfile);
@@ -193,11 +246,11 @@ function clearDeletedCSS(watcher) {
 function makeJSFiles(){
 	// let filtered = filter(['**/*.js', '!**/_*.js'], {restore: true});
 
-	return gulp.src([routes.src.scripts], {allowEmpty: true})
+	return gulp.src([routes.src.scripts], { allowEmpty: true })
 		.pipe(logger({
 			showChange: true,
-			before: 'Collecting files...',
-			after: 'Collecting complete!',
+			before:     'Collecting files...',
+			after:      'Collecting complete!',
 		}))
 		.pipe(rigger())
 		// .pipe(filtered) // выбираем только собраные файлы без кусочков
@@ -207,18 +260,18 @@ function makeJSFiles(){
 
 // Таск на дальнейшую обработку js-файлов для девелопмента
 function buildJSFilesDev() {
-	let filtered = filter(['**/*.js', '!**/_*.js'], {restore: true});
+	let filtered = filter(['**/*.js', '!**/_*.js'], { restore: true });
 
-	return gulp.src([routes.src.scripts_tmp], {allowEmpty: true, read:true})
+	return gulp.src([routes.src.scripts_tmp], { allowEmpty: true, read:true })
 		.pipe(cache('files_changes'))
 		.pipe(plumber())
 		.pipe(logger({
 			showChange: true,
-			before: 'Building files...',
-			after: 'Building complete!',
+			before:     'Building files...',
+			after:      'Building complete!',
 		}))
 		.pipe(filtered)
-		.pipe(sourcemaps.init({loadMaps: true}))
+		.pipe(sourcemaps.init({ loadMaps: true }))
 	    .pipe(babel({
 	      presets: [
 	        ['@babel/env', {
@@ -240,15 +293,15 @@ function buildJSFilesDev() {
 
 // Таск на дальнейшую обработку js-файлов для продакшена
 function buildJSFilesProd() {
-	let filtered = filter(['**/*.js', '!**/_*.js'], {restore: true});
+	let filtered = filter(['**/*.js', '!**/_*.js'], { restore: true });
 
-	return gulp.src([routes.src.scripts_tmp], {allowEmpty: true, read:true})
+	return gulp.src([routes.src.scripts_tmp], { allowEmpty: true, read:true })
 		.pipe(cache('files_changes'))
 		.pipe(plumber())
 		.pipe(logger({
 			showChange: true,
-			before: 'Building files...',
-			after: 'Building complete!',
+			before:     'Building files...',
+			after:      'Building complete!',
 		}))
 		.pipe(cleanBuild(routes.build.scripts, '**'))
 		.pipe(filtered)
@@ -262,8 +315,8 @@ function buildJSFilesProd() {
 		.pipe(gulp.dest(routes.build.scripts))
 		.pipe(minify({
 	        ext:{
-	            src:'.js',
-	            min:'.min.js'
+	            src: '.js',
+	            min: '.min.js'
 	        },
 		})) // минификация js
 		// .pipe(uglify({
@@ -302,11 +355,11 @@ function prodWatchJS() {
 }
 
 function clearJS() {
-	return gulp.src([routes.build.scripts, routes.build.scripts_tmp], {read: false, allowEmpty: true})
+	return gulp.src([routes.build.scripts, routes.build.scripts_tmp], { read: false, allowEmpty: true })
 		.pipe(logger({
 			showChange: true,
-			before: 'Clearing destination folder...',
-			after: 'Destination folder cleared!',
+			before:     'Clearing destination folder...',
+			after:      'Destination folder cleared!',
 		}))
     	.pipe(clean({force: true}));
 }
@@ -317,11 +370,11 @@ function clearDeletedJS(watcher) {
 	    let file = filePathFromSrc.split('/js/')[1]; // файл
 	    let [file_name, file_ext] = file.split('.');
 
-	    let delfile = path.resolve(routes.build.scripts, file);
-	    let tmpfile = path.resolve(routes.build.scripts_tmp, file);
-	    let delfilemap = path.resolve(routes.build.scripts, `${file}.map`);
-	    let delfilemin = path.resolve(routes.build.scripts, `${file_name}.min.${file_ext}`);
-	    let delfileminmap = path.resolve(routes.build.scripts, `${file_name}.min.${file_ext}.map`);
+	    let delfile       = path.resolve(routes.build.scripts, file);
+	    let tmpfile       = path.resolve(routes.build.scripts_tmp, file);
+	    let delfilemap    = path.resolve(routes.build.scripts, `${ file }.map`);
+	    let delfilemin    = path.resolve(routes.build.scripts, `${ file_name }.min.${ file_ext }`);
+	    let delfileminmap = path.resolve(routes.build.scripts, `${ file_name }.min.${ file_ext }.map`);
 
 	    del.sync(delfile);
 	    console.log('[File deleted] ', delfile);
@@ -415,40 +468,40 @@ function watchProd() {
 
 // полная очистка дирректории с готовыми файлами
 function clearDir() {
-	return gulp.src(build_dir, {read: false, allowEmpty: true})
+	return gulp.src(build_folder, { read: false, allowEmpty: true })
 		.pipe(logger({
 			showChange: true,
-			before: 'Clearing destination folder...',
-			after: 'Destination folder cleared!',
+			before:     'Clearing destination folder...',
+			after:      'Destination folder cleared!',
 		}))
-    	.pipe(clean({force: true}));
+    	.pipe(clean({ force: true }));
 }
 
 function clearTmp() {
-	return gulp.src(`${src_dir}/tmp`, {read: false, allowEmpty: true})
+	return gulp.src(`${ src_folder }/tmp`, { read: false, allowEmpty: true })
 		.pipe(logger({
 			showChange: true,
-			before: 'Clearing tmp folder...',
-			after: 'Tmp folder cleared!',
+			before:     'Clearing tmp folder...',
+			after:      'Tmp folder cleared!',
 		}))
-    	.pipe(clean({force: true}));
+    	.pipe(clean({ orce: true }));
 }
 
 // очистка дирректории с css-файлами от sourcemap-ов
 function clearSourceMaps() {
-	return gulp.src([build_dir + 'css/**/*.map', build_dir + 'js/**/*.map'], {read: false, allowEmpty: true})
+	return gulp.src([build_folder + 'css/**/*.map', build_folder + 'js/**/*.map'], { read: false, allowEmpty: true })
 		.pipe(logger({
 			showChange: true,
-			before: 'Clearing sourcemaps...',
-			after: 'Sourcemaps cleared!',
+			before:     'Clearing sourcemaps...',
+			after:      'Sourcemaps cleared!',
 		}))
-    	.pipe(clean({force: true}));
+    	.pipe(clean({ force: true }));
 }
 
 function saveCache() {
-	const css = routes.build.styles + 'css/**/*.css';
-	const maps = src_dir + 'css/**/*.map'
-	const js = routes.build.scripts + '**/*.js';
+	const css  = routes.build.styles + 'css/**/*.css';
+	const maps = src_folder + 'css/**/*.map'
+	const js   = routes.build.scripts + '**/*.js';
 	const files_for_cache = [css, routes.src.scripts, js].concat(routes.src.styles);
 
 	return gulp.src(files_for_cache)
@@ -468,6 +521,11 @@ function clearCache() {
 
 
 // ==================================================================
+
+
+// HTML
+exports.validateHtml = validateHtml;
+
 
 // JS
 exports.makeJSFiles = makeJSFiles;
@@ -507,6 +565,7 @@ exports.clearCache = clearCache;
 
 
 
+gulp.task('validateHtml', validateHtml);
 
 
 gulp.task('js-dev', gulp.series(clearTmp, makeJSFiles, buildJSFilesDev, saveCache));
