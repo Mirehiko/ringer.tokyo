@@ -4,9 +4,11 @@ from django.utils import timezone
 from smtplib import SMTPException
 from django.conf import settings
 from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 import smtplib
 
 import json
+import django
 
 from .serializers import WorkSerializer
 from rest_framework import generics
@@ -31,17 +33,31 @@ def send_email_to_admin(request, some):
     message = request.POST.get('message', '')
     status = ''
 
-    try:
-        msg = EmailMessage(
-            subject=reason,
-            body=message,
-            from_email=settings.EMAIL_HOST_USER,
-            to=(settings.EMAIL_HOST_USER,),
-            headers={'From': email}
-        )
-        msg.content_subtype = 'html'
-        msg.send()
+    email_body = """\
+    <html>
+      <head></head>
+      <body>
+        <h3>Hello, I'm %s</h3>
+        <p>%s</p>
+        <h5 style="margin: 0 0 7px;">%s</h5>
+        <h5 style="margin: 0 0 7px;">%s</h5>
+        <h5 style="margin: 0 0 7px;">%s</h5>
+      </body>
+    </html>
+    """ % (name, message, company, website, email)
 
+    msg = EmailMessage(
+        subject      = reason,
+        body         = email_body,
+        to           = [settings.EMAIL_HOST_USER],
+        reply_to     = [email],
+        # headers={'From': email},
+        # fail_silently=False
+    )
+    msg.content_subtype = 'html'
+
+    try:
+        msg.send()
         status = 'success'
     except SMTPException as e:
         status = 'fail'

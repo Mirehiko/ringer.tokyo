@@ -83,10 +83,10 @@ function sendEmail() {
   data['email'] = $('#email').val();
   data['website'] = $('#website').val();
   data['reason'] = $('#reason option:selected').val();
-  data['message'] = $('#message').val(); // $('.contactForm__send').addClass('is-ok');
-  // if(is_all_exist) {
-  // $('.contactForm__send').addClass('is-ok');
-  //send email
+  data['message'] = $('#message').val();
+  $('.contactForm__send').addClass('is-ok'); // if(is_all_exist) {
+  //   $('.contactForm__send').addClass('is-ok');
+  //   // send email
   // }
   // else {
   //   console.log('Заполните поля')
