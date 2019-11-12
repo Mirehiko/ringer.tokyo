@@ -44,6 +44,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    # 'works.apps.SendEmailConfig',
     'works.apps.WorksConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -186,10 +187,15 @@ MEDIA_URL = '/media/'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_HOST_USER = 'example@yandex.ru'
-EMAIL_HOST_PASSWORD = 'password;'
-EMAIL_PORT = 587
+# EMAIL_HOST = 'smtp.yandex.ru'
+# EMAIL_HOST_USER = 'example@example.ru'
+# EMAIL_HOST_PASSWORD = 'pass;'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.timeweb.ru'
+EMAIL_HOST_USER = 'cf22213'
+EMAIL_HOST_PASSWORD = 'apSvbjSnkino'
+EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
 
 SERVER_EMAIL = EMAIL_HOST_USER
