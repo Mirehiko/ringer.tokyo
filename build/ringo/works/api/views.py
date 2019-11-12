@@ -37,14 +37,15 @@ def send_email_to_admin(request, some):
     <html>
       <head></head>
       <body>
-        <h3>Hello, I'm %s</h3>
+        <h3>Здравствуйте!</h3>
         <p>%s</p>
-        <h5 style="margin: 0 0 7px;">%s</h5>
-        <h5 style="margin: 0 0 7px;">%s</h5>
-        <h5 style="margin: 0 0 7px;">%s</h5>
+        <h5>С уважением, %s</h5>
+        <h5 style="margin: 0 0 7px; font-weight:normal;">Компания: <b>%s</b></h5>
+        <h5 style="margin: 0 0 7px; font-weight:normal;">Сайт: %s</h5>
+        <h5 style="margin: 0 0 7px; font-weight:normal;">E-mail: <b>%s</b></h5>
       </body>
     </html>
-    """ % (name, message, company, website, email)
+    """ % (message, name, company, website, email)
 
     msg = EmailMessage(
         subject      = reason,
