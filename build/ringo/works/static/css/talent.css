@@ -299,18 +299,18 @@ a:hover, .iconBtnBox:hover .iconBtn {
   display: block;
   width: 100%;
   padding: 0;
-  height: 30px;
+  height: 48px;
   vertical-align: middle;
-  line-height: 30px;
+  line-height: 48px;
   position: relative;
   cursor: pointer; }
   .header-menu > * {
     display: block;
     border: none;
     background-color: transparent;
-    height: 30px;
+    height: inherit;
     padding: 0;
-    line-height: 30px;
+    line-height: inherit;
     vertical-align: middle;
     cursor: pointer; }
 
@@ -385,6 +385,21 @@ a:hover, .iconBtnBox:hover .iconBtn {
   -webkit-box-shadow: 0px 1px 5px 0px #efefef;
   box-shadow: 0px 1px 5px 0px #efefef; }
 
+.isContact .logo, .isRecruit .logo {
+  color: #222;
+  background-color: #fff;
+  box-shadow: 0 1px 5px 0 #222; }
+
+.isContact .open .logo, .isRecruit .open .logo {
+  color: #fff;
+  background-color: #222;
+  box-shadow: 0 1px 5px 0 #efefef; }
+
+.isContact .iconBtnBox, .isRecruit .iconBtnBox {
+  color: #222; }
+  .isContact .iconBtnBox.open, .isRecruit .iconBtnBox.open {
+    color: #fff; }
+
 div.logo {
   display: inline-block;
   font-size: 20px;
@@ -397,7 +412,8 @@ div.logo {
   background-color: #222;
   text-align: center;
   box-sizing: border-box;
-  height: 50px; }
+  height: 50px;
+  margin-bottom: 15px; }
 
 img.logo {
   display: block;
@@ -565,18 +581,18 @@ img.logo {
   display: block;
   width: 100%;
   padding: 0;
-  height: 30px;
+  height: 48px;
   vertical-align: middle;
-  line-height: 30px;
+  line-height: 48px;
   position: relative;
   cursor: pointer; }
   .header-menu > * {
     display: block;
     border: none;
     background-color: transparent;
-    height: 30px;
+    height: inherit;
     padding: 0;
-    line-height: 30px;
+    line-height: inherit;
     vertical-align: middle;
     cursor: pointer; }
 
@@ -651,6 +667,21 @@ img.logo {
   -webkit-box-shadow: 0px 1px 5px 0px #efefef;
   box-shadow: 0px 1px 5px 0px #efefef; }
 
+.isContact .logo, .isRecruit .logo {
+  color: #222;
+  background-color: #fff;
+  box-shadow: 0 1px 5px 0 #222; }
+
+.isContact .open .logo, .isRecruit .open .logo {
+  color: #fff;
+  background-color: #222;
+  box-shadow: 0 1px 5px 0 #efefef; }
+
+.isContact .iconBtnBox, .isRecruit .iconBtnBox {
+  color: #222; }
+  .isContact .iconBtnBox.open, .isRecruit .iconBtnBox.open {
+    color: #fff; }
+
 div.logo {
   display: inline-block;
   font-size: 20px;
@@ -663,7 +694,8 @@ div.logo {
   background-color: #222;
   text-align: center;
   box-sizing: border-box;
-  height: 50px; }
+  height: 50px;
+  margin-bottom: 15px; }
 
 img.logo {
   display: block;
