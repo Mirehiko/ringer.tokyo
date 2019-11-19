@@ -134,8 +134,8 @@
   opacity: 0.3;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
   filter: alpha(opacity=30);
-  pointer-events: none;
-  
+  border: 2px solid transparent;
+
   &.is-ok {
     opacity: 1;
     -ms-filter: none;
@@ -148,9 +148,14 @@
     opacity: 1;
     -ms-filter: none;
     filter: none;
+    border-color: #222;
 
     .send__icon {
       opacity: 0;
+    }
+    .text {
+      outline: none;
+      color: #222;
     }
   }
 
@@ -168,7 +173,7 @@
     margin-bottom: 20px;
     padding: 0 30px;
   }
-
+  
   .text {
     line-height: 80px;
     margin: 0;
@@ -180,11 +185,17 @@
   }
 }
 
+.on_success {
+  border-color: #49b13d;
+}
+.on_error {
+  border-color: #ea0d0d;
+}
 
 .select__icon svg {
   position: absolute;
   z-index: 1;
-  
+  background-color: #fff;
   top: 50%;
 
   @media screen and (min-width: 0) {

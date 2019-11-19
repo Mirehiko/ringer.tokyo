@@ -18,9 +18,9 @@
 	<div id="pageContent" class="content">
 		<div id="contactPage" class="page">
 			<form class="contactForm" method="post">
-        <input type="text" id="name" name="name" class="contactForm__text" placeholder="ФИО">
+        <input type="text" id="name" name="name" class="contactForm__text form_input" placeholder="ФИО">
         <input type="text" id="company" name="company" class="contactForm__text" placeholder="Company Name">
-        <input type="text" id="email" name="mail" class="contactForm__text" placeholder="E-mail">
+        <input type="text" id="email" name="email" class="contactForm__text form_input" placeholder="E-mail">
         <input type="text" id="website" name="website" class="contactForm__text" placeholder="Вебсайт">
         <div class="contactForm__subject">
           <div class="select__icon">
@@ -32,14 +32,20 @@
           </select>
         </div>
 
-        <textarea id="message" name="message" class="contactForm__message" placeholder="Сообщение"></textarea>
+        <textarea id="message" name="message" class="contactForm__message form_input" placeholder="Сообщение"></textarea>
 
-        <a class="contactForm__send">
+        <button id="send_email" type="button" name="send_email" class="contactForm__send">
+          <p class="text">
+            <span id="btntxt" class="lang-en">Отправить</span>
+          </p>
+          <img src="{% static '/system/right.svg' %}" alt="" class="send__icon">
+        </button>
+<!--         <a class="contactForm__send">
           <p class="text">
             <span class="lang-en">Отправить</span>
           </p>
           <img src="{% static '/system/right.svg' %}" alt="" class="send__icon">
-        </a>
+        </a> -->
         <span>
           <a class="p-contact_policy" href="#" target="_blank">Политика конфиденциальности</a>
         </span>

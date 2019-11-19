@@ -400,7 +400,7 @@ a:hover, .iconBtnBox:hover .iconBtn {
   .isContact .iconBtnBox.open, .isRecruit .iconBtnBox.open {
     color: #fff; }
 
-div.logo {
+a.logo, div.logo {
   display: inline-block;
   font-size: 20px;
   color: #fff;
@@ -682,7 +682,7 @@ img.logo {
   .isContact .iconBtnBox.open, .isRecruit .iconBtnBox.open {
     color: #fff; }
 
-div.logo {
+a.logo, div.logo {
   display: inline-block;
   font-size: 20px;
   color: #fff;

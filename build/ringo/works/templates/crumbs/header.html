@@ -1,7 +1,7 @@
 {% load static %}
 <div id="mobileNav" class="-mobile-">
 	<a href="/" id="mobileLogo">
-		{% include 'crumbs/_logo.html' %}
+		{% include 'crumbs/_mobile-logo.html' %}
 	</a>
 	<a href="#" id="hideMenu" class="iconBtnBox" title="menu" role="menu">
 		<span class="hmenu-text">Меню</span>
@@ -37,7 +37,6 @@
 <div class="side-header {% if is_mobile_only %}-mobile-{% endif %} ">
 	<div class="side-menu side-menu-controls">
 		<div class="wrapper">
-			<!-- <div class="header-logo">{{ site_name }}</div> -->
 			{% include 'crumbs/_logo.html' %}
 			{% if is_need_category %}
 				<div class="header-category">

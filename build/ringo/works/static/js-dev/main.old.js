@@ -80,16 +80,7 @@ function closeIcon(icon) {
 }
 
 function sendEmail() {
-  let data = {};
-
-  data['name'] = $('#name').val();
-  data['company'] = $('#company').val();
-  data['email'] = $('#email').val();
-  data['website'] = $('#website').val();
-  data['reason'] = $('#reason option:selected').val();
-  data['message'] = $('#message').val();
-
-  $('.contactForm__send').addClass('is-ok');
+  let data = getFieldData();
   // if(is_all_exist) {
   //   $('.contactForm__send').addClass('is-ok');
   //   // send email
@@ -112,5 +103,50 @@ function sendEmail() {
       console.log('response:',response);
     }
   });
-
 }
+
+function getFieldData() {
+  let data        = {};
+  data['name']    = $('#name').val();
+  data['company'] = $('#company').val();
+  data['email']   = $('#email').val();
+  data['website'] = $('#website').val();
+  data['reason']  = $('#reason option:selected').val();
+  data['message'] = $('#message').val();
+  return data;
+}
+
+function isValid(data) {
+  let errors = {};
+  let is_valid = true;
+  if (data.name == '') {
+    is_valid = false;
+    errors['name'] = 'Поле \'ФИО\' не должно быть пустым';
+  }
+  if (data.email == '') {
+    is_valid = false;
+    errors['email'] = 'Поле \'E-mail\' не должно быть пустым';
+  }
+  if (data.email == '') {
+    is_valid = false;
+    errors['message'] = 'Поле \'Сообщение\' не должно быть пустым';
+  }
+  if ( is_valid ) {
+    return [true, data];
+  }
+  return [is_valid, errors];
+}
+
+function checkFields() {
+  let data = getFieldData();
+  let [is_valid, errors] = isValid(data);
+  if (is_valid) {
+    $('.contactForm__send').addClass('is-ok');
+  }
+  else {
+    console.log(errors); 
+  }
+}
+
+$('.form_input').on('change', checheckFields);
+$('#send_email').on('click', sendEmail);

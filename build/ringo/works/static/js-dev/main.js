@@ -81,3 +81,132 @@ function openIcon(icon) {
 function closeIcon(icon) {
 	icon.css('display', 'none');
 }
+
+function sendEmail() {
+  let data = getFieldData();
+
+  $.ajax({
+    url: '/api/send_email_to_admin/12/',
+    type: "POST",
+    data: data,
+    dataType: "json",
+    success: function(response) {
+      if (response == 'success') {
+        $('.contactForm__send').addClass('is-complete');
+        $('#btntxt').text('Отправлено');
+      }
+      else {
+        alert('Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.')
+      }
+      // console.log('response:',response);
+    }
+  });
+}
+
+class Field {
+  constructor(data) {
+    this.name     = data.name;
+    this.field    = $(data.field);
+    this.err_msg  = data.err_msg;
+    this.is_valid = false;
+  }
+
+  validate() {
+    if (this.field.val() == '') {
+      this.is_valid = false;
+    }
+    else {
+      this.is_valid = true;
+    }
+    return this.is_valid;
+  }
+}
+
+class Validator {
+  constructor(fields) {
+    this.fields = {};
+    this.is_form_valid = false;
+    this._init(fields);
+  }
+
+  _init(fields) {
+    for (let i in fields) {
+      this.fields[fields[i].name] = new Field(fields[i]);
+    }
+  }
+
+  isFieldValid(name) {
+    return this.fields[name].validate();
+  }
+
+  isFormValid() {
+    this.is_form_valid = false;
+    for (let i in this.fields) {
+      if (this.fields[i].validate() != true) {
+        this.is_form_valid = false;
+        break;
+      }
+      else {
+        this.is_form_valid = true;
+      }
+    }
+    return this.is_form_valid;
+  }
+}
+
+var validator = new Validator([
+  {
+    name:    'name',
+    field:   '#name',
+    err_msg: 'Поле \'ФИО\' не должно быть пустым',
+  },
+  {
+    name:    'email',
+    field:   '#email',
+    err_msg: 'Поле \'E-mail\' не должно быть пустым',
+  },
+  {
+    name:    'message',
+    field:   '#message',
+    err_msg: 'Поле \'Сообщение\' не должно быть пустым',
+  },
+]);
+
+function getFieldData() {
+  let data = {};
+  data['name']    = $('#name').val();
+  data['company'] = $('#company').val();
+  data['email']   = $('#email').val();
+  data['website'] = $('#website').val();
+  data['reason']  = $('#reason option:selected').val();
+  data['message'] = $('#message').val();
+  return data;
+}
+
+function checkField(name) {
+  if ( validator.isFieldValid(name) ) {
+    validator.fields[name].field.addClass('on_success');
+    validator.fields[name].field.removeClass('on_error');
+  }
+  else {
+    console.log(validator.fields[name].err_msg);
+    validator.fields[name].field.removeClass('on_success');
+    validator.fields[name].field.addClass('on_error');
+  }
+}
+
+
+$('.form_input').on('change', function(e) {
+  e.preventDefault();
+  checkField($(this).attr('name'));
+});
+
+$('.form_input').on('keyup', function(e) {
+  e.preventDefault();
+  checkField($(this).attr('name'));
+  if ( validator.isFormValid() ) {
+    $('.contactForm__send').addClass('is-ok');
+  }
+});
+
+$('#send_email').on('click', sendEmail);

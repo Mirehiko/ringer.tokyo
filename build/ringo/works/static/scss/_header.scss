@@ -166,10 +166,10 @@
 	z-index: 5;
 
 }
-	.logo {
-    -webkit-box-shadow: 0px 1px 5px 0px #efefef;
-            box-shadow: 0px 1px 5px 0px #efefef;
-	}
+.logo {
+  -webkit-box-shadow: 0px 1px 5px 0px #efefef;
+          box-shadow: 0px 1px 5px 0px #efefef;
+}
 
 .isContact, .isRecruit {
 	.logo {
@@ -191,7 +191,7 @@
 		}
 	}
 }
-div.logo {
+a.logo, div.logo {
   display: inline-block;
 	font-size: 20px;
 	color: #fff;

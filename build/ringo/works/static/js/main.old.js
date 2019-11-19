@@ -2,6 +2,14 @@
 // export var maxScroll = 0;
 // export var WINDOW = $(window);
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 var SCREEN_RATIO = 16 / 9;
 var maxScroll = 0;
 var WINDOW = $(window);
@@ -77,14 +85,7 @@ function closeIcon(icon) {
 }
 
 function sendEmail() {
-  var data = {};
-  data['name'] = $('#name').val();
-  data['company'] = $('#company').val();
-  data['email'] = $('#email').val();
-  data['website'] = $('#website').val();
-  data['reason'] = $('#reason option:selected').val();
-  data['message'] = $('#message').val();
-  $('.contactForm__send').addClass('is-ok'); // if(is_all_exist) {
+  var data = getFieldData(); // if(is_all_exist) {
   //   $('.contactForm__send').addClass('is-ok');
   //   // send email
   // }
@@ -108,3 +109,58 @@ function sendEmail() {
     }
   });
 }
+
+function getFieldData() {
+  var data = {};
+  data['name'] = $('#name').val();
+  data['company'] = $('#company').val();
+  data['email'] = $('#email').val();
+  data['website'] = $('#website').val();
+  data['reason'] = $('#reason option:selected').val();
+  data['message'] = $('#message').val();
+  return data;
+}
+
+function isValid(data) {
+  var errors = {};
+  var is_valid = true;
+
+  if (data.name == '') {
+    is_valid = false;
+    errors['name'] = 'Поле \'ФИО\' не должно быть пустым';
+  }
+
+  if (data.email == '') {
+    is_valid = false;
+    errors['email'] = 'Поле \'E-mail\' не должно быть пустым';
+  }
+
+  if (data.email == '') {
+    is_valid = false;
+    errors['message'] = 'Поле \'Сообщение\' не должно быть пустым';
+  }
+
+  if (is_valid) {
+    return [true, data];
+  }
+
+  return [is_valid, errors];
+}
+
+function checkFields() {
+  var data = getFieldData();
+
+  var _isValid = isValid(data),
+      _isValid2 = _slicedToArray(_isValid, 2),
+      is_valid = _isValid2[0],
+      errors = _isValid2[1];
+
+  if (is_valid) {
+    $('.contactForm__send').addClass('is-ok');
+  } else {
+    console.log(errors);
+  }
+}
+
+$('.form_input').on('change', checheckFields);
+$('#send_email').on('click', sendEmail);
