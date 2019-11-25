@@ -226,7 +226,8 @@ function drawVideo(id) {
 }
 
 function drawOwnVideo(data) {
-  var video = '\n\t\t<video id="'.concat(data.id, '" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" poster="').concat(data.previewImage, '"\n\t\t data-setup="{}" title="').concat(data.title, '">\n\t\t ').concat(data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : "", "\n\t\t ").concat(data.srcwebm ? '<source src="' + data.srcwebm + '" type="video/webm">' : "", '\n\t\t <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>\n\t\t</video>');
+  var video = '\n\t\t<video id="'.concat(data.id, '" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" poster="').concat(data.previewImage, '"\n\t\t data-setup="{}" title="">\n\t\t ') // .concat(data.title, '">\n\t\t ')
+  .concat(data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : "", "\n\t\t ").concat(data.srcwebm ? '<source src="' + data.srcwebm + '" type="video/webm">' : "", '\n\t\t <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>\n\t\t</video>');
   $("#videoContent").append(video);
   player = videojs(data.id, {
     controls: true,

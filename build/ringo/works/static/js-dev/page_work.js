@@ -218,8 +218,8 @@ function drawOwnVideo(data) {
       data.id,
       '" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" poster="'
     )
-    .concat(data.previewImage, '"\n\t\t data-setup="{}" title="')
-    .concat(data.title, '">\n\t\t ')
+    .concat(data.previewImage, '"\n\t\t data-setup="{}" title="">\n\t\t ')
+    // .concat(data.title, '">\n\t\t ')
     .concat(
       data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : "",
       "\n\t\t "
