@@ -97,7 +97,7 @@ function sendEmail() {
 				new Noty({
 			    type: 'success',
 			    layout: 'center',
-			    text: 'Ваше письмо отправлено администратору сайта cartu.be',
+			    text: 'Ваше письмо отправлено администратору сайта CAR-TUBE',
 					timeout: 5000,
 				}).show();
       }
