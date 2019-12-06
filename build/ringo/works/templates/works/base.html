@@ -35,7 +35,9 @@
 		<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'csslibs/fontawesome/all.min.css' %}?v{{ version }}">
 	{% endblock %}
 
+
 	<script src="{% static 'jslibs/jquery-3.3.1.min.js' %}?v{{ version }}" defer></script>
+	{% block js_libs %}{% endblock %}
 	<script type="text/javascript" src="{% static 'js/main.min.js' %}?v{{ version }}" charset="utf-8" defer></script>
 
 	{% block js_data %}{% endblock %}

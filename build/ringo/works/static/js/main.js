@@ -92,8 +92,18 @@ function sendEmail() {
       if (response == 'success') {
         $('.contactForm__send').addClass('is-complete');
         $('#btntxt').text('Отправлено');
+        new Noty({
+          type: 'success',
+          layout: 'center',
+          text: 'Ваше письмо отправлено администратору сайта cartu.be',
+          timeout: 5000
+        }).show();
       } else {
-        alert('Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.');
+        new Noty({
+          type: 'error',
+          layout: 'center',
+          text: 'Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.'
+        }).show();
       } // console.log('response:',response);
 
     }
@@ -215,10 +225,26 @@ $('.form_input').on('change', function (e) {
 });
 $('.form_input').on('keyup', function (e) {
   e.preventDefault();
+
+  if ($(this).val() == '') {
+    // if (validator.fields[name].field.val() == '') {
+    new Noty({
+      type: 'warning',
+      layout: 'center',
+      text: validator.fields[$(this).attr('name')].err_msg,
+      // text: validator.fields[name].err_msg,
+      timeout: 5000
+    }).show();
+  }
+
   checkField($(this).attr('name'));
 
   if (validator.isFormValid()) {
     $('.contactForm__send').addClass('is-ok');
+    $('.contactForm__send').attr('disabled', false);
+  } else {
+    $('.contactForm__send').removeClass('is-ok');
+    $('.contactForm__send').attr('disabled', true);
   }
 });
 $('#send_email').on('click', sendEmail);
