@@ -95,7 +95,7 @@ function sendEmail() {
         new Noty({
           type: 'success',
           layout: 'center',
-          text: 'Ваше письмо отправлено администратору сайта cartu.be',
+          text: 'Ваше письмо отправлено администратору сайта CAR-TUBE',
           timeout: 5000
         }).show();
       } else {
@@ -225,19 +225,23 @@ $('.form_input').on('change', function (e) {
 });
 $('.form_input').on('keyup', function (e) {
   e.preventDefault();
+  var btn = $(this);
 
-  if ($(this).val() == '') {
+  if (btn.val() == '') {
     // if (validator.fields[name].field.val() == '') {
-    new Noty({
-      type: 'warning',
-      layout: 'center',
-      text: validator.fields[$(this).attr('name')].err_msg,
-      // text: validator.fields[name].err_msg,
-      timeout: 5000
-    }).show();
+    if (btn.attr('valstate') != 'empty') {
+      btn.attr('valstate', 'empty');
+      new Noty({
+        type: 'warning',
+        layout: 'center',
+        text: validator.fields[btn.attr('name')].err_msg,
+        timeout: 5000
+      }).show();
+    }
+  } else {
+    btn.attr('valstate', 'fill');
+    checkField(btn.attr('name'));
   }
-
-  checkField($(this).attr('name'));
 
   if (validator.isFormValid()) {
     $('.contactForm__send').addClass('is-ok');
