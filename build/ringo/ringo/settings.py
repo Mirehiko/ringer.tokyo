@@ -193,8 +193,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.timeweb.ru'
-EMAIL_HOST_USER = 'ol@cartu.be'
-EMAIL_HOST_PASSWORD = '587514483remote'
+EMAIL_HOST_USER = 'info@cartu.be'
+EMAIL_HOST_PASSWORD = 'efayk5Pp'
 EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
 
