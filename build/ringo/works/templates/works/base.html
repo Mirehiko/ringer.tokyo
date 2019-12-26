@@ -1,9 +1,10 @@
 {% load static %}
-{% with site_name="Car-tube" css_version='.min.css' version='2019_09_03_001' default_video='about.mp4' %}
+{% with site_name="Car-tube" css_version='.min.css' version='2019_12_19_001' default_video='about.mp4' %}
 <!--Версия файлов (.min.css/.css) -->
 
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -13,16 +14,18 @@
 	{% endblock %}
 </head>
 
-{% block body %}<body>{% endblock %}
+{% block body %}
+
+<body>{% endblock %}
 	{% with homepage_name="Главная" %}
 
 
 	{% block header %}
-		{% include 'crumbs/header.html' with is_need_category=False is_mobile_only=False %}
+	{% include 'crumbs/header.html' with is_need_category=False is_mobile_only=False %}
 	{% endblock %}
 
 	{% block breadcrumbs %}
-		{% include 'crumbs/breadcrumbs.html' with page_name="Главная" %}
+	{% include 'crumbs/breadcrumbs.html' with page_name="Главная" %}
 	{% endblock %}
 
 	{% block content %}{% endblock %}
@@ -32,7 +35,8 @@
 	{% endwith %}
 
 	{% block fonts %}
-		<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'csslibs/fontawesome/all.min.css' %}?v{{ version }}">
+	<link rel="stylesheet" type="text/css" charset="utf-8"
+		href="{% static 'csslibs/fontawesome/all.min.css' %}?v{{ version }}">
 	{% endblock %}
 
 
@@ -44,6 +48,7 @@
 
 	{% block tail %}{% endblock %}
 </body>
+
 </html>
 
 {% endwith %}

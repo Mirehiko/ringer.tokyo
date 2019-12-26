@@ -85,7 +85,7 @@ def send_email_to_user(name, email):
     #   </body>
     # </html>
     # """ % (name)
-    email_body = 'Уважаемый %s, ваше письмо было отправлено администратору сайта CAR-TUBE. \nС уважением администрация сайта http://car-tube.ru/' % (name)
+    email_body = 'Уважаемый %s, ваше письмо было отправлено администратору сайта.\nС уважением, http://car-tube.ru/\nDear %s, your letter was sent to the site administrator.\nThanks & Regards, http://car-tube.ru/' % (name,name)
     # msg = send_mail('Уведомление о доставке', email_body, settings.EMAIL_HOST_USER, [email])
     # msg.content_subtype = 'html'
 
