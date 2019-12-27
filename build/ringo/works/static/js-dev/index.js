@@ -113,7 +113,7 @@ function renderMobile(data) {
 
 function mobileItem(data) {
 	return `
-		<a href="${ data.link }" class="mobItem" title="Перейти к ${ data.title }">
+		<a href="${ data.link }" class="mobItem" title="">
 			<img class="mobileItem__image" src="${ data.src }" alt="">
 			<div class="mobItem__info">
 				<h2 class="paramLine">

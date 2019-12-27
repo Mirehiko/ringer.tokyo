@@ -107,7 +107,7 @@ function renderMobile(data) {
 }
 
 function mobileItem(data) {
-  return "\n\t\t<a href=\"".concat(data.link, "\" class=\"mobItem\" title=\"\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A ").concat(data.title, "\">\n\t\t\t<img class=\"mobileItem__image\" src=\"").concat(data.src, "\" alt=\"\">\n\t\t\t<div class=\"mobItem__info\">\n\t\t\t\t<h2 class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Title</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.title, "</span>\n\t\t\t\t</h2>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Launch</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.lauch, "</span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Category</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.category, "</span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</a>");
+  return "\n\t\t<a href=\"".concat(data.link, "\" class=\"mobItem\" title=\"\">\n\t\t\t<img class=\"mobileItem__image\" src=\"").concat(data.src, "\" alt=\"\">\n\t\t\t<div class=\"mobItem__info\">\n\t\t\t\t<h2 class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Title</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.title, "</span>\n\t\t\t\t</h2>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Launch</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.lauch, "</span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t<span class=\"paramTitle\">Category</span>\n\t\t\t\t\t<span class=\"paramValue\">").concat(data.category, "</span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</a>");
 }
 
 function renderPage(data) {
