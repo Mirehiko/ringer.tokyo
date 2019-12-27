@@ -10,15 +10,17 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 import smtplib
-
 import json
 import django
+import urllib
 
+from django.conf import settings
 from .serializers import WorkSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
-
 from works.models import Work
+
+
 
 class WorkListAPIView(generics.ListAPIView):
     lookup_field = 'pk'
@@ -29,6 +31,26 @@ class WorkListAPIView(generics.ListAPIView):
 
 def send_email_to_admin(request, some):
 
+    token = request.POST.get('token', '')
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    payload = {
+        'secret': settings.RECAPTCHA_SECRET_KEY,
+        'response': token
+    }
+    data = urllib.parse.urlencode(payload).encode()
+    req = urllib.request.Request(url, data=data)
+
+    # verify the token submitted with the form is valid
+    response = urllib.request.urlopen(req)
+    result = json.loads(response.read().decode())
+
+    # result will be a dict containing 'success' and 'action'.
+    # it is important to verify both
+    if (not result['success']) or (not result['action'] == 'homepage'):  # make sure action matches the one from your template
+        messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+        # return super().form_invalid(form)
+        return HttpResponse(json.dumps('spamer'), 'application/javascript')
+
     name = request.POST.get('name', '')
     company = request.POST.get('company', '')
     email = request.POST.get('email', '')
@@ -36,7 +58,6 @@ def send_email_to_admin(request, some):
     reason = request.POST.get('reason', '')
     message = request.POST.get('message', '')
     status = ''
-
     email_body = """\
     <html>
       <head></head>

@@ -87,10 +87,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'ringo.context_processors.site_processor',
             ],
         },
     },
 ]
+
+# TEMPLATE_CONTEXT_PROCESSORS = ('ringo.context_processors.global_settings',)
 
 WSGI_APPLICATION = 'ringo.wsgi.application'
 
@@ -198,5 +202,14 @@ EMAIL_HOST_PASSWORD = 'efayk5Pp'
 EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
 
+RECAPTCHA_SITE_KEY = '6Le_RsoUAAAAAHnGQP1xW2uDAeXo8eR0SJ3OmPIz'
+RECAPTCHA_SECRET_KEY = '6Le_RsoUAAAAAC3SRYJBTY48dMQyMtsPBsfvAvXU'
+
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+SITE_NAME = 'Car-tube'
+CSS_VER = '.min.css'
+JS_VER = '.min.js'
+STATIC_VERSION = '2019_12_27_001'
+DEFAULT_VIDEO = 'about.mp4'

@@ -1,6 +1,8 @@
 from django.http import Http404, HttpResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import render
+from django.conf import settings
+from functools import wraps
 
 from .models import Work, News, Category, WorkImages, WorkVideo
 from django.views.decorators.csrf import csrf_protect
@@ -64,9 +66,10 @@ def about(request):
 
 @csrf_protect
 def contacts(request):
-    latest_work_list = Work.objects.order_by('-pub_date')
+    # latest_work_list = Work.objects.order_by('-pub_date')
     context = {
-        'latest_work_list': latest_work_list,
+        # 'latest_work_list': latest_work_list,
+        'site_key': settings.RECAPTCHA_SITE_KEY,
     }
 
     return render(request, 'works/contacts.html', context )

@@ -1051,3 +1051,10 @@ img.logo {
   .send__icon {
     width: 12px;
     height: 12px; } }
+
+.grecaptcha-badge {
+  bottom: 54px !important; }
+
+.grecaptcha {
+  position: relative;
+  z-index: 10; }

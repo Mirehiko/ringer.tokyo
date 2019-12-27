@@ -84,8 +84,37 @@ function closeIcon(icon) {
   icon.css('display', 'none');
 }
 
+const response_statuses = ['success', 'spamer', 'fail'];
+const resp_actions = {
+  success: function() {
+    $('.contactForm__send').addClass('is-complete');
+    $('#btntxt').text('Отправлено');
+    new Noty({
+      type: 'success',
+      layout: 'center',
+      text: 'Ваше письмо отправлено администратору сайта CAR-TUBE',
+      timeout: 5000,
+    }).show();
+  },
+  spamer: function() {
+    new Noty({
+      type: 'error',
+      layout: 'center',
+      text: 'Вы похожи на спамера.'
+    }).show();
+  },
+  fail: function() {
+    new Noty({
+      type: 'error',
+      layout: 'center',
+      text: 'Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.'
+    }).show();
+  }
+};
+
 function sendEmail() {
   let data = getFieldData();
+  data.token = $('#g-recaptcha-responce').val();
 
   $.ajax({
     url: '/api/send_email_to_admin/12/',
@@ -93,22 +122,28 @@ function sendEmail() {
     data: data,
     dataType: "json",
     success: function (response) {
-      if (response == 'success') {
-        $('.contactForm__send').addClass('is-complete');
-        $('#btntxt').text('Отправлено');
-        new Noty({
-          type: 'success',
-          layout: 'center',
-          text: 'Ваше письмо отправлено администратору сайта CAR-TUBE',
-          timeout: 5000,
-        }).show();
-      } else {
-        new Noty({
-          type: 'error',
-          layout: 'center',
-          text: 'Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.'
-        }).show();
+      if (response_statuses.indexOf(response) !== -1) {
+        resp_actions[response];
       }
+      else {
+        console.log('response:',response);
+      }
+      // if (response == 'success') {
+      //   $('.contactForm__send').addClass('is-complete');
+      //   $('#btntxt').text('Отправлено');
+      //   new Noty({
+      //     type: 'success',
+      //     layout: 'center',
+      //     text: 'Ваше письмо отправлено администратору сайта CAR-TUBE',
+      //     timeout: 5000,
+      //   }).show();
+      // } else {
+      //   new Noty({
+      //     type: 'error',
+      //     layout: 'center',
+      //     text: 'Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.'
+      //   }).show();
+      // }
       // console.log('response:',response);
     }
   });
@@ -218,7 +253,7 @@ $('.form_input').on('keyup', function (e) {
         type: 'warning',
         layout: 'center',
         text: validator.fields[btn.attr('name')].err_msg,
-        timeout: 5000,
+        timeout: 3000,
       }).show();
     }
   } else {

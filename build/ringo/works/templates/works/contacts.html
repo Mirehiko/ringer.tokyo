@@ -4,12 +4,23 @@
 {% block title %}Контакты{% endblock %}
 
 {% block css %}
-  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/contact' %}{{ css_version }}?v{{ version }}">
+  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/contact' %}{{ settings.CSS_VER }}?v{{ settings.STATIC_VERSION }}">
 {% endblock %}
 
 {% block js_libs %}
+  <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
   <link rel="stylesheet" type="text/css" charset="utf-8" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+
+  <script>
+    grecaptcha.ready(function() {
+      grecaptcha.execute('{{ site_key }}', {action: 'homepage'}).then(function(token) {
+        console.log(token)
+        document.getElementById('g-recaptcha-responce').value = token;
+        $('.grecaptcha-badge').parent().addClass('grecaptcha');
+      });
+    });
+  </script>
 {% endblock %}
 
 
@@ -39,18 +50,15 @@
 
         <textarea id="message" name="message" class="contactForm__message form_input" placeholder="Сообщение *"></textarea>
 
+        <input type="hidden" id="g-recaptcha-responce" name="g-recaptcha-responce">
+
         <button id="send_email" type="button" name="send_email" class="contactForm__send" disabled>
           <p class="text">
             <span id="btntxt" class="lang-en">Отправить</span>
           </p>
           <img src="{% static '/system/right.svg' %}" alt="" class="send__icon">
         </button>
-<!--         <a class="contactForm__send">
-          <p class="text">
-            <span class="lang-en">Отправить</span>
-          </p>
-          <img src="{% static '/system/right.svg' %}" alt="" class="send__icon">
-        </a> -->
+
         <span>
           <a class="p-contact_policy" href="#" target="_blank">Политика конфиденциальности</a>
         </span>

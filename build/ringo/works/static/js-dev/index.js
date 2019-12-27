@@ -9,7 +9,7 @@ Array.prototype.shuffle = function() {
     this[i] = d;
   }
   return this;
-}
+};
 
 
 var firstID = '';
@@ -37,7 +37,7 @@ function renderer() {
       original: $('.infiniteBox')
     });
 
-		setTimeout(function() {motionObj.init();}, 1000)
+		setTimeout(function() {motionObj.init();}, 1000);
 	}
 }
 
@@ -69,7 +69,7 @@ $('.toggleList__item').on('click', function(e) {
   
 	let text = $(this).text();
 	$(`.toggleBtn__text[globcat]`).text(text);
-})
+});
 
 function checkForAdditionData() {
 	let box = $('.infiniteBox');
@@ -294,7 +294,7 @@ function calcView(num) {
 }
 
 function randomInteger(min, max) {
-	var rand = min - 0.5 + Math.random() * (max - min + 1)
+	var rand = min - 0.5 + Math.random() * (max - min + 1);
 	rand = Math.round(rand);
 	return rand;
 }
@@ -315,7 +315,7 @@ function tsobLine(data){
 		$(small).append(drawItem(dt[0]));
 		dt.splice(0,1);
 	}
-	while(dt.length)
+	while(dt.length);
 
 	$(line).append(small);
 	$(line).append(big);
@@ -339,7 +339,7 @@ function obtsLine(data){
 		$(small).append(drawItem(dt[0]));
 		dt.splice(0,1);
 	}
-	while(dt.length)
+	while(dt.length);
 
 	$(line).append(big);
 	$(line).append(small);
@@ -359,7 +359,7 @@ function tripleLine(data) {
 		$(line).append(item);
 		dt.splice(0,1);
 	}
-	while(dt.length)
+	while(dt.length);
 
 	return line;
 }
@@ -376,7 +376,7 @@ function doubleLine(data) {
 		$(line).append(item);
 		dt.splice(0,1);
 	}
-	while(dt.length)
+	while(dt.length);
 
 	return line;
 }

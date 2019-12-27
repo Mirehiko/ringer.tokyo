@@ -5,7 +5,7 @@
 {% block title %}Домашняя страница{% endblock %}
 
 {% block css %}
-	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/homepage' %}{{ css_version }}?v{{ version }}">
+	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/homepage' %}{{ settings.CSS_VER }}?v{{ settings.STATIC_VERSION }}">
 {% endblock %}
 
 {% block header %}
@@ -42,8 +42,8 @@
 {% endblock %}
 
 {% block tail %}
-	<script type="text/javascript" src="{% static 'js/jquery-mousewheel-3.1.12/jquery.mousewheel.js' %}?v{{ version }}" charset="utf-8" defer></script>
-  <script type="text/javascript" src="{% static 'js/scroll_script.min.js' %}" charset="utf-8" defer></script>
-  <script type="text/javascript" src="{% static 'js/page_home.min.js' %}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'js/jquery-mousewheel-3.1.12/jquery.mousewheel.js' %}?v{{ settings.STATIC_VERSION }}" charset="utf-8" defer></script>
+  <script type="text/javascript" src="{% static 'js/scroll_script.min.js' %}?v{{ settings.STATIC_VERSION }}" charset="utf-8" defer></script>
+  <script type="text/javascript" src="{% static 'js/page_home.min.js' %}?v{{ settings.STATIC_VERSION }}" charset="utf-8" defer></script>
 
 {% endblock %}

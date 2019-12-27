@@ -5,7 +5,7 @@
 {% block title %}{{ work.title }}{% endblock %}
 
 {% block css %}
-  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/workpage' %}{{ css_version }}?v{{ version }}">
+  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/workpage' %}{{ settings.CSS_VER }}?v{{ settings.STATIC_VERSION }}">
 {% endblock %}
 
 {% block header %}
@@ -93,7 +93,7 @@
 
 
 {% block tail %}
-	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'csslibs/video-js.css' %}?v{{ version }}">
+	<link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'csslibs/video-js.css' %}?v{{ settings.STATIC_VERSION }}">
 	<script type="text/javascript" src="{% static 'jslibs/video-js-ie8.min.js' %}" defer></script>
 	<script type="text/javascript" src="{% static 'jslibs/video-js.js' %}" defer></script>
 
@@ -114,10 +114,8 @@
 	  }
 	</style>
 
-	<script type="text/javascript" src="{% static 'js/jquery-mousewheel-3.1.12/jquery.mousewheel.js' %}?v{{ version }}" charset="utf-8" defer></script>
-  <script type="text/javascript" src="{% static 'js/regen.min.js' %}" charset="utf-8" defer></script>
-	<script type="text/javascript" src="{% static 'js/scroll_script.min.js' %}" charset="utf-8" defer></script>
-	<script type="text/javascript" src="{% static 'js/page_work.min.js' %}" charset="utf-8" defer></script>
-	<!-- <script type="text/javascript" src="{% static 'js/scrollBehaviorGlob.old.js' %}" charset="utf-8" defer></script> -->
-	<!-- <script type="text/javascript" src="{% static 'js/works.old.js' %}?v{{ version }}" charset="utf-8" defer></script> -->
+	<script type="text/javascript" src="{% static 'js/jquery-mousewheel-3.1.12/jquery.mousewheel.js' %}?v{{ settings.STATIC_VERSION }}" charset="utf-8" defer></script>
+  	<script type="text/javascript" src="{% static 'js/regen.min.js' %}?v{{ settings.STATIC_VERSION }}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'js/scroll_script.min.js' %}?v{{ settings.STATIC_VERSION }}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'js/page_work.min.js' %}?v{{ settings.STATIC_VERSION }}" charset="utf-8" defer></script>
 {% endblock %}
