@@ -122,11 +122,10 @@ function sendEmail() {
     data: data,
     dataType: "json",
     success: function (response) {
-      if (response_statuses.indexOf(response) !== -1) {
-        resp_actions[response];
-      }
-      else {
-        console.log('response:',response);
+      console.log('response:',response.status);
+      console.log(response_statuses.indexOf(response.status));
+      if (response_statuses.indexOf(response.status) !== -1) {
+        resp_actions[response.status]();
       }
       // if (response == 'success') {
       //   $('.contactForm__send').addClass('is-complete');

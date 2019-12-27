@@ -8,10 +8,10 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.contrib import messages
 
 import smtplib
 import json
-import django
 import urllib
 
 from django.conf import settings
@@ -32,11 +32,14 @@ class WorkListAPIView(generics.ListAPIView):
 def send_email_to_admin(request, some):
 
     token = request.POST.get('token', '')
+    secret_key = settings.RECAPTCHA_SECRET_KEY
     url = 'https://www.google.com/recaptcha/api/siteverify'
     payload = {
-        'secret': settings.RECAPTCHA_SECRET_KEY,
-        'response': token
+        'response': token,
+        'secret': secret_key
     }
+
+
     data = urllib.parse.urlencode(payload).encode()
     req = urllib.request.Request(url, data=data)
 
@@ -77,41 +80,40 @@ def send_email_to_admin(request, some):
         body         = email_body,
         to           = [settings.EMAIL_HOST_USER],
         reply_to     = [email],
-        # headers={'From': email},
-        # fail_silently=False
+
     )
     msg.content_subtype = 'html'
 
     try:
         msg.send()
         status = 'success'
+        print('====================================')
+        print('Your email sent to administrator')
+        print('====================================')
     except SMTPException as e:
         status = 'fail'
-        print('[ERROR]:', e)
+        print('####################################')
+        print('[ERROR SEND TO ADMINISTRATOR]:', e)
+        print('####################################')
+
 
     send_email_to_user(name, email)
 
-
-    return HttpResponse(json.dumps(status), 'application/javascript')
+    print('status', status)
+    return JsonResponse({'status': status})
 
 def send_email_to_user(name, email):
 
-    # email_body = """\
-    # <html>
-    #   <head></head>
-    #   <body>
-    #     <p>Уважаемый %s, ваше письмо было отправлено администратору сайта CAR-TUBE</p>
-    #     <h5>С уважением, администрация сайта</h5>
-    #     <h5 style="margin: 0 0 7px; font-weight:normal;">Сайт: <b>http://car-tube.ru/</b></h5>
-    #   </body>
-    # </html>
-    # """ % (name)
     email_body = 'Уважаемый %s, ваше письмо было отправлено администратору сайта.\nС уважением, http://car-tube.ru/\nDear %s, your letter was sent to the site administrator.\nThanks & Regards, http://car-tube.ru/' % (name,name)
-    # msg = send_mail('Уведомление о доставке', email_body, settings.EMAIL_HOST_USER, [email])
-    # msg.content_subtype = 'html'
 
     try:
-        # msg.send()
         send_mail('Уведомление о доставке', email_body, settings.EMAIL_HOST_USER, [email])
+        print('====================================')
+        print('Email sent to user')
+        print('====================================')
+        return HttpResponse(json.dumps('success'), 'application/javascript')
     except SMTPException as e:
+        print('####################################')
         print('[ERROR SEND TO USER]:', e)
+        print('####################################')
+        return JsonResponse({'status': 'fail'})

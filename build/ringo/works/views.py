@@ -2,7 +2,7 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import render
 from django.conf import settings
-from functools import wraps
+# from functools import wraps
 
 from .models import Work, News, Category, WorkImages, WorkVideo
 from django.views.decorators.csrf import csrf_protect
