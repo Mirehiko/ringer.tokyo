@@ -31,7 +31,7 @@ class WorkItem {
 				</div>`;
 		}
 		this.html = `
-			<a href="${ this.id }" class="boxItem" title="Перейти к ${ this.title }">
+			<a href="${ this.id }" class="boxItem" title="">
 				<div class="itemWrapper">
 					<div class="itemBack" style="background-image: url(${ this.poster }); background-size: cover; background-repeat: no-repeat;"></div>
 					<div class="itemContent">
@@ -47,7 +47,7 @@ class WorkItem {
 
 	_createMobile() {
 		this.html = `
-			<a href="${ this.id }" class="mobItem" title="Перейти к ${ this.title }">
+			<a href="${ this.id }" class="mobItem" title="">
 				<img class="mobileItem__image" src="${ this.poster }" alt="">
 				<div class="mobItem__info">
 					<h2 class="paramLine">
