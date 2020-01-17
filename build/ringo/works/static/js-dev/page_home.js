@@ -1,10 +1,10 @@
 class WorkItem {
 	constructor(data) {
-		this.html;
+		this.html     = null;
 		this.id       = data.id;
 		this.title    = data.title;
 		this.poster   = data.poster;
-		this.lauch    = data.lauch;
+		this.launch   = data.launch || formatDate(new Date(data.launch_date));
 		this.category = data.category;
 
 		return this;
@@ -35,8 +35,8 @@ class WorkItem {
 				<div class="itemWrapper">
 					<div class="itemBack" style="background-image: url(${ this.poster }); background-size: cover; background-repeat: no-repeat;"></div>
 					<div class="itemContent">
-						<div class="itemTitle withValue">Title<span>${ this.title }</span></div>
-						<div class="itemLauchDate withValue">Launch<span>${ this.lauch }</span></div>
+						<div class="itemTitle withValue"><span>${ this.title }</span></div>
+						<div class="itemLauchDate withValue">Launch<span>${ this.launch }</span></div>
 						<div class="itemCategory withValue">Category<span>${ this.category }</span></div>
 						${ preview_html }
 					</div>
@@ -51,12 +51,12 @@ class WorkItem {
 				<img class="mobileItem__image" src="${ this.poster }" alt="">
 				<div class="mobItem__info">
 					<h2 class="paramLine">
-						<span class="paramTitle">Title</span>
+						<span class="paramTitle"></span>
 						<span class="paramValue">${ this.title }</span>
 					</h2>
 					<div class="paramLine">
 						<span class="paramTitle">Launch</span>
-						<span class="paramValue">${ this.lauch }</span>
+						<span class="paramValue">${ this.launch }</span>
 					</div>
 					<div class="paramLine">
 						<span class="paramTitle">Category</span>
@@ -79,9 +79,10 @@ class WorkList {
 
 	_init(data) {
 		this.fragment = document.createDocumentFragment();
-		for (var i = 0; i < data.length; i++) {
+		for (let i = 0; i < data.length; i++) {
 			this.addWork(new WorkItem(data[i]));
-	  }
+			console.log("Creating item:", data[i]);
+	  	}
 	}
 
 	addWork(work) {
@@ -92,7 +93,7 @@ class WorkList {
 		let html = document.createElement('div');
 		if (type == 'mobile') {
 			$(html).addClass('infiniteBox');
-			for (var i = 0; i < this.works.length; i++) {
+			for (let i = 0; i < this.works.length; i++) {
 				$(this.fragment).append(this.works[i].getItem(type));
 			}
 		}
@@ -100,7 +101,7 @@ class WorkList {
 			$(html).addClass('infiniteBox hoverAction');
 			let works_copy = this.works.slice(0);
 
-			for (var i = 0; i < lines.data_lines.length; i++) {
+			for (let i = 0; i < lines.data_lines.length; i++) {
 				let row = works_copy.splice(0, lines.data_lines[i]); // cколько срезаем для линии
 				let func = `_${ lines.line_types[i] }`;
 				$(this.fragment).append(this[func](row, type));
@@ -280,7 +281,7 @@ class Lines {
 			trio_variants = 2;
 		}
 
-		for (var i = 0; i < lines_count; i++) {
+		for (let i = 0; i < lines_count; i++) {
 			let ntmp = [], ctmp = [];
 			if (pair_lines[i] != undefined) {
 				ntmp = ntmp.concat(pair_lines[i]);
@@ -338,13 +339,13 @@ class Lines {
 		this.line_types = new Array(lines_count);
 		this.data_lines = new Array(lines_count);
 
-		for (var i = 0; i < trio_lines.length; i++) {
+		for (let i = 0; i < trio_lines.length; i++) {
 			this.data_lines[trio_count] = 3;
 			this.line_types[trio_count] = this._selectLineType(trio_variants);
 			trio_count += step;
 		}
 
-		for (var i = 0; i < pair_lines.length; i++) {
+		for (let i = 0; i < pair_lines.length; i++) {
 			this.data_lines[pair_count] = 2;
 			this.line_types[pair_count] = 'pairLine';
 			pair_count += step;
@@ -368,7 +369,7 @@ class Lines {
 		do {
 			typeID = randomInteger(1, variants);
 		}
-		while(this.trio_type_tmp == typeID)
+		while(this.trio_type_tmp == typeID);
 
 		this.trio_type_tmp = typeID;
 
@@ -386,8 +387,8 @@ class Lines {
 				break;
 			}
 	    default:
-				return "Error";
-	      break;
+			return "Error";
+	     	 break;
 	  }
 	}
 }
@@ -461,10 +462,10 @@ class Controller {
 	}
 
 	_redrawBackgrounds() {
-	  var items = $('.boxItem');
-	  $.each(items, function (key, val) {
-	    $(this).outerHeight($(this).outerWidth() / SCREEN_RATIO);
-	  });
+		var items = $('.boxItem');
+		$.each(items, function (key, val) {
+			$(this).outerHeight($(this).outerWidth() / SCREEN_RATIO);
+		});
 	}
 
 	_changeView(lines) {
@@ -478,23 +479,45 @@ class Controller {
 	    url: '/api/',
 	    type: "GET",
 	    data: {
-	      category: category,
+	    	category: category,
 	    },
 	    dataType: 'json',
 	    success: function (data) {
-	      if (data.length) {
-					inst.animation.stopMovement();
-					inst._initData(data, true);
-					inst.animation.updateData('.infiniteBox').initAnimation();
-					callback();
-	      }
-	      else {
-	        console.log('Нет данных');
-	      }
+		if (data.length) {
+			inst.animation.stopMovement();
+			inst._initData(data, true);
+			inst.animation.updateData('.infiniteBox').initAnimation();
+			callback();
+		}
+		else {
+			console.log('Нет данных');
+		}
 	    }
 	  });
 	}
 }
+
+const mounth_text = [
+	'Янв', 'Фев', 'Мар', 'Апр',
+	'Май', 'Июн', 'Июл', 'Авг',
+	'Сен', 'Окт', 'Ноя', 'Дек',
+];
+
+function formatDate(date) {
+
+	var dd = date.getDate();
+	if (dd < 10) dd = '0' + dd;
+  
+	// var mm = date.getMonth() + 1;
+	var mm = mounth_text[date.getMonth()];
+	// if (mm < 10) mm = '0' + mm;
+	
+  
+	var yy = date.getFullYear() % 100;
+	if (yy < 10) yy = '0' + yy;
+  
+	return `${dd} ${mm}, ${yy}`;
+  }
 
 function randomInteger(min, max) {
   var rand = min - 0.5 + Math.random() * (max - min + 1);

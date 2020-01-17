@@ -10,11 +10,11 @@ function () {
   function WorkItem(data) {
     _classCallCheck(this, WorkItem);
 
-    this.html;
+    this.html = null;
     this.id = data.id;
     this.title = data.title;
     this.poster = data.poster;
-    this.lauch = data.lauch;
+    this.launch = data.launch || formatDate(new Date(data.launch_date));
     this.category = data.category;
     return this;
   }
@@ -40,12 +40,12 @@ function () {
         preview_html = "\n\t\t\t\t<div class=\"itemPreview\">\n\t\t\t\t\t<div class=\"itemPreview__box\"></div>\n\t\t\t\t\t<div class=\"itemPreview__btn\"></div>\n\t\t\t\t</div>";
       }
 
-      this.html = "\n\t\t\t<a href=\"".concat(this.id, "\" class=\"boxItem\" title=\"\">\n\t\t\t\t<div class=\"itemWrapper\">\n\t\t\t\t\t<div class=\"itemBack\" style=\"background-image: url(").concat(this.poster, "); background-size: cover; background-repeat: no-repeat;\"></div>\n\t\t\t\t\t<div class=\"itemContent\">\n\t\t\t\t\t\t<div class=\"itemTitle withValue\">Title<span>").concat(this.title, "</span></div>\n\t\t\t\t\t\t<div class=\"itemLauchDate withValue\">Launch<span>").concat(this.lauch, "</span></div>\n\t\t\t\t\t\t<div class=\"itemCategory withValue\">Category<span>").concat(this.category, "</span></div>\n\t\t\t\t\t\t").concat(preview_html, "\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</a>\n\t\t");
+      this.html = "\n\t\t\t<a href=\"".concat(this.id, "\" class=\"boxItem\" title=\"\">\n\t\t\t\t<div class=\"itemWrapper\">\n\t\t\t\t\t<div class=\"itemBack\" style=\"background-image: url(").concat(this.poster, "); background-size: cover; background-repeat: no-repeat;\"></div>\n\t\t\t\t\t<div class=\"itemContent\">\n\t\t\t\t\t\t<div class=\"itemTitle withValue\"><span>").concat(this.title, "</span></div>\n\t\t\t\t\t\t<div class=\"itemLauchDate withValue\">Launch<span>").concat(this.launch, "</span></div>\n\t\t\t\t\t\t<div class=\"itemCategory withValue\">Category<span>").concat(this.category, "</span></div>\n\t\t\t\t\t\t").concat(preview_html, "\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</a>\n\t\t");
     }
   }, {
     key: "_createMobile",
     value: function _createMobile() {
-      this.html = "\n\t\t\t<a href=\"".concat(this.id, "\" class=\"mobItem\" title=\"\">\n\t\t\t\t<img class=\"mobileItem__image\" src=\"").concat(this.poster, "\" alt=\"\">\n\t\t\t\t<div class=\"mobItem__info\">\n\t\t\t\t\t<h2 class=\"paramLine\">\n\t\t\t\t\t\t<span class=\"paramTitle\">Title</span>\n\t\t\t\t\t\t<span class=\"paramValue\">").concat(this.title, "</span>\n\t\t\t\t\t</h2>\n\t\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t\t<span class=\"paramTitle\">Launch</span>\n\t\t\t\t\t\t<span class=\"paramValue\">").concat(this.lauch, "</span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t\t<span class=\"paramTitle\">Category</span>\n\t\t\t\t\t\t<span class=\"paramValue\">").concat(this.category, "</span>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</a>");
+      this.html = "\n\t\t\t<a href=\"".concat(this.id, "\" class=\"mobItem\" title=\"\">\n\t\t\t\t<img class=\"mobileItem__image\" src=\"").concat(this.poster, "\" alt=\"\">\n\t\t\t\t<div class=\"mobItem__info\">\n\t\t\t\t\t<h2 class=\"paramLine\">\n\t\t\t\t\t\t<span class=\"paramTitle\"></span>\n\t\t\t\t\t\t<span class=\"paramValue\">").concat(this.title, "</span>\n\t\t\t\t\t</h2>\n\t\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t\t<span class=\"paramTitle\">Launch</span>\n\t\t\t\t\t\t<span class=\"paramValue\">").concat(this.launch, "</span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t\t<span class=\"paramTitle\">Category</span>\n\t\t\t\t\t\t<span class=\"paramValue\">").concat(this.category, "</span>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</a>");
     }
   }]);
 
@@ -74,6 +74,7 @@ function () {
 
       for (var i = 0; i < data.length; i++) {
         this.addWork(new WorkItem(data[i]));
+        console.log("Creating item:", data[i]);
       }
     }
   }, {
@@ -96,10 +97,10 @@ function () {
         $(html).addClass('infiniteBox hoverAction');
         var works_copy = this.works.slice(0);
 
-        for (var i = 0; i < lines.data_lines.length; i++) {
-          var row = works_copy.splice(0, lines.data_lines[i]); // cколько срезаем для линии
+        for (var _i = 0; _i < lines.data_lines.length; _i++) {
+          var row = works_copy.splice(0, lines.data_lines[_i]); // cколько срезаем для линии
 
-          var func = "_".concat(lines.line_types[i]);
+          var func = "_".concat(lines.line_types[_i]);
           $(this.fragment).append(this[func](row, type));
         }
       }
@@ -287,17 +288,17 @@ function () {
         trio_variants = 2;
       }
 
-      for (var i = 0; i < lines_count; i++) {
+      for (var _i2 = 0; _i2 < lines_count; _i2++) {
         var ntmp = [],
             ctmp = [];
 
-        if (pair_lines[i] != undefined) {
-          ntmp = ntmp.concat(pair_lines[i]);
+        if (pair_lines[_i2] != undefined) {
+          ntmp = ntmp.concat(pair_lines[_i2]);
           ctmp = ctmp.concat('pairLine');
         }
 
-        if (trio_lines[i] != undefined) {
-          ntmp = ntmp.concat(trio_lines[i]);
+        if (trio_lines[_i2] != undefined) {
+          ntmp = ntmp.concat(trio_lines[_i2]);
           ctmp = ctmp.concat(this._selectLineType(trio_variants));
         }
 
@@ -350,13 +351,13 @@ function () {
       this.line_types = new Array(lines_count);
       this.data_lines = new Array(lines_count);
 
-      for (var i = 0; i < trio_lines.length; i++) {
+      for (var _i3 = 0; _i3 < trio_lines.length; _i3++) {
         this.data_lines[trio_count] = 3;
         this.line_types[trio_count] = this._selectLineType(trio_variants);
         trio_count += step;
       }
 
-      for (var i = 0; i < pair_lines.length; i++) {
+      for (var _i4 = 0; _i4 < pair_lines.length; _i4++) {
         this.data_lines[pair_count] = 2;
         this.line_types[pair_count] = 'pairLine';
         pair_count += step;
@@ -545,6 +546,19 @@ function () {
 
   return Controller;
 }();
+
+var mounth_text = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+
+function formatDate(date) {
+  var dd = date.getDate();
+  if (dd < 10) dd = '0' + dd; // var mm = date.getMonth() + 1;
+
+  var mm = mounth_text[date.getMonth()]; // if (mm < 10) mm = '0' + mm;
+
+  var yy = date.getFullYear() % 100;
+  if (yy < 10) yy = '0' + yy;
+  return "".concat(dd, " ").concat(mm, ", ").concat(yy);
+}
 
 function randomInteger(min, max) {
   var rand = min - 0.5 + Math.random() * (max - min + 1);
