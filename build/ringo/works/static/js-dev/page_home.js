@@ -35,9 +35,9 @@ class WorkItem {
 				<div class="itemWrapper">
 					<div class="itemBack" style="background-image: url(${ this.poster }); background-size: cover; background-repeat: no-repeat;"></div>
 					<div class="itemContent">
-						<div class="itemTitle withValue"><span>${ this.title }</span></div>
-						<div class="itemLauchDate withValue"><span>${ this.launch }</span></div>
-						<div class="itemCategory withValue"><span>${ this.category }</span></div>
+						<div class="itemTitle text-right"><span>${ this.title }</span></div>
+						<div class="itemLauchDate text-right"><span>${ this.launch }</span></div>
+						<div class="itemCategory text-right"><span>${ this.category }</span></div>
 						${ preview_html }
 					</div>
 				</div>

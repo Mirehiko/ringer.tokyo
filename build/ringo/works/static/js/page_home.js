@@ -40,7 +40,7 @@ function () {
         preview_html = "\n\t\t\t\t<div class=\"itemPreview\">\n\t\t\t\t\t<div class=\"itemPreview__box\"></div>\n\t\t\t\t\t<div class=\"itemPreview__btn\"></div>\n\t\t\t\t</div>";
       }
 
-      this.html = "\n\t\t\t<a href=\"".concat(this.id, "\" class=\"boxItem\" title=\"\">\n\t\t\t\t<div class=\"itemWrapper\">\n\t\t\t\t\t<div class=\"itemBack\" style=\"background-image: url(").concat(this.poster, "); background-size: cover; background-repeat: no-repeat;\"></div>\n\t\t\t\t\t<div class=\"itemContent\">\n\t\t\t\t\t\t<div class=\"itemTitle withValue\"><span>").concat(this.title, "</span></div>\n\t\t\t\t\t\t<div class=\"itemLauchDate withValue\"><span>").concat(this.launch, "</span></div>\n\t\t\t\t\t\t<div class=\"itemCategory withValue\"><span>").concat(this.category, "</span></div>\n\t\t\t\t\t\t").concat(preview_html, "\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</a>\n\t\t");
+      this.html = "\n\t\t\t<a href=\"".concat(this.id, "\" class=\"boxItem\" title=\"\">\n\t\t\t\t<div class=\"itemWrapper\">\n\t\t\t\t\t<div class=\"itemBack\" style=\"background-image: url(").concat(this.poster, "); background-size: cover; background-repeat: no-repeat;\"></div>\n\t\t\t\t\t<div class=\"itemContent\">\n\t\t\t\t\t\t<div class=\"itemTitle text-right\"><span>").concat(this.title, "</span></div>\n\t\t\t\t\t\t<div class=\"itemLauchDate text-right\"><span>").concat(this.launch, "</span></div>\n\t\t\t\t\t\t<div class=\"itemCategory text-right\"><span>").concat(this.category, "</span></div>\n\t\t\t\t\t\t").concat(preview_html, "\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</a>\n\t\t");
     }
   }, {
     key: "_createMobile",
