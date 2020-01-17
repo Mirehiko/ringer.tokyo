@@ -36,8 +36,8 @@ class WorkItem {
 					<div class="itemBack" style="background-image: url(${ this.poster }); background-size: cover; background-repeat: no-repeat;"></div>
 					<div class="itemContent">
 						<div class="itemTitle withValue"><span>${ this.title }</span></div>
-						<div class="itemLauchDate withValue">Launch<span>${ this.launch }</span></div>
-						<div class="itemCategory withValue">Category<span>${ this.category }</span></div>
+						<div class="itemLauchDate withValue"><span>${ this.launch }</span></div>
+						<div class="itemCategory withValue"><span>${ this.category }</span></div>
 						${ preview_html }
 					</div>
 				</div>
@@ -55,11 +55,11 @@ class WorkItem {
 						<span class="paramValue">${ this.title }</span>
 					</h2>
 					<div class="paramLine">
-						<span class="paramTitle">Launch</span>
+						<span class="paramTitle"></span>
 						<span class="paramValue">${ this.launch }</span>
 					</div>
 					<div class="paramLine">
-						<span class="paramTitle">Category</span>
+						<span class="paramTitle"></span>
 						<span class="paramValue">${ this.category }</span>
 					</div>
 				</div>
