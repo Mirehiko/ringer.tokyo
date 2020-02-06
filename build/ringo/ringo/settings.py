@@ -191,25 +191,25 @@ MEDIA_URL = '/media/'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.yandex.ru'
-# EMAIL_HOST_USER = 'example@example.ru'
-# EMAIL_HOST_PASSWORD = 'pass;'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.timeweb.ru'
-EMAIL_HOST_USER = 'info@cartu.be'
-EMAIL_HOST_PASSWORD = 'efayk5Pp'
+
+
+EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 2525
+EMAIL_HOST_USER = "car-tube@mail.ru"
+EMAIL_HOST_PASSWORD = "motor911"
 EMAIL_USE_TLS = True
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 RECAPTCHA_SITE_KEY = '6Le_RsoUAAAAAHnGQP1xW2uDAeXo8eR0SJ3OmPIz'
 RECAPTCHA_SECRET_KEY = '6Le_RsoUAAAAAC3SRYJBTY48dMQyMtsPBsfvAvXU'
 
-SERVER_EMAIL = EMAIL_HOST_USER
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SITE_NAME = 'Car-tube'
 CSS_VER = '.min.css'
 JS_VER = '.min.js'
 STATIC_VERSION = '2020_01_17_001'
 DEFAULT_VIDEO = 'about.mp4'
+
