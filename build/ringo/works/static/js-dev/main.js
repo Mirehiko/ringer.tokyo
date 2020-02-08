@@ -115,7 +115,6 @@ const resp_actions = {
 function sendEmail() {
   let data = getFieldData();
   data.token = $('#g-recaptcha-responce').val();
-
   $.ajax({
     url: '/api/send_email_to_admin/12/',
     type: "POST",
@@ -127,23 +126,6 @@ function sendEmail() {
       if (response_statuses.indexOf(response.status) !== -1) {
         resp_actions[response.status]();
       }
-      // if (response == 'success') {
-      //   $('.contactForm__send').addClass('is-complete');
-      //   $('#btntxt').text('Отправлено');
-      //   new Noty({
-      //     type: 'success',
-      //     layout: 'center',
-      //     text: 'Ваше письмо отправлено администратору сайта CAR-TUBE',
-      //     timeout: 5000,
-      //   }).show();
-      // } else {
-      //   new Noty({
-      //     type: 'error',
-      //     layout: 'center',
-      //     text: 'Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.'
-      //   }).show();
-      // }
-      // console.log('response:',response);
     }
   });
 }
@@ -214,13 +196,18 @@ var validator = new Validator([{
   },
 ]);
 
+const reasons = {
+  'collaboration': 'Сотрудничество',
+  'questions_and_offers': 'Вопросы и предложения'
+};
+
 function getFieldData() {
   let data = {};
   data['name'] = $('#name').val();
   data['company'] = $('#company').val();
   data['email'] = $('#email').val();
-  data['website'] = $('#website').val();
-  data['reason'] = $('#reason option:selected').val();
+  data['website'] = $('#website').val(); 
+  data['reason'] = reasons[$('#reason option:selected').val()];
   data['message'] = $('#message').val();
   return data;
 }

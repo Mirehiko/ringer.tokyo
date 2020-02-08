@@ -123,24 +123,7 @@ function sendEmail() {
 
       if (response_statuses.indexOf(response.status) !== -1) {
         resp_actions[response.status]();
-      } // if (response == 'success') {
-      //   $('.contactForm__send').addClass('is-complete');
-      //   $('#btntxt').text('Отправлено');
-      //   new Noty({
-      //     type: 'success',
-      //     layout: 'center',
-      //     text: 'Ваше письмо отправлено администратору сайта CAR-TUBE',
-      //     timeout: 5000,
-      //   }).show();
-      // } else {
-      //   new Noty({
-      //     type: 'error',
-      //     layout: 'center',
-      //     text: 'Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.'
-      //   }).show();
-      // }
-      // console.log('response:',response);
-
+      }
     }
   });
 }
@@ -231,6 +214,10 @@ var validator = new Validator([{
   field: '#message',
   err_msg: 'Поле \'Сообщение\' не должно быть пустым'
 }]);
+var reasons = {
+  'collaboration': 'Сотрудничество',
+  'questions_and_offers': 'Вопросы и предложения'
+};
 
 function getFieldData() {
   var data = {};
@@ -238,7 +225,7 @@ function getFieldData() {
   data['company'] = $('#company').val();
   data['email'] = $('#email').val();
   data['website'] = $('#website').val();
-  data['reason'] = $('#reason option:selected').val();
+  data['reason'] = reasons[$('#reason option:selected').val()];
   data['message'] = $('#message').val();
   return data;
 }
