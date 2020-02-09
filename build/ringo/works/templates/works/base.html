@@ -18,11 +18,11 @@
 
 
 	{% block header %}
-		{% include 'crumbs/header.html' with is_need_category=False is_mobile_only=False %}
+	{% include 'crumbs/header.html' with is_need_category=False is_mobile_only=False %}
 	{% endblock %}
 
 	{% block breadcrumbs %}
-		{% include 'crumbs/breadcrumbs.html' with page_name="Главная" %}
+	{% include 'crumbs/breadcrumbs.html' with page_name="Главная" %}
 	{% endblock %}
 
 	{% block content %}{% endblock %}
@@ -32,14 +32,15 @@
 	{% endwith %}
 
 	{% block fonts %}
-		<link rel="stylesheet" type="text/css" charset="utf-8"
-			href="{% static 'csslibs/fontawesome/all.min.css' %}?v{{ settings.STATIC_VERSION }}">
+	<link rel="stylesheet" type="text/css" charset="utf-8"
+		href="{% static 'csslibs/fontawesome/css/all.min.css' %}?v{{ settings.STATIC_VERSION }}">
 	{% endblock %}
 
 
 	<script src="{% static 'jslibs/jquery-3.3.1.min.js' %}?v{{ settings.STATIC_VERSION }}" defer></script>
 	{% block js_libs %}{% endblock %}
-	<script type="text/javascript" src="{% static 'js/main.min.js' %}?v{{ settings.STATIC_VERSION }}" charset="utf-8" defer></script>
+	<script type="text/javascript" src="{% static 'js/main.min.js' %}?v{{ settings.STATIC_VERSION }}" charset="utf-8"
+		defer></script>
 	{% block js_data %}{% endblock %}
 
 	{% block tail %}{% endblock %}

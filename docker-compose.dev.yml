@@ -1,17 +1,16 @@
-version: '3.2'
+version: "3.2"
 
 networks:
   main:
     driver: bridge
     attachable: true
 
-
 services:
-  db: 
+  db:
     image: mysql:latest
     container_name: cartube_mysql
     command: --default-authentication-plugin=mysql_native_password
-    environment: 
+    environment:
       - MYSQL_DATABASE=ringerdb
       - MYSQL_USER=mirehiko
       - MYSQL_PASSWORD=sorellina
@@ -22,7 +21,7 @@ services:
       - "./volumes/mysql/db:/var/lib/mysql"
 
   web:
-    build: 
+    build:
       context: ./build/
     container_name: cartube_web
     environment:
@@ -58,4 +57,5 @@ services:
     container_name: cartube_node
     volumes:
       - "./build/ringo/works/static:/static"
+      - "./build/ringo/works/static-dev:/static-dev"
       - "./build/node:/app"

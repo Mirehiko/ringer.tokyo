@@ -1,0 +1,232 @@
+@import 'common';
+@import 'header';
+@import 'content';
+
+
+#contactPage {
+	margin-bottom: 170px;
+
+  @media screen and (min-width: 0) {
+    width: 93%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media screen and (min-width: 768px) {
+    width: 65.1612903%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.contactForm__text {
+	display: block;
+	width: 100%;
+  font-weight: bold;
+	background-color: transparent;
+
+  color: #222;
+	border: none;
+  background-color: #fff;
+  outline: none;
+
+  @media screen and (min-width: 0) {
+    height: 12vw;
+    font-size: 4.8vw;
+    border-bottom: 0.533333333333333vw #000 solid;
+    margin-bottom: 13.333333333333334vw;
+  }
+  @media screen and (min-width: 768px) {
+    height: 80px;
+    font-size: 24px;
+    border-bottom: 2px #000 solid;
+    margin-bottom: 60px;
+  }
+}
+.contactForm__message {
+  width: 100%;
+  font-weight: bold;
+
+  @media screen and (min-width: 0) {
+    height: 80vw;
+    font-size: 4.8vw;
+    border: 0.533333333333333vw #000 solid;
+    padding: 4vw;
+  }
+  @media screen and (min-width: 768px) {
+    height: 480px;
+    font-size: 24px;
+    border: 2px #000 solid;
+    padding: 30px;
+  }
+}
+.contactForm__subject {
+	width: 100%;
+  height: 90px;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  bottom: auto;
+  right: auto;
+  background-color: #fff;
+  border: 2px #000 solid;
+  margin-top: 30px;
+  margin-bottom: 80px;
+
+  @media screen and (min-width: 0) {
+    padding: 0 4vw;
+  }
+  @media screen and (min-width: 768px) {
+    padding: 0 30px;
+  }
+}
+.contactForm__select {
+	// position: absolute;
+  border: none;
+  outline: none;
+  top: 0px;
+  left: 0px;
+  bottom: auto;
+  right: auto;
+  -webkit-appearance: menulist-button;
+  width: 100%;
+  height: 100%;
+  color: #222;
+  /* opacity: 0.00001; */
+  background-color: #fff;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+
+  @media screen and (min-width: 0) {
+    font-size: 4.8vw;
+  }
+  @media screen and (min-width: 768px) {
+    font-size: 24px;
+  }
+}
+.contactForm__send {
+  position: relative;
+  background-color: #000;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -o-box-orient: horizontal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -o-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  color: #fff;
+  opacity: 0.3;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+  filter: alpha(opacity=30);
+  border: 2px solid transparent;
+
+  &.is-ok {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+  }
+  &.is-complete {
+    background-color: #f6f6f6;
+    color: #000;
+    pointer-events: none;
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+    border-color: #222;
+
+    .send__icon {
+      opacity: 0;
+    }
+    .text {
+      outline: none;
+      color: #222;
+    }
+  }
+
+  @media screen and (min-width: 0) {
+    width: 100%;
+    height: 16vw;
+    padding: 0 4vw;
+    margin-top: 16vw;
+    margin-bottom: 2.666666666666667vw;
+  }
+  @media screen and (min-width: 768px) {
+    width: 390px;
+    height: 80px;
+    margin-top: 90px;
+    margin-bottom: 20px;
+    padding: 0 30px;
+  }
+
+  .text {
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    color: #fff;
+    font-weight: bold;
+    font-size: 24px;
+  }
+}
+
+.on_success {
+  border-color: #49b13d;
+}
+.on_error {
+  border-color: #ea0d0d;
+}
+
+.select__icon svg {
+  position: absolute;
+  z-index: 1;
+  background-color: #fff;
+  top: 50%;
+
+  @media screen and (min-width: 0) {
+    width: 10.666666666666666vw;
+    height: 10.666666666666666vw;
+    margin-top: -5.333333333333333vw;
+    right: 4vw;
+  }
+  @media screen and (min-width: 768px) {
+    width: 48px;
+    height: 48px;
+    margin-top: -24px;
+    right: 30px;
+  }
+}
+
+.send__icon {
+  @media screen and (min-width: 0) {
+    width: 3.2vw;
+    height: 3.2vw;
+  }
+  @media screen and (min-width: 768px) {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.grecaptcha-badge {
+  bottom: 54px !important;
+}
+
+.grecaptcha {
+  position: relative;
+  z-index: 10;
+}

@@ -1,0 +1,349 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-family: aktiv-grotesk, sans-serif;
+}
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: #000;
+  color: #fff;
+
+  &.isRecruit, &.isContact {
+    background-color: #f6f6f6;
+    color: #222;
+  }
+  &.isContact {
+    background-color: #fff;
+    color: #222;
+  }
+
+  &.isRecruit a, &.isContact a {
+      color: #222;
+  }
+  &.isRecruit .bg path,
+  &.isContact .bg path {
+      fill: #222;
+  }
+  &.isRecruit .iconBtn .shape > .inner > div,
+  &.isContact .iconBtn .shape > .inner > div {
+      background-color: #222;
+  }
+}
+a {
+    text-decoration: none;
+    color: #fff;
+}
+.bg path {
+    fill: #fff;
+}
+
+.iconBtn .shape > .inner > div {
+    background-color: #fff;
+}
+
+
+@-webkit-keyframes pulsate{ 50%{ opacity: 0.7; } }
+
+
+@keyframes pulsate{ 50%{ opacity: 0.7; } }
+button:hover {
+    cursor: pointer;
+}
+a:hover, .iconBtnBox:hover .iconBtn {
+    opacity: 1;
+  -webkit-animation: pulsate .001s linear infinite;
+  animation: pulsate .001s linear infinite;
+}
+.wrapper {
+    position: relative;
+}
+#pageContent {
+    margin-right: 200px;
+    position: relative;
+}
+
+
+.iconBtn {
+  position: absolute;
+  text-align: center;
+  right: 15px;
+  top: 50%;
+  margin-top: -24px;
+  width: auto;
+  height: auto;
+
+  svg {
+    opacity: .2;
+  }
+  .shape {
+    position: relative;
+    width: 20.8333333%;
+    height: 4.1666667%;
+  }
+  .shape > .inner {
+    position: absolute;
+    top: 24px;
+    left: 0px;
+    bottom: auto;
+    right: auto;
+    width: 100%;
+    height: 100%;
+  }
+  .shape > .inner > div {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: auto;
+    right: auto;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+  }
+}
+
+.iconBtnBox {
+    position: relative;
+    cursor: pointer;
+}
+.iconBtn .shape > .inner > div:last-child {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.iconBtnBox.open .inner > div,
+.iconBtn:hover .inner > div,
+.iconBtnBox:hover .inner > div  {
+    -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.iconBtnBox.open .inner > div:last-child,
+.iconBtn:hover .inner > div:last-child,
+.iconBtnBox:hover .inner > div:last-child {
+    -webkit-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+.iconBtnBox.open:hover .inner > div {
+    -webkit-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+.iconBtnBox.open:hover .inner > div:last-child {
+    -webkit-transform: rotate(450deg);
+  -ms-transform: rotate(450deg);
+  transform: rotate(450deg);
+}
+.iconBtn .wrapper {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -o-box-orient: vertical;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+
+  // @media screen and (min-width: 0) {
+  //   width: 10.666666666666666vw;
+  //   height: 10.666666666666666vw;
+  // }
+  // @media screen and (min-width: 768px) {
+  //   width: 48px;
+  //   height: 48px;
+  // }
+}
+
+.toggleContent {
+  -webkit-transition: all .5s;
+  -o-transition: all .5s;
+  transition: all .5s;
+  overflow: hidden;
+}
+.breadcrumbs {
+  position: absolute;
+  padding: 27px 29px;
+  mix-blend-mode: difference;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-weight: bold;
+  z-index: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -o-box-orient: horizontal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+
+  a {
+    opacity: .4;
+  }
+}
+
+.-hidden- {
+  display: none;
+}
+.fullView {
+  width: 100%;
+  height: 100%;
+  background-color: #222;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+.fullView__close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #fff;
+  z-index: 5;
+}
+
+.page {
+  position: relative;
+}
+
+.toggleBtn {
+  display: block;
+  padding:  10px 0;
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  @media screen and (min-width: 0) {
+    font-size: 4.8vw;
+  }
+  @media screen and (min-width: 768px) {
+    font-size: 24px;
+  }
+}
+.toggleBtn__text {
+  vertical-align: middle;
+}
+.toggleBtn__icon {
+  padding-left: 15px;
+  vertical-align: middle;
+}
+.toggleList {
+  padding: 10px 0;
+  overflow: hidden;
+}
+.toggleList__item {
+  font-size: 14px;
+  display: block;
+  color: #fff;
+  padding: 8px 0;
+  font-weight: bold;
+}
+.toggleList__item[globcat].-active- {
+  opacity: .5;
+}
+
+@import 'header';
+
+@media screen and (min-width: 0) {
+  #pageContent {
+    width: 100%;
+  }
+  .page {
+    padding: 0 10px;
+  }
+  .-mobile- {
+    display: block;
+  }
+  .breadcrumbs {
+    padding: 11px;
+    top: 24.4vw;
+    font-size: 4.8vw;
+  }
+  .breadcrumbs .arw {
+    width: 2.666666666666667vw;
+    height: 2.666666666666667vw;
+    margin: 0 3.333333333333333vw;
+  }
+  #contactPage, #talentPage,
+  #newsPage {
+    margin-top: 48vw;
+  }
+  #aboutPage { margin-top: 21.333333333333332vw; }
+}
+@media screen and (min-width: 768px) {
+  #pageContent {
+    width: auto;
+    margin: 0 200px 0 0;
+  }
+  .page {
+    padding: 0 30px;
+  }
+  .-mobile- {
+    display: none;
+  }
+  .breadcrumbs {
+    padding: 27px 29px;
+    top: 0;
+    font-size: 24px;
+  }
+  .breadcrumbs .arw {
+    width: 12px;
+    height: 12px;
+    margin: 1px 18px 0;
+  }
+  #contactPage, #talentPage,
+  #newsPage {
+    margin-top: 196px;
+  }
+  #aboutPage { margin-top: 0; }
+}
+
+.mobItem {
+  display: block;
+  margin: 0 0 15px;
+  border-radius: 5px;
+  width: 100%;
+  overflow: hidden;
+}
+.mobileItem__image {
+  display: block;
+  width: 100%;
+  /* margin: 0 0 10px; */
+}
+.mobItem__info {
+  padding: 15px 10px;
+  background-color: #222;
+}
+.mobItem__info h2 {
+  margin: 0 0 30px;
+}
