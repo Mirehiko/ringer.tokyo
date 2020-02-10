@@ -1,6 +1,7 @@
 @import 'common';
-@import 'header';
-/*===================================*/
+@import 'modules/header';
+
+/* =================================== */
 .page {
   padding: 0;
 }
@@ -8,36 +9,38 @@
 #pageContent {
   margin: 0;
 }
+
 .infiniteBlock {
   width: 100%;
   overflow: hidden;
   height: 80%;
 }
+
+.infiniteList,
+.infiniteItem,
+.infiniteItem img {
+  height: 100%;
+}
+
 .infiniteWrapper {
   position: relative;
   width: 100%;
   height: 100%;
-}
-.infiniteList, .infiniteItem,
-.infiniteItem img {
-  height: 100%;
-}
-.infiniteWrapper {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-
+  -ms-flex-pack: center;
+  justify-content: center;
 }
+
 .infiniteList {
   font-size: 0;
   position: relative;
@@ -47,8 +50,8 @@
   display: flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   overflow: hidden;
   -webkit-transition: all 0.1s;
   -o-transition: all 0.1s;
@@ -63,29 +66,34 @@
   display: inline-block;
   white-space: normal;
 }
+
 .infiniteImage {
   width: 100%;
   width: auto;
   height: 100%;
 }
 
-
 .workItem {
   vertical-align: middle;
   position: relative;
 }
+
 .infoItem {
   color: #fff;
 }
+
 .paramLine {
   margin-bottom: 5px;
 }
+
 .paramTitle {
   opacity: 0.4;
 }
+
 .paramValue {
   font-weight: bold;
 }
+
 .itmEtc {
   margin: 0;
   width: 100%;
@@ -100,6 +108,7 @@
   width: 100%;
   background-color: rgba(34, 34, 34, 0.7215686274509804);
 }
+
 .prevIcon {
   display: block;
   position: absolute;
@@ -109,7 +118,7 @@
   width: 100%;
   height: 100%;
 
-  &>.playIcon {
+  & > .playIcon {
     top: 50%;
     left: 50%;
     margin-top: -24px;
@@ -120,7 +129,6 @@
   }
 }
 
-
 .navigation {
   color: #fff;
   font-weight: bold;
@@ -130,15 +138,16 @@
   }
 }
 
-.nav__item>* {
+.nav__item > * {
   padding-bottom: 4px;
   border-bottom: 2px solid #fff;
 }
+
 #videoContent {
   height: 100%;
   width: 100%;
 
-  &>* {
+  & > * {
     display: block;
     margin: 0 auto;
     height: 100%;
@@ -146,69 +155,75 @@
   }
 }
 
-
-
-@media screen and (min-width: 0px) {
+@media screen and (min-width: 0) {
   .workInfo {
     width: 100%;
     display: block;
   }
+
   .workItem {
     width: 100%;
   }
+
   #wrapper {
     overflow: hidden;
   }
+
   .workContent {
     width: 100%;
     display: block;
   }
-  .videoItem>* {
+
+  .videoItem > * {
     width: 100%;
   }
-  #videoContent>* {
+
+  #videoContent > * {
     width: 100%;
   }
-  .videoItem .prevIcon, .videoItem .previewcover {
+
+  .videoItem .prevIcon,
+  .videoItem .previewcover {
     height: 100%;
   }
+
   .infoItem {
     margin-top: 35.333333333333336vw;
     margin-bottom: 11.333333333333334vw;
+    background-color: transparent;
   }
+
   .infoWrapper {
     padding: 0 4vw;
   }
-  .main.paramTitle, .main.paramValue {
+
+  .main.paramTitle,
+  .main.paramValue {
     font-size: 4.8vw;
     line-height: 1.5;
     display: inline-block;
   }
+
   .main.paramTitle {
     margin-right: 1.066666666666667vw;
     line-height: 1.5;
     margin-bottom: 9.866666666666667vw;
   }
-  .infoItem {
-    background-color: transparent;
-  }
+
   .itmEtc .paramLine {
     font-size: 3.2vw;
     margin-bottom: 1.866666666666667vw;
   }
+
   .itmEtc .paramTitle {
     margin-right: 1.066666666666667vw;
   }
+
   .breadcrumbs {
     display: none;
   }
 
   #nav_foot {
-    position: absolute;
-    top: auto;
-    left: 0;
-    bottom: 0;
-    right: auto;
     width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -222,44 +237,45 @@
     -o-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    padding: 22px 29px;
     white-space: nowrap;
-
-
     position: relative;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     bottom: auto;
     right: auto;
     padding: 0 4vw;
     margin-top: 24.8vw;
     margin-bottom: 23.066666666666666vw;
   }
-  #nav_foot>.nav__item {
+
+  #nav_foot > .nav__item {
     font-size: 4.8vw;
-  
+
     &.all {
       margin-top: 22.666666666666668vw;
     }
   }
-
 }
+
 @media screen and (min-width: 768px) {
   .workInfo {
     height: 100%;
     width: initial;
     display: inline-block;
   }
+
   .workItem {
     display: inline-block;
     height: 100%;
     width: auto;
   }
+
   #workPage {
     position: absolute;
     top: 0;
     left: 0;
-    right: auto; bottom: auto;
+    right: auto;
+    bottom: auto;
     width: 100%;
     height: 100%;
     display: -webkit-box;
@@ -267,12 +283,13 @@
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
   }
+
   #wrapper {
     overflow: hidden;
     width: 100%;
@@ -283,34 +300,43 @@
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-            flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
   }
+
   #wrapper2 {
     overflow: hidden;
     width: 100%;
     height: 100%;
     white-space: nowrap;
   }
+
   .workContent {
     width: auto;
     height: 100%;
   }
-  .videoItem>* {
+
+  .videoItem > * {
     width: auto;
     height: 100%;
     display: block;
   }
-  .videoItem .prevIcon, .videoItem .previewcover {
+
+  .videoItem .prevIcon,
+  .videoItem .previewcover {
     width: 100%;
   }
-  #videoContent>* {
+
+  #videoContent > * {
     height: 100%;
     width: 100%;
   }
-  #pageContent, #workPage {
+
+  #pageContent,
+  #workPage {
     height: 100%;
   }
+
   .navigation {
     position: absolute;
     left: 0;
@@ -319,31 +345,35 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-      -webkit-box-orient: horizontal;
-      -o-box-orient: horizontal;
-      -ms-flex-direction: row;
-      flex-direction: row;
-      -webkit-box-pack: justify;
-      -o-box-pack: justify;
-      -ms-flex-pack: justify;
+    -webkit-box-orient: horizontal;
+    -o-box-orient: horizontal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -o-box-pack: justify;
+    -ms-flex-pack: justify;
     justify-content: space-between;
     padding: 22px 29px;
     white-space: nowrap;
   }
+
   .itmEtc {
     bottom: 0;
     left: 0;
-  
+
     .paramLine {
       font-size: 14px;
     }
+
     .paramLine:not(:last-child) {
       margin-bottom: 8px;
     }
+
     .paramTitle {
       margin-right: 15px;
     }
   }
+
   .infoItem {
     color: #fff;
     background: #222;
@@ -358,27 +388,32 @@
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
     -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
   }
 
-  .main.paramTitle, .main.paramValue {
+  .main.paramTitle,
+  .main.paramValue {
     font-size: initial;
     line-height: initial;
     display: block;
   }
+
   .main.paramTitle {
     margin: 0;
   }
+
   .main.paramValue {
     font-size: 24px;
   }
+
   .breadcrumbs {
     display: block;
   }
+
   #nav_foot {
     position: absolute;
     top: auto;
@@ -400,16 +435,16 @@
     justify-content: space-between;
     padding: 22px 29px;
     white-space: nowrap;
-    margin:0;
+    margin: 0;
 
-    &>.nav__item {
+    & > .nav__item {
       font-size: 24px;
     }
-    &>.nav__item.all {
+
+    & > .nav__item.all {
       margin-top: 0;
     }
   }
-
 }
 
 .vjs-paused .vjs-big-play-button {

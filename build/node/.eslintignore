@@ -1,0 +1,6 @@
+node_modules
+/frontend_app/*
+!/frontend_app/src_dev/static/
+/.git
+/.vscode
+gulpfile.js

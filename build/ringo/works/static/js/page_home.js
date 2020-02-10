@@ -1,3 +1,5 @@
+"use strict";
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -37,15 +39,15 @@ function () {
       var preview_html = '';
 
       if (preview) {
-        preview_html = "\n\t\t\t\t<div class=\"itemPreview\">\n\t\t\t\t\t<div class=\"itemPreview__box\"></div>\n\t\t\t\t\t<div class=\"itemPreview__btn\"></div>\n\t\t\t\t</div>";
+        preview_html = "\n        <div class=\"itemPreview\">\n          <div class=\"itemPreview__box\"></div>\n          <div class=\"itemPreview__btn\"></div>\n        </div>";
       }
 
-      this.html = "\n\t\t\t<a href=\"".concat(this.id, "\" class=\"boxItem\" title=\"\">\n\t\t\t\t<div class=\"itemWrapper\">\n\t\t\t\t\t<div class=\"itemBack\" style=\"background-image: url(").concat(this.poster, "); background-size: cover; background-repeat: no-repeat;\"></div>\n\t\t\t\t\t<div class=\"itemContent\">\n\t\t\t\t\t\t<div class=\"itemTitle text-right\"><span>").concat(this.title, "</span></div>\n\t\t\t\t\t\t<div class=\"itemLauchDate text-right\"><span>").concat(this.launch, "</span></div>\n\t\t\t\t\t\t<div class=\"itemCategory text-right\"><span>").concat(this.category, "</span></div>\n\t\t\t\t\t\t").concat(preview_html, "\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</a>\n\t\t");
+      this.html = "\n      <a href=\"".concat(this.id, "\" class=\"boxItem\" title=\"\">\n        <div class=\"itemWrapper\">\n          <div class=\"itemBack\" style=\"background-image: url(").concat(this.poster, "); background-size: cover; background-repeat: no-repeat;\"></div>\n          <div class=\"itemContent\">\n            <div class=\"itemTitle text-right\"><span>").concat(this.title, "</span></div>\n            <div class=\"itemLauchDate text-right\"><span>").concat(this.launch, "</span></div>\n            <div class=\"itemCategory text-right\"><span>").concat(this.category, "</span></div>\n            ").concat(preview_html, "\n          </div>\n        </div>\n      </a>\n    ");
     }
   }, {
     key: "_createMobile",
     value: function _createMobile() {
-      this.html = "\n\t\t\t<a href=\"".concat(this.id, "\" class=\"mobItem\" title=\"\">\n\t\t\t\t<img class=\"mobileItem__image\" src=\"").concat(this.poster, "\" alt=\"\">\n\t\t\t\t<div class=\"mobItem__info\">\n\t\t\t\t\t<h2 class=\"paramLine\">\n\t\t\t\t\t\t<span class=\"paramTitle\"></span>\n\t\t\t\t\t\t<span class=\"paramValue\">").concat(this.title, "</span>\n\t\t\t\t\t</h2>\n\t\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t\t<span class=\"paramTitle\"></span>\n\t\t\t\t\t\t<span class=\"paramValue\">").concat(this.launch, "</span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"paramLine\">\n\t\t\t\t\t\t<span class=\"paramTitle\"></span>\n\t\t\t\t\t\t<span class=\"paramValue\">").concat(this.category, "</span>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</a>");
+      this.html = "\n      <a href=\"".concat(this.id, "\" class=\"mobItem\" title=\"\">\n        <img class=\"mobileItem__image\" src=\"").concat(this.poster, "\" alt=\"\">\n        <div class=\"mobItem__info\">\n          <h2 class=\"paramLine\">\n            <span class=\"paramTitle\"></span>\n            <span class=\"paramValue\">").concat(this.title, "</span>\n          </h2>\n          <div class=\"paramLine\">\n            <span class=\"paramTitle\"></span>\n            <span class=\"paramValue\">").concat(this.launch, "</span>\n          </div>\n          <div class=\"paramLine\">\n            <span class=\"paramTitle\"></span>\n            <span class=\"paramValue\">").concat(this.category, "</span>\n          </div>\n        </div>\n      </a>");
     }
   }]);
 

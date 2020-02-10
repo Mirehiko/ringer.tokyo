@@ -1,4 +1,4 @@
-version: "3.2"
+version: '3.2'
 
 networks:
   main:
@@ -18,7 +18,7 @@ services:
     networks:
       - main
     volumes:
-      - "./volumes/mysql/db:/var/lib/mysql"
+      - './volumes/mysql/db:/var/lib/mysql'
 
   web:
     build:
@@ -27,9 +27,9 @@ services:
     environment:
       - VIRTUAL_HOST=car-tube.ru
     volumes:
-      - "./build/ringo:/ringo"
-      - "./volumes/static:/ringo/static"
-      - "./volumes/media:/media"
+      - './build/ringo:/ringo'
+      - './volumes/static:/ringo/static'
+      - './volumes/media:/media'
     depends_on:
       - db
     links:
@@ -41,9 +41,9 @@ services:
     image: nginx:latest
     container_name: cartube_nginx
     volumes:
-      - "./volumes/nginx/conf.d:/etc/nginx/conf.d"
-      - "./volumes/media:/media:ro"
-      - "./volumes/static:/ringo/static:ro"
+      - './volumes/nginx/conf.d:/etc/nginx/conf.d'
+      - './volumes/media:/media:ro'
+      - './volumes/static:/ringo/static:ro'
     depends_on:
       - web
     ports:
@@ -56,6 +56,6 @@ services:
       context: ./build/node
     container_name: cartube_node
     volumes:
-      - "./build/ringo/works/static:/static"
-      - "./build/ringo/works/static-dev:/static-dev"
-      - "./build/node:/app"
+      - './build/node:/app'
+      - './build/ringo/works/static:/static'
+      - './build/ringo/works/static-dev:/static-dev'

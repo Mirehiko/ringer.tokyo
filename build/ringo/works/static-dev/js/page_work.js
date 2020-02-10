@@ -1,26 +1,14 @@
 "use strict";
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function setSizes() {
-  var contentWidth = $('.infoItem').width();
+  let contentWidth = $('.infoItem').width();
   setSizesToImages(contentWidth);
 }
 
 function setSizesToImages(contentWidth) {
-  return new Promise(function (resolve) {
+  return new Promise(resolve => {
     $(".imgcfg").one("load", function () {
-      var _getSize = getSize($(this)),
-          _getSize2 = _slicedToArray(_getSize, 2),
-          w = _getSize2[0],
-          h = _getSize2[1];
-
+      let [w, h] = getSize($(this));
       $(this).parent().width(w);
       contentWidth += w;
       $('.workInfo').width(contentWidth);
@@ -29,7 +17,7 @@ function setSizesToImages(contentWidth) {
         $(this).trigger('load'); // For jQuery >= 3.0
       }
     });
-    setTimeout(function () {
+    setTimeout(() => {
       resolve();
     }, 1000);
   });
@@ -73,7 +61,6 @@ function selectDrawModeAndDraw(elem) {
 
 function drawImageItem(data) {
   var item = '<div class="workItem">';
-
   if (data.link) {
     item += '<a href="' + data.link + '" target="_blank">';
     item += '<img class="workImage workContent imgcfg" src="' + data.src;
@@ -99,7 +86,15 @@ function drawVideoItem(data) {
   }
 
   item += ' alt="' + data.title + '">';
-  item += '<a href="#" class="prevIcon" title="' + data.title + '" vid="' + data.id + '" own="'.concat(data.type == "video" ? "true" : "false", '">\n\t\t<img class="playIcon" src="/static/system/play.svg" alt="play icon">\n\t</a><div class="previewcover"></div></div>');
+  item +=
+    '<a href="#" class="prevIcon" title="' +
+    data.title +
+    '" vid="' +
+    data.id +
+    '" own="'.concat(
+      data.type == "video" ? "true" : "false",
+      '">\n\t\t<img class="playIcon" src="/static/system/play.svg" alt="play icon">\n\t</a><div class="previewcover"></div></div>'
+    );
   return item;
 }
 
@@ -116,23 +111,32 @@ function drawIntegratedVideoItem(data) {
   }
 
   item += ' alt="' + data.title + '">';
-  item += '<a href="#" class="prevIcon" title="' + data.title + '" vid="' + data.id + '">\n\t\t<img class="playIcon" src="/static/system/play.svg" alt="play icon">\n\t</a><div class="previewcover"></div></div>';
+  item +=
+    '<a href="#" class="prevIcon" title="' +
+    data.title +
+    '" vid="' +
+    data.id +
+    '">\n\t\t<img class="playIcon" src="/static/system/play.svg" alt="play icon">\n\t</a><div class="previewcover"></div></div>';
   return item;
 }
 
 function drawInfoItem(data) {
   var item = document.createElement("div");
   $(item).addClass("workItem infoItem");
+
   var wraper = document.createElement("div");
   $(wraper).addClass("infoWrapper");
+
   var workTitle = document.createElement("div");
   $(workTitle).addClass("paramTitle main");
   $(workTitle).text("Title");
   var workTitle__value = document.createElement("h1");
   $(workTitle__value).addClass("paramValue main");
   $(workTitle__value).text(data.title);
+
   var itemEtc = document.createElement("div");
   $(itemEtc).addClass("itmEtc");
+
   var workLaunch = document.createElement("div");
   $(workLaunch).addClass("paramLine");
   var workLaunch__title = document.createElement("span");
@@ -143,6 +147,7 @@ function drawInfoItem(data) {
   $(workLaunch__value).text(data.launch);
   $(workLaunch).append(workLaunch__title);
   $(workLaunch).append(workLaunch__value);
+
   var workCategory = document.createElement("div");
   $(workCategory).addClass("paramLine");
   var workCategory__title = document.createElement("span");
@@ -153,6 +158,8 @@ function drawInfoItem(data) {
   $(workCategory__value).text(data.category);
   $(workCategory).append(workCategory__title);
   $(workCategory).append(workCategory__value);
+
+
   var workClient = document.createElement("div");
   $(workClient).addClass("paramLine");
   var workClient__title = document.createElement("span");
@@ -163,15 +170,19 @@ function drawInfoItem(data) {
   $(workClient__value).text(data.client);
   $(workClient).append(workClient__title);
   $(workClient).append(workClient__value);
+
   $(itemEtc).append(workLaunch);
   $(itemEtc).append(workCategory);
   $(itemEtc).append(workClient);
+
   var header = document.createElement("div");
   $(header).append(workTitle);
   $(header).append(workTitle__value);
+
   $(item).append(wraper);
   $(wraper).append(header);
   $(wraper).append(itemEtc);
+
   return item;
 }
 
@@ -202,24 +213,43 @@ function drawVideo(id) {
 }
 
 function drawOwnVideo(data) {
-  var video = '\n\t\t<video id="'.concat(data.id, '" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" poster="').concat(data.previewImage, '"\n\t\t data-setup="{}" title="">\n\t\t ') // .concat(data.title, '">\n\t\t ')
-  .concat(data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : "", "\n\t\t ").concat(data.srcwebm ? '<source src="' + data.srcwebm + '" type="video/webm">' : "", '\n\t\t <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>\n\t\t</video>');
+  var video = '\n\t\t<video id="'
+    .concat(
+      data.id,
+      '" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" poster="'
+    )
+    .concat(data.previewImage, '"\n\t\t data-setup="{}" title="">\n\t\t ')
+    // .concat(data.title, '">\n\t\t ')
+    .concat(
+      data.srcMP4 ? '<source src="' + data.srcMP4 + '" type="video/mp4">' : "",
+      "\n\t\t "
+    )
+    .concat(
+      data.srcwebm ?
+      '<source src="' + data.srcwebm + '" type="video/webm">' :
+      "",
+      '\n\t\t <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>\n\t\t</video>'
+    );
   $("#videoContent").append(video);
+
   player = videojs(data.id, {
     controls: true,
-    liveui: false
+    liveui: false,
   });
   player.src([{
-    type: "video/mp4",
-    src: data.srcMP4
-  }, {
-    type: "video/webm",
-    src: data.srcwebm
-  }]);
+      type: "video/mp4",
+      src: data.srcMP4
+    },
+    {
+      type: "video/webm",
+      src: data.srcwebm
+    },
+  ]);
   player.ready(function () {
     player.play();
     player.pause();
   });
+
 }
 
 function clearContent() {
@@ -234,6 +264,7 @@ function setContent() {
 var videoObj = {};
 var motion = null;
 var type = '';
+
 setView();
 
 function setView() {
@@ -246,20 +277,20 @@ function setView() {
     if (motion == null) {
       motion = new Motion();
       motion.init({
-        elem: '.workInfo'
+        elem: '.workInfo',
       });
     } else {
       motion.updateData('.workInfo');
     }
 
-    setSizes().then(function () {
+    setSizes().then(() => {
       motion.animationOn();
     });
+
   } else {
     if (motion != null) {
       motion.animationOff();
     }
-
     if (type != 'mobile') {
       type = 'mobile';
       setContent();
@@ -267,32 +298,33 @@ function setView() {
   }
 }
 
-$(window).on('resize', function (e) {
+$(window).on('resize', (e) => {
   setView();
 });
+
 $(document).on("keyup", function (e) {
   if (e.keyCode == 27) {
     closeVideo();
   }
 });
+
 $("body").delegate(".fullView__close", "click", closeVideo);
 $("body").delegate(".prevIcon", "click", function (e) {
   e.preventDefault();
-
   if ($(this).attr("own") == "true") {
     drawOwnVideo(videoObj[$(this).attr("vid")]);
   } else {
     drawVideo($(this).attr("vid"));
   }
-
   showVideo();
 });
+
 var player = null;
 videojs.TOUCH_ENABLED = true;
+
 window.addEventListener("orientationchange", function () {
   if (player != null) {
     var orientation = screen.msOrientation || screen.mozOrientation || (screen.orientation || {}).type;
-
     if (orientation == 'landscape-primary' || orientation == 'landscape-secondary') {
       $(window).scrollTop();
       player.focus();
@@ -305,6 +337,7 @@ window.addEventListener("orientationchange", function () {
     }
   }
 }, false);
+
 $(document).delegate('.vjs-play-control, .vjs-tech, .vjs-big-play-button', 'click', function (e) {
   if (player.paused()) {
     $('.vjs-big-play-button').show();

@@ -3,7 +3,7 @@ FROM node:12.6
 ADD . /app
 WORKDIR /app
 
-RUN ["npm", "install", "--global", "gulp-cli"]
+RUN ["npm", "install", "--global", "gulp-cli", "eslint"]
 RUN ["npm", "install"]
 RUN ["npm", "audit", "fix"]
 
