@@ -1,10 +1,33 @@
-"use strict";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var month_text = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+
+function randomInteger(min, max) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1);
+  rand = Math.round(rand);
+  return rand;
+}
+
+function formatDate(date) {
+  var dd = date.getDate();
+
+  if (dd < 10) {
+    dd = "0".concat(dd);
+  }
+
+  var mm = month_text[date.getMonth()];
+  var yy = date.getFullYear() % 100;
+
+  if (yy < 10) {
+    yy = "0".concat(yy);
+  }
+
+  return "".concat(dd, " ").concat(mm, ", ").concat(yy);
+}
 
 var WorkItem =
 /*#__PURE__*/
@@ -24,7 +47,7 @@ function () {
   _createClass(WorkItem, [{
     key: "getItem",
     value: function getItem(type) {
-      if (type == 'mobile') {
+      if (type === 'mobile') {
         this._createMobile();
       } else {
         this._createDesktop();
@@ -76,7 +99,7 @@ function () {
 
       for (var i = 0; i < data.length; i++) {
         this.addWork(new WorkItem(data[i]));
-        console.log("Creating item:", data[i]);
+        console.log('Creating item:', data[i]);
       }
     }
   }, {
@@ -89,7 +112,7 @@ function () {
     value: function getWorks(type, lines) {
       var html = document.createElement('div');
 
-      if (type == 'mobile') {
+      if (type === 'mobile') {
         $(html).addClass('infiniteBox');
 
         for (var i = 0; i < this.works.length; i++) {
@@ -217,10 +240,10 @@ function () {
       this.clear_part = Math.trunc(this.data_length / 3);
       this.divided_part = this.data_length % 3;
 
-      if (this.divided_part == 2) {
+      if (this.divided_part === 2) {
         this.data_lines = this.data_lines.concat([2]);
-      } else if (this.divided_part == 1) {
-        if (this.clear_part == 0) {
+      } else if (this.divided_part === 1) {
+        if (this.clear_part === 0) {
           this.data_lines = this.data_lines.concat([2]);
         } else {
           this.clear_part--;
@@ -243,14 +266,14 @@ function () {
 
       this.divided_part = this.data_length % 5;
 
-      if (this.divided_part == 4) {
+      if (this.divided_part === 4) {
         this.data_lines = this.data_lines.concat([2, 2]);
-      } else if (this.divided_part == 3) {
+      } else if (this.divided_part === 3) {
         this.data_lines = this.data_lines.concat([3]);
-      } else if (this.divided_part == 2) {
+      } else if (this.divided_part === 2) {
         this.data_lines = this.data_lines.concat([2]);
-      } else if (this.divided_part == 1) {
-        if (this.clear_part == 0) {
+      } else if (this.divided_part === 1) {
+        if (this.clear_part === 0) {
           this.data_lines = this.data_lines.concat([2]);
         } else {
           this.clear_part--;
@@ -269,11 +292,11 @@ function () {
   }, {
     key: "_setLineTypesTrio",
     value: function _setLineTypesTrio() {
-      var pair_lines = [],
-          trio_lines = [];
+      var pair_lines = [];
+      var trio_lines = [];
 
       for (var i = 0; i < this.data_lines.length; i++) {
-        if (this.data_lines[i] == 2) {
+        if (this.data_lines[i] === 2) {
           pair_lines.push(this.data_lines[i]);
         } else {
           trio_lines.push(this.data_lines[i]);
@@ -286,20 +309,20 @@ function () {
       this.line_types = [];
       var trio_variants = 3;
 
-      if (lines_count == 1) {
+      if (lines_count === 1) {
         trio_variants = 2;
       }
 
       for (var _i2 = 0; _i2 < lines_count; _i2++) {
-        var ntmp = [],
-            ctmp = [];
+        var ntmp = [];
+        var ctmp = [];
 
-        if (pair_lines[_i2] != undefined) {
+        if (pair_lines[_i2] !== undefined) {
           ntmp = ntmp.concat(pair_lines[_i2]);
           ctmp = ctmp.concat('pairLine');
         }
 
-        if (trio_lines[_i2] != undefined) {
+        if (trio_lines[_i2] !== undefined) {
           ntmp = ntmp.concat(trio_lines[_i2]);
           ctmp = ctmp.concat(this._selectLineType(trio_variants));
         }
@@ -312,7 +335,7 @@ function () {
         this.line_types = this.line_types.concat(ctmp);
       }
 
-      if (this._selectCombination() == 2) {
+      if (this._selectCombination() === 2) {
         this.line_types.reverse();
         this.data_lines.reverse();
       }
@@ -320,28 +343,28 @@ function () {
   }, {
     key: "_setLineTypesDouble",
     value: function _setLineTypesDouble() {
-      var pair_lines = [],
-          trio_lines = [];
+      var pair_lines = [];
+      var trio_lines = [];
 
       for (var i = 0; i < this.data_lines.length; i++) {
-        if (this.data_lines[i] == 2) {
+        if (this.data_lines[i] === 2) {
           pair_lines.push(this.data_lines[i]);
         } else {
           trio_lines.push(this.data_lines[i]);
         }
       }
 
-      var trio_count = 1,
-          pair_count = 0,
-          step = 2,
-          trio_variants = 3;
+      var trio_count = 1;
+      var pair_count = 0;
+      var step = 2;
+      var trio_variants = 3;
 
-      if (this._selectCombination() == 2) {
+      if (this._selectCombination() === 2) {
         trio_count = 0;
         pair_count = 1;
       }
 
-      if (this.clear_part == 0) {
+      if (this.clear_part === 0) {
         step = 1;
         pair_count = 0;
         trio_count = 0;
@@ -371,7 +394,7 @@ function () {
   }, {
     key: "_selectCombination",
     value: function _selectCombination() {
-      if (randomInteger(1, 2) == 1) {
+      if (randomInteger(1, 2) === 1) {
         return 1;
       }
 
@@ -381,14 +404,12 @@ function () {
     key: "_selectLineType",
     value: function _selectLineType() {
       var variants = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 3;
-
-      /* Выбираем рандомную комбинацию из трех элементов */
-      // var typeID = randomInteger(1, variants);
+      // Выбираем рандомную комбинацию из трех элементов
       var typeID = 0;
 
       do {
         typeID = randomInteger(1, variants);
-      } while (this.trio_type_tmp == typeID);
+      } while (this.trio_type_tmp === typeID);
 
       this.trio_type_tmp = typeID;
 
@@ -415,7 +436,7 @@ function () {
           }
 
         default:
-          return "Error";
+          return 'Error';
           break;
       }
     }
@@ -459,7 +480,7 @@ function () {
         // on_hover:      'pause',
         on_hover_objs: '.boxItem'
       }).initAnimation();
-      $(window).on('resize', function (e) {
+      $(window).on('resize', function () {
         _this._setView();
       });
     }
@@ -475,22 +496,22 @@ function () {
   }, {
     key: "_setView",
     value: function _setView(is_update) {
-      if (this.windowObj.width() < this.edge && this.current_view != 'mobile') {
+      if (this.windowObj.width() < this.edge && this.current_view !== 'mobile') {
         this.current_view = 'mobile';
 
-        if (this.animation != null) {
+        if (this.animation !== null) {
           this.animation.animationOff();
         }
 
         this._changeView();
       }
 
-      if (this.windowObj.width() >= this.edge && this.current_view != 'desktop') {
+      if (this.windowObj.width() >= this.edge && this.current_view !== 'desktop') {
         this.current_view = 'desktop';
 
         this._changeView(this.lines);
 
-        if (this.animation != null) {
+        if (this.animation !== null) {
           this.animation.updateData('.infiniteBox');
           this.animation.animationOn();
         }
@@ -500,7 +521,7 @@ function () {
         this._changeView(this.lines);
       }
 
-      if (this.current_view == 'desktop') {
+      if (this.current_view === 'desktop') {
         this._redrawBackgrounds();
       }
     }
@@ -525,7 +546,7 @@ function () {
       var inst = this;
       $.ajax({
         url: '/api/',
-        type: "GET",
+        type: 'GET',
         data: {
           category: category
         },
@@ -549,30 +570,11 @@ function () {
   return Controller;
 }();
 
-var mounth_text = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
-
-function formatDate(date) {
-  var dd = date.getDate();
-  if (dd < 10) dd = '0' + dd; // var mm = date.getMonth() + 1;
-
-  var mm = mounth_text[date.getMonth()]; // if (mm < 10) mm = '0' + mm;
-
-  var yy = date.getFullYear() % 100;
-  if (yy < 10) yy = '0' + yy;
-  return "".concat(dd, " ").concat(mm, ", ").concat(yy);
-}
-
-function randomInteger(min, max) {
-  var rand = min - 0.5 + Math.random() * (max - min + 1);
-  rand = Math.round(rand);
-  return rand;
-}
+var controller = new Controller(textData);
 
 function setCategory(category) {
-  $(".toggleBtn__text[globcat]").text(category);
+  $('.toggleBtn__text[globcat]').text(category);
 }
-
-var controller = new Controller(textData); // console.log(controller);
 
 $('.toggleList__item').on('click', function (e) {
   var _this2 = this;
@@ -585,9 +587,9 @@ $('.toggleList__item').on('click', function (e) {
     setCategory($(_this2).text());
   });
 });
-$('#mobileCategory>.toggleBtn').on('click', function (e) {
+$('#mobileCategory>.toggleBtn').on('click', function () {
   var elem = $(this);
-  var mobileNav = $('#mobileNav'); // console.log(mobileNav);
+  var mobileNav = $('#mobileNav');
 
   if (elem.hasClass('collapse')) {
     mobileNav.addClass('-open-');

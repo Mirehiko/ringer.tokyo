@@ -1,5 +1,3 @@
-"use strict";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -11,22 +9,27 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   var vendors = ['ms', 'moz', 'webkit', 'o'];
 
   for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+    window.requestAnimationFrame = window["".concat(vendors[x], "RequestAnimationFrame")];
+    window.cancelAnimationFrame = window["".concat(vendors[x], "CancelAnimationFrame")] || window["".concat(vendors[x], "CancelRequestAnimationFrame")];
   }
 
-  if (!window.requestAnimationFrame) window.requestAnimationFrame = function (callback, element) {
-    var currTime = new Date().getTime();
-    var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-    var id = window.setTimeout(function () {
-      callback(currTime + timeToCall);
-    }, timeToCall);
-    lastTime = currTime + timeToCall;
-    return id;
-  };
-  if (!window.cancelAnimationFrame) window.cancelAnimationFrame = function (id) {
-    clearTimeout(id);
-  };
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function (callback, element) {
+      var currTime = new Date().getTime();
+      var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+      var id = window.setTimeout(function () {
+        callback(currTime + timeToCall);
+      }, timeToCall);
+      lastTime = currTime + timeToCall;
+      return id;
+    };
+  }
+
+  if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame = function (id) {
+      clearTimeout(id);
+    };
+  }
 })();
 
 var Motion =
@@ -211,8 +214,8 @@ function () {
 
           _this2.hoveringItem.addClass('-hover-');
         });
-        this.container.delegate(this.on_hover_objs, 'mouseleave', function (evt) {
-          if (_this2.hoveringItem != null) {
+        this.container.delegate(this.on_hover_objs, 'mouseleave', function () {
+          if (_this2.hoveringItem !== null) {
             _this2.hoveringItem.removeClass('-hover-');
 
             _this2.hoveringItem = null;
@@ -221,8 +224,8 @@ function () {
       } // Пауза при наведении мышкой
 
 
-      if (this.on_hover == 'pause') {
-        this.container.delegate('.hoverAction', 'mousemove', function (evt) {
+      if (this.on_hover === 'pause') {
+        this.container.delegate('.hoverAction', 'mousemove', function () {
           _this2.is_paused = true;
           clearTimeout(_this2.delay_timer);
           _this2.delay_timer = setTimeout(function () {
@@ -240,10 +243,10 @@ function () {
         if (_this3.is_animated) {
           _this3.is_paused = true;
 
-          if (e.keyCode == 37 || e.keyCode == 38) {
+          if (e.keyCode === 37 || e.keyCode === 38) {
             _this3.pos += _this3.key_delta;
             _this3.pos = _this3._calcScroll(_this3.pos, 'reverse');
-          } else if (e.keyCode == 39 || e.keyCode == 40) {
+          } else if (e.keyCode === 39 || e.keyCode === 40) {
             _this3.pos -= _this3.key_delta;
             _this3.pos = _this3._calcScroll(_this3.pos, 'normal');
           }
@@ -251,7 +254,7 @@ function () {
           _this3._setPosition();
         }
       });
-      $(window).on('keyup', function (e) {
+      $(window).on('keyup', function () {
         if (_this3.is_animated) {
           _this3.is_paused = false;
         }
@@ -260,23 +263,21 @@ function () {
   }, {
     key: "_calcScroll",
     value: function _calcScroll(pos, way) {
-      if (way == 'normal') {
-        if (this.current_way == way) {
+      if (way === 'normal') {
+        if (this.current_way === way) {
           if (pos <= -this.content_length) {
             pos = 0;
           }
         }
       }
 
-      if (way == 'reverse') {
-        if (this.current_way == way) {
+      if (way === 'reverse') {
+        if (this.current_way === way) {
           if (pos >= 0) {
-            pos = pos - this.content_length;
+            pos -= this.content_length;
           }
-        } else {
-          if (pos >= 0) {
-            pos = pos - this.content_length;
-          }
+        } else if (pos >= 0) {
+          pos -= this.content_length;
         }
       }
 
@@ -288,7 +289,7 @@ function () {
     value: function _getEdgesOfHover() {
       this.hoverBgn = this.hoveringItem.offset().top;
 
-      if (this.axis == 'horizontal') {
+      if (this.axis === 'horizontal') {
         this.hoverEnd = this.hoveringItem.offset().left + this.hoveringItem.outerWidth();
       } else {
         this.hoverEnd = this.hoveringItem.offset().top + this.hoveringItem.outerHeight();
@@ -297,27 +298,27 @@ function () {
   }, {
     key: "_isInsiteOfItem",
     value: function _isInsiteOfItem() {
-      if (this.axis == 'horizontal') {
+      if (this.axis === 'horizontal') {
         if (this.mouseX >= this.hoverBgn && this.mouseX <= this.hoverEnd) {
           return true;
         }
 
         return false;
-      } else {
-        if (this.mouseY >= this.hoverBgn && this.mouseY <= this.hoverEnd) {
-          return true;
-        }
-
-        return false;
       }
+
+      if (this.mouseY >= this.hoverBgn && this.mouseY <= this.hoverEnd) {
+        return true;
+      }
+
+      return false;
     }
   }, {
     key: "_setPosition",
     value: function _setPosition(is_reset) {
       if (is_reset) {
-        this.elem[0].style.transform = "translate3d(0px, 0px, 0)";
+        this.elem[0].style.transform = 'translate3d(0px, 0px, 0)';
       } else {
-        if (this.axis == 'horizontal') {
+        if (this.axis === 'horizontal') {
           this.xPos = this.pos;
         } else {
           this.yPos = this.pos;
@@ -329,11 +330,10 @@ function () {
   }, {
     key: "_render",
     value: function _render() {
-      var refreshRate = 1000 / 60;
-      var inst = this;
+      var inst = this; // const refreshRate = 1000 / 60;
 
       function renderStep() {
-        if (inst.hoveringItem != null) {
+        if (inst.hoveringItem !== null) {
           inst._getEdgesOfHover();
 
           if (!inst._isInsiteOfItem()) {
@@ -367,7 +367,7 @@ function () {
   }, {
     key: "_setContentLength",
     value: function _setContentLength(elem) {
-      if (this.axis == 'horizontal') {
+      if (this.axis === 'horizontal') {
         return elem.find('.fake').length ? elem.outerWidth() / 2 : elem.outerWidth();
       }
 
@@ -380,7 +380,7 @@ function () {
       this.content_length = this._setContentLength(this.elem);
 
       if (!this.is_animated) {
-        this.elem.append(this._copyContent(this.elem));
+        this.elem.append(Motion.copyContent(this.elem));
       }
 
       console.log('[LOG] Data to animate prepared');
@@ -394,7 +394,7 @@ function () {
 
       var parent_size = 0;
 
-      if (this.axis == 'horizontal') {
+      if (this.axis === 'horizontal') {
         parent_size = compare_elem.parent().outerWidth();
       } else {
         parent_size = compare_elem.parent().outerHeight();
@@ -408,9 +408,9 @@ function () {
       console.log('[CHECK] Need to animate');
       return true;
     }
-  }, {
-    key: "_copyContent",
-    value: function _copyContent(elem) {
+  }], [{
+    key: "copyContent",
+    value: function copyContent(elem) {
       return elem.children().clone().addClass('fake');
     }
   }]);

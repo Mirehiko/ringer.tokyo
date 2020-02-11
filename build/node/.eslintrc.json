@@ -19,7 +19,6 @@
   },
   "plugins": ["import", "jsx-a11y", "react", "prettier", "jquery"],
   "rules": {
-    "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
@@ -27,7 +26,9 @@
     "no-console": "warn",
     "no-plusplus": "off",
     "no-alert": "off",
-    "camelcase": "warn",
+    "camelcase": ["warn", {
+      "properties": "never"
+    }],
     "max-len": [
       "error",
       {
@@ -41,6 +42,16 @@
     ],
     // "no-unused-vars": "warn",
     "no-param-reassign": "warn",
-    "no-async-promise-executor": "warn"
+    "no-async-promise-executor": "warn",
+    "no-underscore-dangle": "off",
+    "brace-style": ["error", "stroustrup"],
+    "indent": ["error", 2, {
+      "VariableDeclarator": {
+        "var": 2,
+        "let": 2,
+        "const": 3
+      }
+    }],
+    "eqeqeq": ["error", "always"]
   }
 }

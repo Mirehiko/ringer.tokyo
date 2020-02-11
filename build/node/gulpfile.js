@@ -39,8 +39,8 @@ const imagemin = require('gulp-imagemin');
 //------------------------------------------------------------------------------
 
 // Переменные
-const entry = '/frontend/'; // точка входа
-const source_dir = `${entry}app/`; // папка с исходниками
+const entry = '/'; // точка входа
+const source_dir = `${entry}`; // папка с исходниками
 const src_static = `${source_dir}static-dev/`; // исходники скриптов и стилей
 const dest_static = `${entry}static/`; // папка выхлопа скриптов и стилей
 const tmp_dir = `${source_dir}temps`; // временная папка
@@ -110,7 +110,7 @@ function buildStyles() {
         })
       ) // минификация css
       .pipe(
-        rename(function(src_dir) {
+        rename(function (src_dir) {
           src_dir.basename += '.min';
         })
       )
@@ -121,46 +121,46 @@ function buildStyles() {
     let filtered = filter(routes.cssFilter);
     return (
       gulp
-        .src(routes.src.styles, {
-          allowEmpty: true
+      .src(routes.src.styles, {
+        allowEmpty: true
+      })
+      // .pipe(stripDebug())
+      .pipe(cache('files_changes')) // Кэшируем для определения только измененных файлов
+      .pipe(dependents()) // если есть связанные файлы, то меняем и их
+      .pipe(
+        logger({
+          showChange: true,
+          before: '[development] Starting dev build css-files...',
+          after: '[development] Building dev css-files complete.'
         })
-        // .pipe(stripDebug())
-        .pipe(cache('files_changes')) // Кэшируем для определения только измененных файлов
-        .pipe(dependents()) // если есть связанные файлы, то меняем и их
-        .pipe(
-          logger({
-            showChange: true,
-            before: '[development] Starting dev build css-files...',
-            after: '[development] Building dev css-files complete.'
-          })
-        ) // логируем изменяемые файлы
-        .pipe(filtered)
-        .pipe(sourcemaps.init())
-        .pipe(sass()) // переводим в css
-        .pipe(
-          autoprefixer({
-            remove: false,
-            cascade: false
-          })
-        ) // добавляем префиксы
-        .pipe(flatten()) // пишем файлы без сохранения структуры папок
-        .pipe(sourcemaps.write('./')) // sourcemap-ы для .css файлов
-        .pipe(gulp.dest(routes.build.styles))
-        // // .. далее минифицируем и добавляем sourcemap-ы для .min.css
-        .pipe(filter('**/*.css'))
-        .pipe(
-          cleanCSS({
-            compatibility: 'ie8' // default
-          })
-        ) // минификация css
-        .pipe(
-          rename(function(src_dir) {
-            src_dir.basename += '.min'; //до расширения файла
-          })
-        )
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(routes.build.styles)) // выходная папка
-        .pipe(touch())
+      ) // логируем изменяемые файлы
+      .pipe(filtered)
+      .pipe(sourcemaps.init())
+      .pipe(sass()) // переводим в css
+      .pipe(
+        autoprefixer({
+          remove: false,
+          cascade: false
+        })
+      ) // добавляем префиксы
+      .pipe(flatten()) // пишем файлы без сохранения структуры папок
+      .pipe(sourcemaps.write('./')) // sourcemap-ы для .css файлов
+      .pipe(gulp.dest(routes.build.styles))
+      // // .. далее минифицируем и добавляем sourcemap-ы для .min.css
+      .pipe(filter('**/*.css'))
+      .pipe(
+        cleanCSS({
+          compatibility: 'ie8' // default
+        })
+      ) // минификация css
+      .pipe(
+        rename(function (src_dir) {
+          src_dir.basename += '.min'; //до расширения файла
+        })
+      )
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest(routes.build.styles)) // выходная папка
+      .pipe(touch())
     );
   }
 }
@@ -191,7 +191,7 @@ function clearCSS() {
 }
 
 function clearDeletedCSS(watcher) {
-  watcher.on('unlink', function(filepath) {
+  watcher.on('unlink', function (filepath) {
     let filePathFromSrc = path.relative(path.resolve('src'), filepath);
     let file = filePathFromSrc.split('/scss/')[1]; // файл
     let [file_name, file_ext] = file.split('.');
@@ -267,52 +267,52 @@ function buildScripts() {
   if (isProduction) {
     return (
       gulp
-        .src(`${tmp_dir}/**/*.js`, {
-          allowEmpty: true,
-          read: true
+      .src(`${tmp_dir}/**/*.js`, {
+        allowEmpty: true,
+        read: true
+      })
+      .pipe(filtered)
+      .pipe(cache('files_changes'))
+      .pipe(plumber())
+      .pipe(
+        logger({
+          showChange: true,
+          before: '[production] Starting build js-files...',
+          after: '[production] Building js-files complete'
         })
-        .pipe(filtered)
-        .pipe(cache('files_changes'))
-        .pipe(plumber())
-        .pipe(
-          logger({
-            showChange: true,
-            before: '[production] Starting build js-files...',
-            after: '[production] Building js-files complete'
-          })
-        )
-        .pipe(cleanBuild(routes.build.scripts, '**'))
-        .pipe(
-          babel({
-            presets: [
-              [
-                '@babel/env',
-                {
-                  modules: false
-                }
-              ]
+      )
+      .pipe(cleanBuild(routes.build.scripts, '**'))
+      .pipe(
+        babel({
+          presets: [
+            [
+              '@babel/env',
+              {
+                modules: false
+              }
             ]
-          })
-        )
-        .pipe(flatten())
-        .pipe(gulp.dest(routes.build.scripts))
-        .pipe(
-          minify({
-            ext: {
-              src: '.js',
-              min: '.min.js'
-            }
-          })
-        ) // минификация js
-        // .pipe(uglify({
-        // 	// toplevel: true, // максимальный уровень минификации
-        // })) // минификация js
-        // .pipe(rename(function (path) {
-        // 	path.basename += ".min";//до расширения файла
-        // }))
-        .pipe(gulp.dest(routes.build.scripts)) // выходная папка
-        .pipe(touch())
-        .pipe(size())
+          ]
+        })
+      )
+      .pipe(flatten())
+      .pipe(gulp.dest(routes.build.scripts))
+      .pipe(
+        minify({
+          ext: {
+            src: '.js',
+            min: '.min.js'
+          }
+        })
+      ) // минификация js
+      // .pipe(uglify({
+      // 	// toplevel: true, // максимальный уровень минификации
+      // })) // минификация js
+      // .pipe(rename(function (path) {
+      // 	path.basename += ".min";//до расширения файла
+      // }))
+      .pipe(gulp.dest(routes.build.scripts)) // выходная папка
+      .pipe(touch())
+      .pipe(size())
     );
   } else {
     return gulp
@@ -351,7 +351,7 @@ function buildScripts() {
       .pipe(gulp.dest(routes.build.scripts))
       .pipe(filter('**/*.js'))
       .pipe(
-        rename(function(path) {
+        rename(function (path) {
           path.basename += '.min'; //до расширения файла
         })
       )
@@ -392,7 +392,7 @@ function clearJS() {
 }
 
 function clearDeletedJS(watcher) {
-  watcher.on('unlink', function(filepath) {
+  watcher.on('unlink', function (filepath) {
     let filePathFromSrc = path.relative(path.resolve('src'), filepath);
 
     let file = filePathFromSrc.split('/js/')[1]; // файл
@@ -559,7 +559,7 @@ function saveCache() {
 }
 
 function clearCache() {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     delete cache.caches.files_changes;
     console.log('Cache cleared');
     resolve();

@@ -1,131 +1,8 @@
-"use strict";
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var SCREEN_RATIO = 16 / 9;
-var maxScroll = 0;
-var WINDOW = $(window);
-reDrawImages($('.infiniteItem'));
-$('#header-menu, #hideMenu').on('click', function (e) {
-  // e.stopPropagation();
-  $('.side-header').toggleClass('open');
-  $('.backlayer').toggleClass('-visible-');
-
-  if ($('.side-header').hasClass('open')) {
-    $('.hmenu-text').html('Close');
-  } else {
-    $('.hmenu-text').html('Menu');
-  }
-});
-$('.side-header').on('click', function (e) {
-  if ($('.side-header').hasClass('open')) {
-    $('.side-header').removeClass('open');
-    $('.backlayer').removeClass('-visible-');
-    $('.side-header .line.is-b').css('display', 'block');
-    $('.hmenu-text').html('Menu');
-  }
-}); // Toggle accordeon item
-
-$('.toggleBtn').on('click', function (e) {
-  var elemItem = $(this);
-  var target = elemItem.attr('toggle-target');
-  var toggleData = $(".toggleList[toggle-data=\"".concat(target, "\"]"));
-  elemItem.find('.toggleBtn__icon').empty();
-
-  if (elemItem.hasClass('collapse')) {
-    elemItem.removeClass('collapse');
-    toggleData.addClass('-hidden-');
-    elemItem.find('.toggleBtn__icon').append('<i class="fas fa-caret-down"></i>');
-  } else {
-    elemItem.addClass('collapse');
-    toggleData.removeClass('-hidden-');
-    elemItem.find('.toggleBtn__icon').append('<i class="fas fa-caret-up"></i>');
-  }
-});
-$('.iconBtnBox').on('click', function (e) {
-  e.stopPropagation();
-  $(this).toggleClass('open');
-
-  if ($(this).hasClass('open')) {
-    closeIcon($(this).find('.line.is-b'));
-  } else {
-    openIcon($(this).find('.line.is-b'));
-  }
-});
-WINDOW.on('resize', function (e) {
-  reDrawImages($('.infiniteItem'));
-});
-
-function moveInfinate() {
-  var mar = 0;
-  setInterval(function () {
-    $('.infiniteList').css('margin', mar);
-    mar -= 5;
-  }, 100);
-}
-
-function reDrawImages(image) {
-  image.width(image.height() * SCREEN_RATIO);
-}
-
-function openIcon(icon) {
-  icon.css('display', 'block');
-}
-
-function closeIcon(icon) {
-  icon.css('display', 'none');
-}
-
-var response_statuses = ['success', 'spamer', 'fail'];
-var resp_actions = {
-  success: function success() {
-    $('.contactForm__send').addClass('is-complete');
-    $('#btntxt').text('Отправлено');
-    new Noty({
-      type: 'success',
-      layout: 'center',
-      text: 'Ваше письмо отправлено администратору сайта CAR-TUBE',
-      timeout: 5000
-    }).show();
-  },
-  spamer: function spamer() {
-    new Noty({
-      type: 'error',
-      layout: 'center',
-      text: 'Вы похожи на спамера.'
-    }).show();
-  },
-  fail: function fail() {
-    new Noty({
-      type: 'error',
-      layout: 'center',
-      text: 'Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.'
-    }).show();
-  }
-};
-
-function sendEmail() {
-  var data = getFieldData();
-  data.token = $('#g-recaptcha-responce').val();
-  $.ajax({
-    url: '/api/send_email_to_admin/12/',
-    type: "POST",
-    data: data,
-    dataType: "json",
-    success: function success(response) {
-      console.log('response:', response.status);
-      console.log(response_statuses.indexOf(response.status));
-
-      if (response_statuses.indexOf(response.status) !== -1) {
-        resp_actions[response.status]();
-      }
-    }
-  });
-}
 
 var Field =
 /*#__PURE__*/
@@ -142,7 +19,7 @@ function () {
   _createClass(Field, [{
     key: "validate",
     value: function validate() {
-      if (this.field.val() == '') {
+      if (this.field.val() === '') {
         this.is_valid = false;
       } else {
         this.is_valid = true;
@@ -185,7 +62,7 @@ function () {
       this.is_form_valid = false;
 
       for (var i in this.fields) {
-        if (this.fields[i].validate() != true) {
+        if (this.fields[i].validate() !== true) {
           this.is_form_valid = false;
           break;
         } else {
@@ -200,6 +77,40 @@ function () {
   return Validator;
 }();
 
+var SCREEN_RATIO = 16 / 9;
+var maxScroll = 0;
+var WINDOW = $(window);
+var response_statuses = ['success', 'spamer', 'fail'];
+var resp_actions = {
+  success: function success() {
+    $('.contactForm__send').addClass('is-complete');
+    $('#btntxt').text('Отправлено');
+    new Noty({
+      type: 'success',
+      layout: 'center',
+      text: 'Ваше письмо отправлено администратору сайта CAR-TUBE',
+      timeout: 5000
+    }).show();
+  },
+  spamer: function spamer() {
+    new Noty({
+      type: 'error',
+      layout: 'center',
+      text: 'Вы похожи на спамера.'
+    }).show();
+  },
+  fail: function fail() {
+    new Noty({
+      type: 'error',
+      layout: 'center',
+      text: 'Произошла ошибка при отправке сообщения. Попробуйте повторить операцию позднее.'
+    }).show();
+  }
+};
+var reasons = {
+  collaboration: 'Сотрудничество',
+  questions_and_offers: 'Вопросы и предложения'
+};
 var validator = new Validator([{
   name: 'name',
   field: '#name',
@@ -213,19 +124,15 @@ var validator = new Validator([{
   field: '#message',
   err_msg: 'Поле \'Сообщение\' не должно быть пустым'
 }]);
-var reasons = {
-  'collaboration': 'Сотрудничество',
-  'questions_and_offers': 'Вопросы и предложения'
-};
 
 function getFieldData() {
   var data = {};
-  data['name'] = $('#name').val();
-  data['company'] = $('#company').val();
-  data['email'] = $('#email').val();
-  data['website'] = $('#website').val();
-  data['reason'] = reasons[$('#reason option:selected').val()];
-  data['message'] = $('#message').val();
+  data.name = $('#name').val();
+  data.company = $('#company').val();
+  data.email = $('#email').val();
+  data.website = $('#website').val();
+  data.reason = reasons[$('#reason option:selected').val()];
+  data.message = $('#message').val();
   return data;
 }
 
@@ -240,6 +147,94 @@ function checkField(name) {
   }
 }
 
+function reDrawImages(image) {
+  image.width(image.height() * SCREEN_RATIO);
+}
+
+function openIcon(icon) {
+  icon.css('display', 'block');
+}
+
+function closeIcon(icon) {
+  icon.css('display', 'none');
+}
+
+reDrawImages($('.infiniteItem'));
+$('#header-menu, #hideMenu').on('click', function () {
+  // e.stopPropagation();
+  $('.side-header').toggleClass('open');
+  $('.backlayer').toggleClass('-visible-');
+
+  if ($('.side-header').hasClass('open')) {
+    $('.hmenu-text').html('Close');
+  } else {
+    $('.hmenu-text').html('Menu');
+  }
+});
+$('.side-header').on('click', function () {
+  if ($('.side-header').hasClass('open')) {
+    $('.side-header').removeClass('open');
+    $('.backlayer').removeClass('-visible-');
+    $('.side-header .line.is-b').css('display', 'block');
+    $('.hmenu-text').html('Menu');
+  }
+}); // Toggle accordeon item
+
+$('.toggleBtn').on('click', function () {
+  var elemItem = $(this);
+  var target = elemItem.attr('toggle-target');
+  var toggleData = $(".toggleList[toggle-data=\"".concat(target, "\"]"));
+  elemItem.find('.toggleBtn__icon').empty();
+
+  if (elemItem.hasClass('collapse')) {
+    elemItem.removeClass('collapse');
+    toggleData.addClass('-hidden-');
+    elemItem.find('.toggleBtn__icon').append('<i class="fas fa-caret-down"></i>');
+  } else {
+    elemItem.addClass('collapse');
+    toggleData.removeClass('-hidden-');
+    elemItem.find('.toggleBtn__icon').append('<i class="fas fa-caret-up"></i>');
+  }
+});
+$('.iconBtnBox').on('click', function (e) {
+  e.stopPropagation();
+  $(this).toggleClass('open');
+
+  if ($(this).hasClass('open')) {
+    closeIcon($(this).find('.line.is-b'));
+  } else {
+    openIcon($(this).find('.line.is-b'));
+  }
+});
+WINDOW.on('resize', function () {
+  reDrawImages($('.infiniteItem'));
+}); // function moveInfinate() {
+//   let mar = 0;
+//   setInterval( () => {
+//     $( '.infiniteList' ).css( 'margin', mar );
+//     mar -= 5;
+//   }, 100 );
+// }
+
+function sendEmail() {
+  var data = getFieldData();
+  data.token = $('#g-recaptcha-responce').val();
+  $.ajax({
+    url: '/api/send_email_to_admin/12/',
+    type: 'POST',
+    data: data,
+    dataType: 'json',
+    success: function success(response) {
+      console.log('response:', response.status);
+      console.log(response_statuses.indexOf(response.status));
+
+      if (response_statuses.indexOf(response.status) !== -1) {
+        resp_actions[response.status]();
+      }
+    }
+  });
+}
+
 $('.form_input').on('change', function (e) {
   e.preventDefault();
   checkField($(this).attr('name'));
@@ -248,9 +243,8 @@ $('.form_input').on('keyup', function (e) {
   e.preventDefault();
   var btn = $(this);
 
-  if (btn.val() == '') {
-    // if (validator.fields[name].field.val() == '') {
-    if (btn.attr('valstate') != 'empty') {
+  if (btn.val() === '') {
+    if (btn.attr('valstate') !== 'empty') {
       btn.attr('valstate', 'empty');
       new Noty({
         type: 'warning',
