@@ -274,3 +274,34 @@ $('.form_input').on('keyup', function (e) {
   }
 });
 $('#send_email').on('click', sendEmail);
+$('.fakeSelect').on('click', function () {
+  if ($(this).hasClass('fakeSelect-opened')) {
+    $(this).removeClass('fakeSelect-opened');
+  } else {
+    $(this).addClass('fakeSelect-opened');
+  }
+});
+$('.fakeSelect__option').on('click', function (e) {
+  e.stopPropagation();
+  var option = $(this).attr('value');
+  $($(this).attr('for')).text($(this).text());
+  var select = $('#reason')[0];
+
+  for (var i = 0; i < select.options.length; i++) {
+    if (select.options[i].value === option) {
+      select.options[i].selected = true;
+    }
+  }
+
+  $('.fakeSelect').removeClass('fakeSelect-opened');
+});
+$(document).mouseup(function (e) {
+  // отслеживаем событие клика по веб-документу
+  var block = $(".fakeSelect"); // определяем элемент, к которому будем применять условия (можем указывать ID, класс либо любой другой идентификатор элемента)
+
+  if (!block.is(e.target) // проверка условия если клик был не по нашему блоку
+  && block.has(e.target).length === 0) {
+    // проверка условия если клик не по его дочерним элементам
+    block.removeClass('fakeSelect-opened'); // если условия выполняются - скрываем наш элемент
+  }
+});

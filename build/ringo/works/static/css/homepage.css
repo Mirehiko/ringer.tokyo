@@ -282,7 +282,7 @@ a:hover, .iconBtnBox:hover .iconBtn {
   top: 0;
   left: 0;
   z-index: 3;
-  background-color: #be4e9f;
+  background-color: #222;
   display: none; }
   .backlayer.-visible- {
     display: block; }
@@ -564,7 +564,7 @@ img.logo {
   top: 0;
   left: 0;
   z-index: 3;
-  background-color: #be4e9f;
+  background-color: #222;
   display: none; }
   .backlayer.-visible- {
     display: block; }

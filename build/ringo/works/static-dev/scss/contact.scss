@@ -4,13 +4,14 @@
 
 
 #contactPage {
-	margin-bottom: 170px;
+  margin-bottom: 170px;
 
   @media screen and (min-width: 0) {
     width: 93%;
     margin-left: auto;
     margin-right: auto;
   }
+
   @media screen and (min-width: 768px) {
     width: 65.1612903%;
     margin-left: 0;
@@ -19,13 +20,13 @@
 }
 
 .contactForm__text {
-	display: block;
-	width: 100%;
+  display: block;
+  width: 100%;
   font-weight: bold;
-	background-color: transparent;
+  background-color: transparent;
 
   color: #222;
-	border: none;
+  border: none;
   background-color: #fff;
   outline: none;
 
@@ -35,6 +36,7 @@
     border-bottom: 0.533333333333333vw #000 solid;
     margin-bottom: 13.333333333333334vw;
   }
+
   @media screen and (min-width: 768px) {
     height: 80px;
     font-size: 24px;
@@ -42,6 +44,7 @@
     margin-bottom: 60px;
   }
 }
+
 .contactForm__message {
   width: 100%;
   font-weight: bold;
@@ -52,6 +55,7 @@
     border: 0.533333333333333vw #000 solid;
     padding: 4vw;
   }
+
   @media screen and (min-width: 768px) {
     height: 480px;
     font-size: 24px;
@@ -59,8 +63,9 @@
     padding: 30px;
   }
 }
+
 .contactForm__subject {
-	width: 100%;
+  width: 100%;
   height: 90px;
   position: relative;
   top: 0px;
@@ -71,16 +76,19 @@
   border: 2px #000 solid;
   margin-top: 30px;
   margin-bottom: 80px;
+  display: none;
 
   @media screen and (min-width: 0) {
     padding: 0 4vw;
   }
+
   @media screen and (min-width: 768px) {
     padding: 0 30px;
   }
 }
+
 .contactForm__select {
-	// position: absolute;
+  // position: absolute;
   border: none;
   outline: none;
   top: 0px;
@@ -99,10 +107,12 @@
   @media screen and (min-width: 0) {
     font-size: 4.8vw;
   }
+
   @media screen and (min-width: 768px) {
     font-size: 24px;
   }
 }
+
 .contactForm__send {
   position: relative;
   background-color: #000;
@@ -141,6 +151,7 @@
     -ms-filter: none;
     filter: none;
   }
+
   &.is-complete {
     background-color: #f6f6f6;
     color: #000;
@@ -153,6 +164,7 @@
     .send__icon {
       opacity: 0;
     }
+
     .text {
       outline: none;
       color: #222;
@@ -166,6 +178,7 @@
     margin-top: 16vw;
     margin-bottom: 2.666666666666667vw;
   }
+
   @media screen and (min-width: 768px) {
     width: 390px;
     height: 80px;
@@ -187,6 +200,7 @@
 .on_success {
   border-color: #49b13d;
 }
+
 .on_error {
   border-color: #ea0d0d;
 }
@@ -203,6 +217,7 @@
     margin-top: -5.333333333333333vw;
     right: 4vw;
   }
+
   @media screen and (min-width: 768px) {
     width: 48px;
     height: 48px;
@@ -216,6 +231,7 @@
     width: 3.2vw;
     height: 3.2vw;
   }
+
   @media screen and (min-width: 768px) {
     width: 12px;
     height: 12px;
@@ -229,4 +245,67 @@
 .grecaptcha {
   position: relative;
   z-index: 10;
+}
+
+
+.fakeSelect__optionList {
+  display: none;
+  position: absolute;
+  border: 2px solid #666;
+  left: 0;
+  width: 100%;
+}
+
+.fakeSelect__option {
+  color: #222;
+  line-height: 30px;
+  padding: 0 15px;
+
+  &:hover {
+    color: #fff;
+    background-color: #666;
+  }
+}
+
+.fakeSelectField {
+  line-height: 90px;
+  height: 100%;
+
+  @media screen and (min-width: 0) {
+    font-size: 4.8vw;
+  }
+
+  @media screen and (min-width: 768px) {
+    font-size: 24px;
+  }
+}
+
+.fakeSelect {
+  width: 100%;
+  height: 90px;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  bottom: auto;
+  right: auto;
+  background-color: #fff;
+  border: 2px #000 solid;
+  margin-top: 30px;
+  margin-bottom: 80px;
+  cursor: default;
+
+  @media screen and (min-width: 0) {
+    padding: 0 4vw;
+  }
+
+  @media screen and (min-width: 768px) {
+    padding: 0 30px;
+  }
+
+  &.fakeSelect-opened,
+  &:hover {
+    .fakeSelect__optionList {
+      display: block;
+    }
+  }
 }

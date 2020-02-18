@@ -4,43 +4,75 @@
 {% block title %}Контакты{% endblock %}
 
 {% block css %}
-  <link rel="stylesheet" type="text/css" charset="utf-8" href="{% static 'css/contact' %}{{ settings.CSS_VER }}?v{{ settings.STATIC_VERSION }}">
+<link rel="stylesheet" type="text/css" charset="utf-8"
+  href="{% static 'css/contact' %}{{ settings.CSS_VER }}?v{{ settings.STATIC_VERSION }}">
 {% endblock %}
 
 {% block js_libs %}
-  <script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
-  <link rel="stylesheet" type="text/css" charset="utf-8" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?render={{ site_key }}"></script>
+<link rel="stylesheet" type="text/css" charset="utf-8"
+  href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
 
-  <script>
-    grecaptcha.ready(function() {
-      grecaptcha.execute('{{ site_key }}', {action: 'homepage'}).then(function(token) {
-        console.log(token)
-        document.getElementById('g-recaptcha-responce').value = token;
-        $('.grecaptcha-badge').parent().addClass('grecaptcha');
-      });
+<script>
+  grecaptcha.ready(function () {
+    grecaptcha.execute('{{ site_key }}', {
+      action: 'homepage'
+    }).then(function (token) {
+      console.log(token)
+      document.getElementById('g-recaptcha-responce').value = token;
+      $('.grecaptcha-badge').parent().addClass('grecaptcha');
     });
-  </script>
+  });
+</script>
 {% endblock %}
 
 
-{% block body %}<body class="isContact">{% endblock %}
+{% block body %}
 
-{% block breadcrumbs %}
-	{% include 'crumbs/breadcrumbs.html' with page_name="Контакты" is_dark=True %}
-{% endblock %}
+<body class="isContact">{% endblock %}
 
-{% block content %}
-	<div id="pageContent" class="content">
-		<div id="contactPage" class="page">
-			<form class="contactForm" method="post">
+  {% block breadcrumbs %}
+  {% include 'crumbs/breadcrumbs.html' with page_name="Контакты" is_dark=True %}
+  {% endblock %}
+
+  {% block content %}
+  <div id="pageContent" class="content">
+    <div id="contactPage" class="page">
+      <form class="contactForm" method="post">
         <input type="text" id="name" name="name" class="contactForm__text form_input" placeholder="ФИО *">
         <input type="text" id="company" name="company" class="contactForm__text" placeholder="Company Name">
         <input type="text" id="email" name="email" class="contactForm__text form_input" placeholder="E-mail *">
         <input type="text" id="website" name="website" class="contactForm__text" placeholder="Вебсайт">
+        <div id="fake_reason" class="fakeSelect">
+          <div id="fake_select" class="fakeSelectField">Сотрудничество</div>
+          <div class="select__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+              <title>icon_down</title>
+              <path d="M24,0A24,24,0,1,0,48,24,24,24,0,0,0,24,0Zm0,40A16,16,0,1,1,40,24,16,16,0,0,1,24,40Z"
+                style="fill:#f5f5f5" />
+              <g style="isolation:isolate">
+                <polygon
+                  points="30 24.055 28.458 22.513 25.088 25.858 25.088 18 22.911 18 22.911 25.858 19.542 22.513 18 24.055 24 30 30 24.055" />
+              </g>
+            </svg>
+          </div>
+          <div class="fakeSelect__optionList">
+            <div class="fakeSelect__option" value="collaboration" for="#fake_select" selected="">Сотрудничество</div>
+            <div class="fakeSelect__option" value="questions_and_offers" for="#fake_select">Вопросы и предложения</div>
+          </div>
+        </div>
         <div class="contactForm__subject">
           <div class="select__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><title>icon_down</title><path d="M24,0A24,24,0,1,0,48,24,24,24,0,0,0,24,0Zm0,40A16,16,0,1,1,40,24,16,16,0,0,1,24,40Z" style="fill:#f5f5f5"/><g style="isolation:isolate"><polygon points="30 24.055 28.458 22.513 25.088 25.858 25.088 18 22.911 18 22.911 25.858 19.542 22.513 18 24.055 24 30 30 24.055"/></g></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+              <title>icon_down</title>
+              <path d="M24,0A24,24,0,1,0,48,24,24,24,0,0,0,24,0Zm0,40A16,16,0,1,1,40,24,16,16,0,0,1,24,40Z"
+                style="fill:#f5f5f5" />
+              <g style="isolation:isolate">
+                <polygon
+                  points="30 24.055 28.458 22.513 25.088 25.858 25.088 18 22.911 18 22.911 25.858 19.542 22.513 18 24.055 24 30 30 24.055" />
+              </g>
+            </svg>
           </div>
           <select id="reason" class="contactForm__select">
             <option value="collaboration" selected="">Сотрудничество</option>
@@ -48,7 +80,8 @@
           </select>
         </div>
 
-        <textarea id="message" name="message" class="contactForm__message form_input" placeholder="Сообщение *"></textarea>
+        <textarea id="message" name="message" class="contactForm__message form_input"
+          placeholder="Сообщение *"></textarea>
 
         <input type="hidden" id="g-recaptcha-responce" name="g-recaptcha-responce">
 
@@ -63,7 +96,6 @@
           <a class="p-contact_policy" href="#" target="_blank">Политика конфиденциальности</a>
         </span>
       </form>
-		</div>
-	</div>
-{% endblock %}
-
+    </div>
+  </div>
+  {% endblock %}

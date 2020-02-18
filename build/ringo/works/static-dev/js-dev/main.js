@@ -86,7 +86,7 @@ function closeIcon(icon) {
 
 const response_statuses = ['success', 'spamer', 'fail'];
 const resp_actions = {
-  success: function() {
+  success: function () {
     $('.contactForm__send').addClass('is-complete');
     $('#btntxt').text('Отправлено');
     new Noty({
@@ -96,14 +96,14 @@ const resp_actions = {
       timeout: 5000,
     }).show();
   },
-  spamer: function() {
+  spamer: function () {
     new Noty({
       type: 'error',
       layout: 'center',
       text: 'Вы похожи на спамера.'
     }).show();
   },
-  fail: function() {
+  fail: function () {
     new Noty({
       type: 'error',
       layout: 'center',
@@ -121,7 +121,7 @@ function sendEmail() {
     data: data,
     dataType: "json",
     success: function (response) {
-      console.log('response:',response.status);
+      console.log('response:', response.status);
       console.log(response_statuses.indexOf(response.status));
       if (response_statuses.indexOf(response.status) !== -1) {
         resp_actions[response.status]();
@@ -206,7 +206,7 @@ function getFieldData() {
   data['name'] = $('#name').val();
   data['company'] = $('#company').val();
   data['email'] = $('#email').val();
-  data['website'] = $('#website').val(); 
+  data['website'] = $('#website').val();
   data['reason'] = reasons[$('#reason option:selected').val()];
   data['message'] = $('#message').val();
   return data;
@@ -256,3 +256,33 @@ $('.form_input').on('keyup', function (e) {
 });
 
 $('#send_email').on('click', sendEmail);
+
+$('.fakeSelect').on('click', function () {
+  if ($(this).hasClass('fakeSelect-opened')) {
+    $(this).removeClass('fakeSelect-opened');
+  } else {
+    $(this).addClass('fakeSelect-opened');
+  }
+});
+
+$('.fakeSelect__option').on('click', function (e) {
+  e.stopPropagation();
+  const option = $(this).attr('value');
+  $($(this).attr('for')).text($(this).text());
+  const select = $('#reason')[0];
+  for (let i = 0; i < select.options.length; i++) {
+    if (select.options[i].value === option) {
+      select.options[i].selected = true;
+    }
+  }
+  $('.fakeSelect').removeClass('fakeSelect-opened');
+});
+
+$(document).mouseup(function (e) { // отслеживаем событие клика по веб-документу
+  var block = $(".fakeSelect"); // определяем элемент, к которому будем применять условия (можем указывать ID, класс либо любой другой идентификатор элемента)
+  if (!block.is(e.target) // проверка условия если клик был не по нашему блоку
+    &&
+    block.has(e.target).length === 0) { // проверка условия если клик не по его дочерним элементам
+    block.removeClass('fakeSelect-opened'); // если условия выполняются - скрываем наш элемент
+  }
+});
