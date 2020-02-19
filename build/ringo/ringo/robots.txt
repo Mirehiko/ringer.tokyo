@@ -1,0 +1,18 @@
+User-agent: Yandex
+Crawl-delay: 2
+Disallow: /search/
+Disallow: /admin/
+Disallow: /login/
+
+User-agent: Googlebot
+Disallow: /search/
+Disallow: /admin/
+Disallow: /login/
+
+User-agent: *
+Crawl-delay: 3
+Disallow: /search/
+Disallow: /admin/
+Disallow: /login/
+
+Host: http://www.car-tube.ru
