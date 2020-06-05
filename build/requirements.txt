@@ -1,5 +1,5 @@
 git+git://github.com/gkuhn1/django-admin-multiupload.git
-Django==2.1.15
+Django==2.2.13
 django-cors-headers==3.0.2
 django-filter==2.0.0
 django-inline-orderable==0.1.1
