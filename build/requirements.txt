@@ -3,7 +3,7 @@ Django==2.1.15
 django-cors-headers==3.0.2
 django-filter==2.0.0
 django-inline-orderable==0.1.1
-djangorestframework==3.9.2
+djangorestframework==3.11.2
 Markdown==3.1
 Pillow==6.2.0
 pytz==2018.9
