@@ -5,7 +5,7 @@ django-filter==2.0.0
 django-inline-orderable==0.1.1
 djangorestframework==3.9.2
 Markdown==3.1
-Pillow==6.2.0
+Pillow==9.3.0
 pytz==2018.9
 PyYAML==5.1
 virtualenv==15.1.0
